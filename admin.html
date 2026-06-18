@@ -1060,7 +1060,7 @@
           emailAddress: document.getElementById('set-email').value.trim(),
           contactAddress: document.getElementById('set-address').value.trim(),
           instagramUrl: document.getElementById('set-insta').value.trim(),
-          adminPassword: settings.adminPassword || "dhanalakshmi123"
+          adminPassword: settings.adminPassword || "admin"
         };
 
         await DB.saveSettings(updatedSettings);
@@ -1080,7 +1080,7 @@
         const newInput = document.getElementById('set-new-password').value;
         const confirmInput = document.getElementById('set-confirm-password').value;
 
-        const storedPassword = settings.adminPassword || "dhanalakshmi123";
+        const storedPassword = settings.adminPassword || "admin";
 
         if (currentInput !== storedPassword) {
           alert("Error: Current password is incorrect!");

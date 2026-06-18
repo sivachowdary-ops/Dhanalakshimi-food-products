@@ -112,5 +112,4 @@ INSERT INTO settings (key, value) VALUES
 ('upiId', '8919051435@axl'),
 ('instagramUrl', 'https://instagram.com/dhanalakshmifoods'),
 ('emailAddress', 'amarnadhkarella664@gmail.com'),
-('contactAddress', 'Door No. 18/87, Nimmathota, Undrajavaram, West Godavari District, Andhra Pradesh - 534216'),
-('adminPassword', 'dhanalakshmi123');
+('contactAddress', 'Door No. 18/87, Nimmathota, Undrajavaram, West Godavari District, Andhra Pradesh - 534216');

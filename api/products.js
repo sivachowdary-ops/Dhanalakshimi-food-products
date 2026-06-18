@@ -35,8 +35,13 @@ async function handler(req, res) {
   }
 
   // ADMIN OPERATIONS SHIELD
+  const targetPassword = process.env.ADMIN_PASSWORD;
+  if (!targetPassword) {
+    console.error("Configuration Error: ADMIN_PASSWORD environment variable is not configured on the server.");
+    return res.status(500).json({ error: "Server Configuration Error: Admin operations are disabled." });
+  }
+
   const adminPasswordHeader = req.headers['x-admin-password'];
-  const targetPassword = process.env.ADMIN_PASSWORD || 'dhanalakshmi123';
   if (!adminPasswordHeader || adminPasswordHeader !== targetPassword) {
     return res.status(401).json({ error: 'Unauthorized: Admin credentials invalid.' });
   }

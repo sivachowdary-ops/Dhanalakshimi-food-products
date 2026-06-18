@@ -184,8 +184,7 @@ const DEFAULT_SETTINGS = {
   upiId: "8919051435@axl",
   instagramUrl: "https://instagram.com/dhanalakshmifoods",
   emailAddress: "amarnadhkarella664@gmail.com",
-  contactAddress: "Door No. 18/87, Nimmathota, Undrajavaram, West Godavari District, Andhra Pradesh - 534216",
-  adminPassword: "dhanalakshmi123"
+  contactAddress: "Door No. 18/87, Nimmathota, Undrajavaram, West Godavari District, Andhra Pradesh - 534216"
 };
 
 class UnifiedDatabase {
@@ -502,7 +501,8 @@ class UnifiedDatabase {
     
     // Fallback Local Auth
     const settings = JSON.parse(localStorage.getItem("dfp_settings")) || DEFAULT_SETTINGS;
-    if (password === settings.adminPassword) {
+    const localPassword = settings.adminPassword || "admin";
+    if (password === localPassword) {
       this.adminToken = password;
       localStorage.setItem('dfp_admin_token', password);
       return { success: true };

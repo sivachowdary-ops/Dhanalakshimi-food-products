@@ -11,8 +11,12 @@ async function handler(req, res) {
         return res.status(400).json({ error: 'Password is required.' });
       }
 
-      // Read configured password from environment variables or default settings
-      const targetPassword = process.env.ADMIN_PASSWORD || 'dhanalakshmi123';
+      // Read configured password from environment variables
+      const targetPassword = process.env.ADMIN_PASSWORD;
+      if (!targetPassword) {
+        console.error("Configuration Error: ADMIN_PASSWORD environment variable is not configured on the server.");
+        return res.status(500).json({ error: "Server Configuration Error: Admin authentication is disabled." });
+      }
 
       if (password === targetPassword) {
         // Return success and password-as-token for simplified verification on subsequent API requests

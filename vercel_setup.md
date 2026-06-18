@@ -35,7 +35,7 @@ For local development and testing, you can create a local environment file in th
    ```env
    SUPABASE_URL=https://your-supabase-project-id.supabase.co
    SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key-secret-here
-   ADMIN_PASSWORD=dhanalakshmi123
+   ADMIN_PASSWORD=your-secure-admin-password-here
    NODE_ENV=development
    ```
 
