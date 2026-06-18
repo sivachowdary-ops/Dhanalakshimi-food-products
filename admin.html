@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dhanalakshmi Foods - Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background-color: #F8F9FA !important;
+    }
+    .app-container {
+      max-width: 100% !important;
+      box-shadow: none !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Password Lock Screen Overlay -->
+  <div id="admin-lock-screen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #F3F4F6; z-index: 99999; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background-color: var(--white); border: 1px solid #E5E7EB; border-radius: 16px; padding: 40px 32px; width: 100%; max-width: 420px; box-shadow: var(--shadow-lg); text-align: center; position: relative;">
+      <!-- Elegant border accent -->
+      <div style="position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--primary-maroon), var(--primary-red)); border-radius: 16px 16px 0 0;"></div>
+      
+      <!-- Modern Lock Icon SVG -->
+      <div style="width: 64px; height: 64px; background-color: var(--bg-cream); border: 1px solid var(--border-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; color: var(--primary-maroon);">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+      </div>
+
+      <h2 style="font-size: 1.5rem; color: var(--primary-maroon); margin-bottom: 8px; font-family: var(--font-heading); font-weight: 700;">Admin Authentication</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 28px; line-height: 1.5;">Access is restricted to store management. Please input your secure password below.</p>
+      
+      <form id="lock-form" onsubmit="event.preventDefault(); verifyAdminPassword();">
+        <div class="form-group" style="margin-bottom: 20px; text-align: left;">
+          <label for="lock-password" style="font-weight: 600; font-size: 0.8rem; color: var(--text-dark); margin-bottom: 6px; display: block; text-transform: uppercase; letter-spacing: 0.5px;">Dashboard Password</label>
+          <input type="password" id="lock-password" required placeholder="••••••••" style="border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 8px; font-size: 1rem; width: 100%; outline: none; transition: var(--transition); background-color: #F9FAFB; color: var(--text-dark);">
+        </div>
+        <div id="lock-error-msg" style="color: var(--primary-red); font-size: 0.8rem; font-weight: 600; margin-bottom: 16px; display: none; align-items: center; justify-content: center; gap: 6px;">
+          <span>⚠️</span> Incorrect password. Please try again.
+        </div>
+        <button type="submit" class="btn-primary" style="width: 100%; padding: 14px; font-size: 0.95rem; font-weight: 700; border-radius: 9999px;">
+          Unlock Dashboard
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="admin-container">
+    <!-- Admin Header (Ecomora Style Navigation) -->
+    <header class="admin-header">
+      <div class="logo-container" style="display: flex; align-items: center; gap: 10px;">
+        <img src="assets/logo.png" alt="Dhanalakshmi Food Products Logo" class="logo-img" style="width: 36px; height: 36px;">
+        <span class="brand-title" style="font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700; color: var(--primary-maroon);">Dhanalakshmi Foods</span>
+      </div>
+
+      <!-- Center Navigation Tabs -->
+      <div class="admin-nav-tabs">
+        <div class="admin-tab active" data-tab="dashboard">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          Dashboard
+        </div>
+        <div class="admin-tab" data-tab="products">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+          Products
+        </div>
+        <div class="admin-tab" data-tab="orders">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><polygon points="12 22.08 12 12 3 6.92 3 17.08 12 22.08"></polygon><polygon points="12 12 21 6.92 21 17.08 12 22.08"></polygon><polygon points="12 2 3 6.92 12 12 21 6.92 12 2"></polygon><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+          Orders
+          <span id="orders-badge" class="badge-status pending" style="padding: 1px 5px; font-size: 0.65rem; margin-left: 4px; display: none;">0</span>
+        </div>
+        <div class="admin-tab" data-tab="shipping">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+          Shipping
+        </div>
+        <div class="admin-tab" data-tab="settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          Settings
+        </div>
+      </div>
+
+      <!-- Right Header Profile Widget -->
+      <div class="admin-header-right">
+        <div class="admin-profile-widget">
+          <div class="admin-avatar">A</div>
+          <span class="admin-profile-name">Manager</span>
+        </div>
+        <a href="index.html" class="admin-logout-btn" style="color: var(--text-dark); border-color: #E5E7EB; border-radius: var(--radius-full); padding: 8px 16px; text-decoration: none;">
+          👁 View Store
+        </a>
+        <button onclick="adminLogout()" class="admin-logout-btn" style="border-radius: var(--radius-full); padding: 8px 16px;">
+          🚪 Logout
+        </button>
+      </div>
+    </header>
+
+    <!-- Admin Content Area -->
+    <div class="admin-content">
+
+      <!-- PANEL 1: DASHBOARD -->
+      <div class="admin-tab-panel active" id="panel-dashboard">
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon">💰</div>
+            <div class="metric-info">
+              <h5>Total Revenue</h5>
+              <p id="metric-revenue">₹0</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">🛍</div>
+            <div class="metric-info">
+              <h5>Total Orders</h5>
+              <p id="metric-orders">0</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">📈</div>
+            <div class="metric-info">
+              <h5>Avg Order Value</h5>
+              <p id="metric-aov">₹0</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">⏳</div>
+            <div class="metric-info">
+              <h5>Pending Orders</h5>
+              <p id="metric-pending" style="color: var(--primary-red);">0</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <h3 class="admin-card-title">Recent Orders</h3>
+          <div class="table-responsive">
+            <table id="recent-orders-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>State</th>
+                  <th>Total Weight</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2: PRODUCTS -->
+      <div class="admin-tab-panel" id="panel-products">
+        <div class="admin-section-header">
+          <h2 class="admin-section-title">Product Catalog</h2>
+          <div class="admin-section-actions">
+            <div class="admin-search-wrapper">
+              <span class="admin-search-icon">🔍</span>
+              <input type="text" id="product-search-input" class="admin-search-input" placeholder="Search product...">
+            </div>
+            <button class="btn-primary" id="btn-add-product" style="border-radius: var(--radius-full); padding: 10px 20px;">
+              ✨ Add New Product
+            </button>
+          </div>
+        </div>
+        
+        <!-- Category Pills Filter Bar -->
+        <div class="admin-filter-pills" id="admin-category-pills">
+          <!-- Loaded dynamically -->
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div class="admin-product-grid" id="admin-products-grid">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+
+      <!-- PANEL 3: ORDERS -->
+      <div class="admin-tab-panel" id="panel-orders">
+        <div class="admin-card">
+          <h3 class="admin-card-title">Order Processing</h3>
+          
+          <div class="admin-section-actions" style="margin-bottom: 20px; display: flex; flex-direction: row; gap: 12px; width: 100%; flex-wrap: wrap;">
+            <div class="admin-search-wrapper" style="flex-grow: 1; min-width: 250px;">
+              <span class="admin-search-icon">🔍</span>
+              <input type="text" id="order-search-input" class="admin-search-input" placeholder="Search by Order ID, Name, WhatsApp...">
+            </div>
+            <div class="form-group filter-select" style="width: auto; min-width: 180px; margin: 0; display: flex; flex-direction: row; align-items: center;">
+              <select id="order-status-filter" class="admin-search-input" style="padding-left: 16px; padding-right: 32px; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236C554E%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22></polyline></svg>'); background-repeat: no-repeat; background-position: right 14px center; background-size: 12px; appearance: none; cursor: pointer; color: var(--text-muted);">
+                <option value="All">All Statuses</option>
+                <option value="Pending">Pending Verification</option>
+                <option value="Processing">Processing / Preparing</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table id="orders-table">
+              <thead>
+                <tr>
+                  <th>Date & Time</th>
+                  <th>Order ID</th>
+                  <th>Customer Info</th>
+                  <th>Items ordered</th>
+                  <th>Total Weight</th>
+                  <th>Payable</th>
+                  <th>UTR/Payment Ref</th>
+                  <th>Status</th>
+                  <th>Update Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 4: SHIPPING -->
+      <div class="admin-tab-panel" id="panel-shipping">
+        <div class="admin-row">
+          <!-- Left side: Shipping Editor Form -->
+          <div class="admin-col-sidebar">
+            <div class="admin-card">
+              <h3 class="admin-card-title">Edit State Shipping</h3>
+              <form id="shipping-form">
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="ship-state">State / Region *</label>
+                  <select id="ship-state" required>
+                    <!-- Loaded dynamically -->
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 16px;">
+                  <label for="ship-rate">Courier Fee (Per 1kg Base) *</label>
+                  <input type="number" id="ship-rate" required min="0" placeholder="e.g. 80">
+                  <span style="font-size: 0.65rem; color: var(--text-muted);">This sets the base shipping rate. Incremental weight (per kg) is calculated automatically.</span>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Update Rate</button>
+              </form>
+            </div>
+          </div>
+          <!-- Right side: Shipping List -->
+          <div class="admin-col-main">
+            <div class="admin-card">
+              <h3 class="admin-card-title">State-wise Shipping Matrix</h3>
+              <div class="table-responsive">
+                <table id="shipping-table">
+                  <thead>
+                    <tr>
+                      <th>State Name</th>
+                      <th>Base Shipping Charge (up to 1kg)</th>
+                      <th>Calculated Heavy Shipping (per kg after first)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Populated dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 5: SETTINGS -->
+      <div class="admin-tab-panel" id="panel-settings">
+        <div class="admin-row">
+          <div class="admin-col-sidebar">
+            <div class="admin-card">
+              <h3 class="admin-card-title">Quick Settings Summary</h3>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">
+                Configure contact coordinates, business identity, and payment channels.
+              </p>
+              <button class="btn-secondary" id="btn-reset-db" style="width:100%; color: var(--primary-red); border-color: var(--primary-red); margin-bottom: 10px;">
+                🔄 Reset Store to Defaults
+              </button>
+            </div>
+          </div>
+
+          <div class="admin-col-main">
+            <!-- Card 1: Store Configuration -->
+            <div class="admin-card">
+              <h3 class="admin-card-title">Store Configuration</h3>
+              <form id="settings-form">
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="set-biz-name">Business Name *</label>
+                  <input type="text" id="set-biz-name" required>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="set-upi-id">UPI ID for Payment (Direct QR & Intent Link) *</label>
+                  <input type="text" id="set-upi-id" required placeholder="e.g. account@upi">
+                  <span style="font-size: 0.65rem; color: var(--text-muted);">All storefront UPI payment deep-links and QR codes will point directly to this account.</span>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="set-tagline">Tagline / Brand Promise *</label>
+                  <input type="text" id="set-tagline" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="set-desc">Description (Used in Footer & SEO) *</label>
+                  <textarea id="set-desc" rows="3" required></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+                  <div class="form-group" style="flex:1;">
+                    <label for="set-phone">WhatsApp Number *</label>
+                    <input type="text" id="set-phone" required>
+                  </div>
+                  <div class="form-group" style="flex:1;">
+                    <label for="set-email">Email Address *</label>
+                    <input type="email" id="set-email" required>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                  <label for="set-address">Business Address *</label>
+                  <textarea id="set-address" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 16px;">
+                  <label for="set-insta">Instagram Profile URL</label>
+                  <input type="url" id="set-insta">
+                </div>
+
+                <button type="submit" class="btn-primary" style="border-radius: var(--radius-full); padding: 10px 24px;">💾 Save Store Settings</button>
+              </form>
+            </div>
+
+            <!-- Card 2: Security Credentials -->
+            <div class="admin-card">
+              <h3 class="admin-card-title">Change Dashboard Password</h3>
+              <form id="change-password-form">
+                <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5;">To update the access password, fill in the fields below. Verification requires matching your current password.</p>
+                
+                <div class="form-group" style="margin-bottom: 16px;">
+                  <label for="set-current-password">Current Password *</label>
+                  <input type="password" id="set-current-password" required placeholder="Enter current password" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+                </div>
+                
+                <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+                  <div class="form-group" style="flex:1;">
+                    <label for="set-new-password">New Password *</label>
+                    <input type="password" id="set-new-password" required placeholder="Enter new password" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+                  </div>
+                  <div class="form-group" style="flex:1;">
+                    <label for="set-confirm-password">Confirm New Password *</label>
+                    <input type="password" id="set-confirm-password" required placeholder="Confirm new password" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+                  </div>
+                </div>
+
+                <button type="submit" class="btn-primary" style="border-radius: var(--radius-full); padding: 10px 24px; background-color: var(--primary-maroon); border-color: var(--primary-maroon); color: var(--accent-gold);">🔑 Update Password</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Slide-Over Drawer for Adding/Editing Products -->
+  <div class="slide-over-overlay" id="product-drawer-overlay"></div>
+  <div class="slide-over-drawer" id="product-drawer">
+    <div class="drawer-header">
+      <h3 id="product-form-title">Add New Product</h3>
+      <button id="btn-close-drawer" style="font-size: 1.5rem; color: var(--text-muted); cursor: pointer; background:none; border:none;">&times;</button>
+    </div>
+    <div class="drawer-body">
+      <form id="product-form">
+        <input type="hidden" id="prod-id-edit" value="">
+        
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="prod-name" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Product Name *</label>
+          <input type="text" id="prod-name" required placeholder="e.g. Pappu Chekodi" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="prod-category" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Category *</label>
+          <select id="prod-category" required style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background: var(--white); color:var(--text-dark);">
+            <option value="Mixtures">Mixtures</option>
+            <option value="Chekodilu">Chekodilu</option>
+            <option value="Karapusa">Karapusa</option>
+            <option value="Traditional Snacks">Traditional Snacks</option>
+            <option value="Gavvalu">Gavvalu</option>
+            <option value="Appadalu">Appadalu</option>
+            <option value="Others">Others</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="prod-desc" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Description *</label>
+          <textarea id="prod-desc" required rows="4" placeholder="Describe the snack taste, ingredients, shape..." style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; resize: vertical; background:var(--white); color:var(--text-dark);"></textarea>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px;">
+          <label for="prod-image" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Image URL</label>
+          <input type="text" id="prod-image" placeholder="e.g. assets/product_name.jpg" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+          <span style="font-size: 0.65rem; color: var(--text-muted); display: block; margin-top: 4px;">Leave empty to use general fallback picture.</span>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <div class="form-group" style="flex:1;">
+            <label for="prod-price-500g" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Price (500g) *</label>
+            <input type="number" id="prod-price-500g" required min="1" value="125" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+          </div>
+          <div class="form-group" style="flex:1;">
+            <label for="prod-price-1kg" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Price (1kg) *</label>
+            <input type="number" id="prod-price-1kg" required min="1" value="250" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F3F4F6; padding-bottom: 12px;">
+          <label for="prod-instock" style="font-weight: 600; font-size: 0.85rem; cursor: pointer; color: var(--text-dark);">Available in Stock</label>
+          <label class="switch">
+            <input type="checkbox" id="prod-instock" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="form-group" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F3F4F6; padding-bottom: 12px;">
+          <label for="prod-bestseller" style="font-weight: 600; font-size: 0.85rem; cursor: pointer; color: var(--text-dark);">Mark as Best Seller</label>
+          <label class="switch">
+            <input type="checkbox" id="prod-bestseller">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </form>
+    </div>
+    <div class="drawer-footer">
+      <button type="button" class="btn-secondary" id="btn-cancel-edit" style="color: var(--primary-maroon); border-color: var(--primary-maroon); border-radius: var(--radius-full); padding: 10px 20px;">Cancel</button>
+      <button type="submit" form="product-form" class="btn-primary" id="btn-save-product" style="border-radius: var(--radius-full); padding: 10px 20px;">Save Product</button>
+    </div>
+  </div>
+
+  <script src="db.js"></script>
+  <script>
+    // UI Tab Navigation
+    const tabs = document.querySelectorAll('.admin-tab');
+    const panels = document.querySelectorAll('.admin-tab-panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', async () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+
+        tab.classList.add('active');
+        const activeTab = tab.getAttribute('data-tab');
+        document.getElementById(`panel-${activeTab}`).classList.add('active');
+        
+        // Refresh specific view
+        try {
+          if (activeTab === 'dashboard') await loadDashboard();
+          else if (activeTab === 'products') await loadProducts();
+          else if (activeTab === 'orders') await loadOrders();
+          else if (activeTab === 'shipping') await loadShipping();
+          else if (activeTab === 'settings') await loadSettings();
+        } catch (err) {
+          console.error("Error refreshing view:", err);
+        }
+      });
+    });
+
+    // Verify Admin Password
+    function checkAuthentication() {
+      const auth = sessionStorage.getItem('dfp_admin_auth');
+      const lockScreen = document.getElementById('admin-lock-screen');
+      if (auth === 'true') {
+        lockScreen.style.display = 'none';
+      } else {
+        lockScreen.style.display = 'flex';
+        document.getElementById('lock-password').focus();
+      }
+    }
+
+    async function verifyAdminPassword() {
+      const passwordInput = document.getElementById('lock-password').value;
+      try {
+        const res = await DB.login(passwordInput);
+        if (res.success) {
+          sessionStorage.setItem('dfp_admin_auth', 'true');
+          document.getElementById('lock-error-msg').style.display = 'none';
+          document.getElementById('admin-lock-screen').style.display = 'none';
+          await loadDashboard();
+          await updatePendingOrdersCount();
+        } else {
+          const errorMsg = document.getElementById('lock-error-msg');
+          errorMsg.textContent = res.error || "Incorrect admin password.";
+          errorMsg.style.display = 'block';
+          document.getElementById('lock-password').value = "";
+          document.getElementById('lock-password').focus();
+        }
+      } catch (err) {
+        console.error("Authentication error:", err);
+        const errorMsg = document.getElementById('lock-error-msg');
+        errorMsg.textContent = "Error: Connection failed.";
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function adminLogout() {
+      DB.logout();
+      sessionStorage.removeItem('dfp_admin_auth');
+      location.reload();
+    }
+
+    // PAGE LOAD INITS
+    window.addEventListener('DOMContentLoaded', async () => {
+      checkAuthentication();
+      if (sessionStorage.getItem('dfp_admin_auth') === 'true') {
+        try {
+          await loadDashboard();
+          await updatePendingOrdersCount();
+        } catch (err) {
+          console.error("Initialization error:", err);
+        }
+      }
+    });
+
+    window.addEventListener('storage', async () => {
+      if (sessionStorage.getItem('dfp_admin_auth') !== 'true') return;
+      // Sync UI if storage updates from storefront
+      const activeTab = document.querySelector('.admin-tab.active').getAttribute('data-tab');
+      try {
+        if (activeTab === 'dashboard') await loadDashboard();
+        else if (activeTab === 'products') await loadProducts();
+        else if (activeTab === 'orders') await loadOrders();
+        else if (activeTab === 'shipping') await loadShipping();
+        else if (activeTab === 'settings') await loadSettings();
+        await updatePendingOrdersCount();
+      } catch (err) {
+        console.error("Storage sync error:", err);
+      }
+    });
+
+    async function updatePendingOrdersCount() {
+      try {
+        const orders = await DB.getOrders();
+        const pendingCount = orders.filter(o => o.status === 'Pending').length;
+        const badge = document.getElementById('orders-badge');
+        badge.textContent = pendingCount;
+        badge.style.display = pendingCount > 0 ? "inline-block" : "none";
+      } catch (err) {
+        console.error("Error updating pending orders count:", err);
+      }
+    }
+
+    // --- PANEL 1: DASHBOARD ---
+    async function loadDashboard() {
+      try {
+        const orders = await DB.getOrders();
+        
+        // Calculations
+        const completedOrders = orders.filter(o => o.status !== 'Cancelled');
+        const totalRevenue = completedOrders.reduce((sum, o) => sum + o.total, 0);
+        const totalOrdersCount = orders.length;
+        const averageOrderVal = totalOrdersCount > 0 ? Math.round(totalRevenue / totalOrdersCount) : 0;
+        const pendingOrdersCount = orders.filter(o => o.status === 'Pending').length;
+
+        // Update Cards
+        document.getElementById('metric-revenue').textContent = `₹${totalRevenue}`;
+        document.getElementById('metric-orders').textContent = totalOrdersCount;
+        document.getElementById('metric-aov').textContent = `₹${averageOrderVal}`;
+        document.getElementById('metric-pending').textContent = pendingOrdersCount;
+
+        // Load Recent Orders Table
+        const recentTableBody = document.querySelector('#recent-orders-table tbody');
+        recentTableBody.innerHTML = "";
+        
+        const recentOrders = orders.slice(0, 5); // display 5 newest
+        if (recentOrders.length === 0) {
+          recentTableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:var(--text-muted);">No orders placed yet.</td></tr>`;
+          return;
+        }
+
+        recentOrders.forEach(o => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td><strong>#${o.id}</strong></td>
+            <td>
+              <div style="font-weight:700;">${o.customer.name}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">${o.customer.phone}</div>
+            </td>
+            <td>${o.customer.state}</td>
+            <td>${o.totalWeight}</td>
+            <td style="font-weight:700;">₹${o.total}</td>
+            <td><span class="badge-status ${o.status.toLowerCase()}">${o.status}</span></td>
+            <td>
+              <button class="btn-primary btn-view-order" style="font-size:0.75rem; padding: 4px 8px; flex:none;">Manage</button>
+            </td>
+          `;
+
+          row.querySelector('.btn-view-order').addEventListener('click', async () => {
+            // Trigger tab jump to Orders Panel with Search prefilled
+            const ordersTab = document.querySelector('.admin-tab[data-tab="orders"]');
+            ordersTab.click();
+            document.getElementById('order-search-input').value = o.id;
+            await loadOrders(o.id);
+          });
+
+          recentTableBody.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Error loading dashboard metrics:", err);
+      }
+    }
+
+    // --- PANEL 2: PRODUCTS ---
+    const productForm = document.getElementById('product-form');
+    const btnCancelEdit = document.getElementById('btn-cancel-edit');
+    const productFormTitle = document.getElementById('product-form-title');
+
+    // Slide-over drawer control elements
+    const productDrawer = document.getElementById('product-drawer');
+    const productDrawerOverlay = document.getElementById('product-drawer-overlay');
+    const btnAddProduct = document.getElementById('btn-add-product');
+    const btnCloseDrawer = document.getElementById('btn-close-drawer');
+
+    let currentCategoryFilter = "All";
+    let currentSearchQuery = "";
+
+    function openDrawer(mode = "add") {
+      if (mode === "add") {
+        resetProductForm();
+      }
+      productDrawer.classList.add('active');
+      productDrawerOverlay.classList.add('active');
+    }
+
+    function closeDrawer() {
+      productDrawer.classList.remove('active');
+      productDrawerOverlay.classList.remove('active');
+      resetProductForm();
+    }
+
+    btnAddProduct.addEventListener('click', () => openDrawer("add"));
+    btnCloseDrawer.addEventListener('click', closeDrawer);
+    productDrawerOverlay.addEventListener('click', closeDrawer);
+    btnCancelEdit.addEventListener('click', closeDrawer);
+
+    // Dynamic Category Pills Renderer
+    function loadCategoryPills() {
+      const categories = ["All", "Mixtures", "Chekodilu", "Karapusa", "Traditional Snacks", "Gavvalu", "Appadalu", "Others"];
+      const container = document.getElementById('admin-category-pills');
+      container.innerHTML = "";
+
+      categories.forEach(cat => {
+        const pill = document.createElement('button');
+        pill.className = `admin-filter-pill ${cat === currentCategoryFilter ? 'active' : ''}`;
+        pill.textContent = cat;
+        pill.addEventListener('click', async () => {
+          currentCategoryFilter = cat;
+          document.querySelectorAll('.admin-filter-pill').forEach(btn => btn.classList.remove('active'));
+          pill.classList.add('active');
+          await loadProducts();
+        });
+        container.appendChild(pill);
+      });
+    }
+
+    // Dynamic Products Grid Renderer
+    async function loadProducts() {
+      // Refresh category pills selection active state
+      loadCategoryPills();
+
+      try {
+        const products = await DB.getProducts();
+        const productsGrid = document.getElementById('admin-products-grid');
+        productsGrid.innerHTML = "";
+
+        const filtered = products.filter(p => {
+          const matchesCategory = currentCategoryFilter === "All" || p.category === currentCategoryFilter;
+          const matchesSearch = p.name.toLowerCase().includes(currentSearchQuery.toLowerCase()) || 
+                                p.description.toLowerCase().includes(currentSearchQuery.toLowerCase());
+          return matchesCategory && matchesSearch;
+        });
+
+        if (filtered.length === 0) {
+          productsGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 48px; color: var(--text-muted); background: var(--white); border-radius: 16px; border: 1px solid #E5E7EB; box-shadow: var(--shadow-sm);">
+              No products found matching filters.
+            </div>`;
+          return;
+        }
+
+        filtered.forEach(p => {
+          const card = document.createElement('div');
+          card.className = "admin-product-card";
+          
+          const imgUrl = p.image || 'assets/hero_lifestyle.png';
+          const bestSellerBadge = p.isBestSeller ? `<span class="badge-bestseller">Best Seller</span>` : '';
+          const outOfStockOverlay = p.inStock ? '' : `<div class="badge-outofstock">Out of Stock</div>`;
+
+          card.innerHTML = `
+            <div class="img-wrapper">
+              ${bestSellerBadge}
+              ${outOfStockOverlay}
+              <img src="${imgUrl}" alt="${p.name}" onerror="this.src='assets/hero_lifestyle.png'">
+            </div>
+            <div class="card-category">${p.category}</div>
+            <h4 class="card-title">${p.name}</h4>
+            <p class="card-desc" title="${p.description}">${p.description}</p>
+            <div class="card-price">
+              500g: ₹${p.prices["500g"]} &nbsp;|&nbsp; 1kg: ₹${p.prices["1kg"]}
+            </div>
+            <div class="card-stats">
+              <span class="${p.inStock ? 'success-text' : 'danger-text'}" style="font-weight: 600;">
+                ${p.inStock ? '● In Stock' : '○ Out of Stock'}
+              </span>
+            </div>
+            <div class="card-footer">
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <label class="admin-card-label" style="cursor: pointer;">
+                  <input type="checkbox" class="stock-toggle" ${p.inStock ? 'checked' : ''} style="width: auto; margin-right: 4px;"> In Stock
+                </label>
+                <label class="admin-card-label" style="cursor: pointer;">
+                  <input type="checkbox" class="bestseller-toggle" ${p.isBestSeller ? 'checked' : ''} style="width: auto; margin-right: 4px;"> Best Seller
+                </label>
+              </div>
+              <div class="card-actions">
+                <button class="btn-icon-pill edit" title="Edit Product">✏</button>
+                <button class="btn-icon-pill delete" title="Delete Product">🗑</button>
+              </div>
+            </div>
+          `;
+
+          // Toggle Stock
+          card.querySelector('.stock-toggle').addEventListener('change', async (e) => {
+            try {
+              await DB.updateProduct(p.id, { inStock: e.target.checked });
+              await loadProducts();
+            } catch (err) {
+              alert("Error updating stock status: " + err.message);
+              e.target.checked = !e.target.checked;
+            }
+          });
+
+          // Toggle Bestseller
+          card.querySelector('.bestseller-toggle').addEventListener('change', async (e) => {
+            try {
+              await DB.updateProduct(p.id, { isBestSeller: e.target.checked });
+              await loadProducts();
+            } catch (err) {
+              alert("Error updating best seller status: " + err.message);
+              e.target.checked = !e.target.checked;
+            }
+          });
+
+          // Edit button click
+          card.querySelector('.btn-icon-pill.edit').addEventListener('click', () => {
+            document.getElementById('prod-id-edit').value = p.id;
+            document.getElementById('prod-name').value = p.name;
+            document.getElementById('prod-category').value = p.category;
+            document.getElementById('prod-desc').value = p.description;
+            document.getElementById('prod-image').value = p.image || "";
+            document.getElementById('prod-price-500g').value = p.prices["500g"];
+            document.getElementById('prod-price-1kg').value = p.prices["1kg"];
+            document.getElementById('prod-instock').checked = p.inStock;
+            document.getElementById('prod-bestseller').checked = p.isBestSeller || false;
+
+            document.getElementById('product-form-title').textContent = "Edit Product";
+            openDrawer("edit");
+          });
+
+          // Delete button click
+          card.querySelector('.btn-icon-pill.delete').addEventListener('click', async () => {
+            if (confirm(`Are you sure you want to delete ${p.name}?`)) {
+              try {
+                await DB.deleteProduct(p.id);
+                await loadProducts();
+              } catch (err) {
+                alert("Error deleting product: " + err.message);
+              }
+            }
+          });
+
+          productsGrid.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Error loading products:", err);
+      }
+    }
+
+    // Search bar event binding
+    const productSearchInput = document.getElementById('product-search-input');
+    if (productSearchInput) {
+      productSearchInput.addEventListener('input', async (e) => {
+        currentSearchQuery = e.target.value;
+        await loadProducts();
+      });
+    }
+
+    // Product Form Save (Add or Update)
+    productForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const id = document.getElementById('prod-id-edit').value;
+      const name = document.getElementById('prod-name').value.trim();
+      const category = document.getElementById('prod-category').value;
+      const description = document.getElementById('prod-desc').value.trim();
+      const imageVal = document.getElementById('prod-image').value.trim() || "assets/hero_lifestyle.png";
+      const p500 = parseFloat(document.getElementById('prod-price-500g').value);
+      const p1k = parseFloat(document.getElementById('prod-price-1kg').value);
+      const inStock = document.getElementById('prod-instock').checked;
+      const isBestSeller = document.getElementById('prod-bestseller').checked;
+
+      const productPayload = {
+        name,
+        category,
+        description,
+        image: imageVal,
+        prices: {
+          "500g": p500,
+          "1kg": p1k
+        },
+        inStock,
+        isBestSeller
+      };
+
+      try {
+        if (id) {
+          // Edit flow
+          await DB.updateProduct(id, productPayload);
+          alert("Product updated successfully!");
+        } else {
+          // Add flow
+          await DB.addProduct(productPayload);
+          alert("Product added successfully!");
+        }
+
+        closeDrawer();
+        await loadProducts();
+      } catch (err) {
+        alert("Error saving product: " + err.message);
+      }
+    });
+
+    function resetProductForm() {
+      productForm.reset();
+      document.getElementById('prod-id-edit').value = "";
+      document.getElementById('product-form-title').textContent = "Add New Product";
+      document.getElementById('prod-price-500g').value = "125";
+      document.getElementById('prod-price-1kg').value = "250";
+    }
+
+    // --- PANEL 3: ORDERS ---
+    const orderSearchInput = document.getElementById('order-search-input');
+    const orderStatusFilter = document.getElementById('order-status-filter');
+
+    orderSearchInput.addEventListener('input', async () => await loadOrders());
+    orderStatusFilter.addEventListener('change', async () => await loadOrders());
+
+    async function loadOrders(highlightId = "") {
+      try {
+        const orders = await DB.getOrders();
+        const ordersTableBody = document.querySelector('#orders-table tbody');
+        ordersTableBody.innerHTML = "";
+
+        const searchQuery = orderSearchInput.value.toLowerCase().trim();
+        const filterStatus = orderStatusFilter.value;
+
+        const filteredOrders = orders.filter(o => {
+          // Status filter
+          if (filterStatus !== "All" && o.status !== filterStatus) return false;
+          
+          // Search filter
+          if (searchQuery) {
+            const matchId = o.id.toLowerCase().includes(searchQuery);
+            const matchName = o.customer.name.toLowerCase().includes(searchQuery);
+            const matchPhone = o.customer.phone.toLowerCase().includes(searchQuery);
+            const matchRef = o.paymentRef && o.paymentRef.toLowerCase().includes(searchQuery);
+            return matchId || matchName || matchPhone || matchRef;
+          }
+          
+          return true;
+        });
+
+        if (filteredOrders.length === 0) {
+          ordersTableBody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:var(--text-muted); padding:24px 0;">No matching orders found.</td></tr>`;
+          return;
+        }
+
+        filteredOrders.forEach(o => {
+          const row = document.createElement('tr');
+          if (highlightId && o.id === highlightId) {
+            row.style.backgroundColor = "#FEF3C7"; // highlight matching search order
+          }
+
+          const dateFormatted = new Date(o.timestamp).toLocaleString('en-IN', {
+            dateStyle: 'short',
+            timeStyle: 'short'
+          });
+
+          // Map items to readable string
+          const itemsStr = o.items.map(item => `${item.name} (${item.weight} x${item.quantity})`).join('<br>');
+
+          row.innerHTML = `
+            <td><span style="font-size:0.75rem; color:var(--text-muted);">${dateFormatted}</span></td>
+            <td><strong style="color:var(--primary-maroon);">#${o.id}</strong></td>
+            <td>
+              <div style="font-weight:700;">${o.customer.name}</div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">${o.customer.phone}</div>
+              <div style="font-size:0.7rem; color:var(--text-muted); max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;" title="${o.customer.address}, ${o.customer.state} - ${o.customer.pincode}">
+                ${o.customer.address}, ${o.customer.state}
+              </div>
+            </td>
+            <td style="font-size:0.8rem; line-height:1.3;">${itemsStr}</td>
+            <td>${o.totalWeight}</td>
+            <td style="font-weight:700;">₹${o.total} <br><span style="font-size:0.7rem; font-weight:normal; color:var(--text-muted);">Ship: ₹${o.shipping}</span></td>
+            <td><code style="background:#ECEFF1; padding:2px 4px; border-radius:4px; font-weight:700;">${o.paymentRef}</code></td>
+            <td><span class="badge-status ${o.status.toLowerCase()}">${o.status}</span></td>
+            <td>
+              <select class="order-status-update" style="font-size:0.75rem; padding:4px; border:1px solid var(--border-color); border-radius:4px; background:var(--white);">
+                <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending Verification</option>
+                <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+              </select>
+            </td>
+          `;
+
+          row.querySelector('.order-status-update').addEventListener('change', async (e) => {
+            const newStatus = e.target.value;
+            try {
+              await DB.updateOrderStatus(o.id, newStatus);
+              await updatePendingOrdersCount();
+              await loadOrders(o.id);
+            } catch (err) {
+              alert("Error updating order status: " + err.message);
+              e.target.value = o.status;
+            }
+          });
+
+          ordersTableBody.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Error loading orders:", err);
+      }
+    }
+
+    // --- PANEL 4: SHIPPING ---
+    const shippingForm = document.getElementById('shipping-form');
+    const shipStateSelect = document.getElementById('ship-state');
+    const shipRateInput = document.getElementById('ship-rate');
+
+    async function loadShipping() {
+      try {
+        const rates = await DB.getShippingRates();
+        const shippingTableBody = document.querySelector('#shipping-table tbody');
+        shippingTableBody.innerHTML = "";
+
+        // Populate form state dropdown
+        shipStateSelect.innerHTML = "";
+        rates.forEach(r => {
+          const option = document.createElement('option');
+          option.value = r.state;
+          option.textContent = r.state;
+          shipStateSelect.appendChild(option);
+        });
+
+        // Show first state price by default in input
+        if (rates.length > 0) {
+          shipRateInput.value = rates[0].rate;
+        }
+
+        rates.forEach(r => {
+          const row = document.createElement('tr');
+          
+          let extraCharge = 80;
+          if (r.rate <= 60) extraCharge = 40;
+          else if (r.rate <= 80) extraCharge = 50;
+
+          row.innerHTML = `
+            <td><strong>${r.state}</strong></td>
+            <td style="font-weight:700; color: var(--primary-maroon);">₹${r.rate}</td>
+            <td>+₹${extraCharge} per extra kg after first 1kg</td>
+          `;
+          shippingTableBody.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Error loading shipping rates:", err);
+      }
+    }
+
+    shipStateSelect.addEventListener('change', async (e) => {
+      try {
+        const rates = await DB.getShippingRates();
+        const selected = rates.find(r => r.state === e.target.value);
+        if (selected) {
+          shipRateInput.value = selected.rate;
+        }
+      } catch (err) {
+        console.error("Error fetching shipping rates:", err);
+      }
+    });
+
+    shippingForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const state = shipStateSelect.value;
+      const rate = parseFloat(shipRateInput.value);
+      
+      try {
+        await DB.updateShippingRate(state, rate);
+        alert(`Shipping charges for ${state} updated to ₹${rate}`);
+        await loadShipping();
+      } catch (err) {
+        alert("Error updating shipping rate: " + err.message);
+      }
+    });
+
+    // --- PANEL 5: SETTINGS ---
+    const settingsForm = document.getElementById('settings-form');
+    const changePasswordForm = document.getElementById('change-password-form');
+    const btnResetDb = document.getElementById('btn-reset-db');
+
+    async function loadSettings() {
+      try {
+        const settings = await DB.getSettings();
+        
+        document.getElementById('set-biz-name').value = settings.businessName;
+        document.getElementById('set-upi-id').value = settings.upiId;
+        document.getElementById('set-tagline').value = settings.tagline;
+        document.getElementById('set-desc').value = settings.description;
+        document.getElementById('set-phone').value = settings.whatsappNumber;
+        document.getElementById('set-email').value = settings.emailAddress;
+        document.getElementById('set-address').value = settings.contactAddress;
+        document.getElementById('set-insta').value = settings.instagramUrl || "";
+        
+        // Clear password inputs
+        document.getElementById('set-current-password').value = "";
+        document.getElementById('set-new-password').value = "";
+        document.getElementById('set-confirm-password').value = "";
+      } catch (err) {
+        console.error("Error loading store settings:", err);
+      }
+    }
+
+    settingsForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      try {
+        const settings = await DB.getSettings();
+        
+        const updatedSettings = {
+          businessName: document.getElementById('set-biz-name').value.trim(),
+          upiId: document.getElementById('set-upi-id').value.trim(),
+          tagline: document.getElementById('set-tagline').value.trim(),
+          description: document.getElementById('set-desc').value.trim(),
+          whatsappNumber: document.getElementById('set-phone').value.trim(),
+          emailAddress: document.getElementById('set-email').value.trim(),
+          contactAddress: document.getElementById('set-address').value.trim(),
+          instagramUrl: document.getElementById('set-insta').value.trim(),
+          adminPassword: settings.adminPassword || "dhanalakshmi123"
+        };
+
+        await DB.saveSettings(updatedSettings);
+        alert("Store configuration saved successfully!");
+        await loadSettings();
+      } catch (err) {
+        alert("Error saving settings: " + err.message);
+      }
+    });
+
+    changePasswordForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      try {
+        const settings = await DB.getSettings();
+        const currentInput = document.getElementById('set-current-password').value;
+        const newInput = document.getElementById('set-new-password').value;
+        const confirmInput = document.getElementById('set-confirm-password').value;
+
+        const storedPassword = settings.adminPassword || "dhanalakshmi123";
+
+        if (currentInput !== storedPassword) {
+          alert("Error: Current password is incorrect!");
+          return;
+        }
+        if (newInput.length < 4) {
+          alert("Error: New password must be at least 4 characters long!");
+          return;
+        }
+        if (newInput !== confirmInput) {
+          alert("Error: New password and Confirm new password do not match!");
+          return;
+        }
+
+        // Save updated password
+        settings.adminPassword = newInput;
+        await DB.saveSettings(settings);
+        
+        alert("Password updated successfully!");
+        await loadSettings();
+      } catch (err) {
+        alert("Error changing password: " + err.message);
+      }
+    });
+
+    btnResetDb.addEventListener('click', async () => {
+      if (confirm("WARNING: This will delete all order records and restore products, shipping rates, and settings to original defaults. Do you want to proceed?")) {
+        try {
+          await DB.resetToDefaults();
+          alert("Database has been reset to system defaults.");
+          
+          // Refresh active tab panel
+          const activeTab = document.querySelector('.admin-tab.active').getAttribute('data-tab');
+          if (activeTab === 'dashboard') await loadDashboard();
+          else if (activeTab === 'products') await loadProducts();
+          else if (activeTab === 'orders') await loadOrders();
+          else if (activeTab === 'shipping') await loadShipping();
+          else if (activeTab === 'settings') await loadSettings();
+          
+          await updatePendingOrdersCount();
+        } catch (err) {
+          alert("Error resetting database: " + err.message);
+        }
+      }
+    });
+
+  </script>
+</body>
+</html>

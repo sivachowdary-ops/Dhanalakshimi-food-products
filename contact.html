@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Contact Us - Dhanalakshmi Food Products</title>
+  <meta name="description" content="Get in touch with Dhanalakshmi Food Products. Order fresh traditional Andhra snacks, ask queries, or request bulk bookings.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Announcement Bar Marquee -->
+  <div class="announcement-bar">
+    <div class="ticker-track">
+      <div class="ticker-content">
+        <span>✦ No Palm Oil</span>
+        <span>✦ No Preservatives</span>
+        <span>✦ 100% Pure & Traditional</span>
+        <span>✦ Pan India Shipping</span>
+        <span>✦ No Added Colors</span>
+      </div>
+      <div class="ticker-content">
+        <span>✦ No Palm Oil</span>
+        <span>✦ No Preservatives</span>
+        <span>✦ 100% Pure & Traditional</span>
+        <span>✦ Pan India Shipping</span>
+        <span>✦ No Added Colors</span>
+      </div>
+      <div class="ticker-content">
+        <span>✦ No Palm Oil</span>
+        <span>✦ No Preservatives</span>
+        <span>✦ 100% Pure & Traditional</span>
+        <span>✦ Pan India Shipping</span>
+        <span>✦ No Added Colors</span>
+      </div>
+      <div class="ticker-content">
+        <span>✦ No Palm Oil</span>
+        <span>✦ No Preservatives</span>
+        <span>✦ 100% Pure & Traditional</span>
+        <span>✦ Pan India Shipping</span>
+        <span>✦ No Added Colors</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-top">
+        <div class="logo-container" onclick="location.href='index.html'" style="cursor:pointer;">
+          <img src="assets/logo.png" alt="Dhanalakshmi Food Products Logo" class="logo-img">
+          <div>
+            <span class="brand-title" id="store-title">Dhanalakshmi</span>
+            <span class="brand-subtitle">Food Products</span>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation Menu -->
+        <nav class="desktop-nav">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="index.html#categories-section" class="nav-link">Categories</a>
+          <div class="nav-dropdown">
+            <a href="index.html#products-section" class="nav-link dropdown-toggle">Snack Types ▾</a>
+            <div class="dropdown-menu">
+              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'All');" style="border-bottom: 1px solid var(--border-color); font-weight: 700; color: var(--primary-maroon);">All Snacks</a>
+              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Mixtures');">Mixtures</a>
+              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Chekodilu');">Chekodilu</a>
+              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Karapusa');">Karapusa</a>
+              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Traditional Snacks');">Traditional Snacks</a>
+              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Gavvalu');">Gavvalu</a>
+              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Appadalu');">Appadalu</a>
+              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Others');">Others</a>
+            </div>
+          </div>
+          <a href="index.html#how-to-order-section" class="nav-link">How to Order</a>
+          <a href="index.html#faq-section" class="nav-link">FAQs</a>
+          <a href="contact.html" class="nav-link active">Contact Us</a>
+        </nav>
+
+        <div class="header-actions">
+          <!-- Mobile Menu Toggle -->
+          <button class="menu-toggle-btn" id="mobile-menu-toggle-btn" aria-label="Toggle Menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <button class="cart-icon-btn" id="open-cart-btn" aria-label="Open Cart">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span class="cart-badge" id="cart-badge-count">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer Overlay -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+      <div class="mobile-nav-header">
+        <div class="logo-container" onclick="location.href='index.html'">
+          <img src="assets/logo.png" alt="Dhanalakshmi Food Products Logo" class="logo-img">
+          <div>
+            <span class="brand-title" style="font-size: 1.1rem; line-height: 1;">Dhanalakshmi</span>
+            <span class="brand-subtitle" style="font-size: 0.65rem;">Food Products</span>
+          </div>
+        </div>
+        <button class="close-btn" id="close-mobile-menu-btn" aria-label="Close Menu">&times;</button>
+      </div>
+      <div class="mobile-nav-links">
+        <a href="index.html">🏠 Home</a>
+        <a href="index.html#categories-section" onclick="toggleMobileMenu(false);">📂 Categories</a>
+        <a href="index.html#how-to-order-section" onclick="toggleMobileMenu(false);">📋 How to Order</a>
+        <a href="index.html#faq-section" onclick="toggleMobileMenu(false);">❓ FAQs</a>
+        <a href="contact.html" class="active">📞 Contact Us</a>
+        <div style="border-top: 1px solid var(--border-color); margin-top: 8px; padding-top: 8px;">
+          <strong style="font-size: 0.75rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px; display: block; padding: 4px 24px;">Snack Types Available</strong>
+          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'All'); toggleMobileMenu(false);" style="font-weight: 700; color: var(--primary-maroon);">• All Snacks</a>
+          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Mixtures'); toggleMobileMenu(false);">• Mixtures</a>
+          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Chekodilu'); toggleMobileMenu(false);">• Chekodilu</a>
+          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Karapusa'); toggleMobileMenu(false);">• Karapusa</a>
+          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Traditional Snacks'); toggleMobileMenu(false);">• Traditional Snacks</a>
+          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Gavvalu'); toggleMobileMenu(false);">• Gavvalu</a>
+          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Appadalu'); toggleMobileMenu(false);">• Appadalu</a>
+          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Others'); toggleMobileMenu(false);">• Others</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contact Page Layout -->
+  <div class="contact-page-wrapper">
+    <div class="container">
+      
+      <div class="back-btn-container">
+        <a href="index.html" class="contact-back-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+          Back to Home Page
+        </a>
+      </div>
+
+      <h2 class="contact-title-main">Contact Us</h2>
+
+      <div class="contact-grid-layout">
+        
+        <!-- Get In Touch Details -->
+        <div class="contact-premium-card">
+          <h3>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            Get In Touch
+          </h3>
+          
+          <div class="contact-info-list">
+            
+            <div class="contact-info-item">
+              <div class="contact-icon-box">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              </div>
+              <div class="contact-info-details">
+                <h4>Phone</h4>
+                <a href="tel:+918919051435" id="contact-phone-link">+91 89190 51435</a>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Available Mon-Sat: 9AM - 8PM</p>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <div class="contact-icon-box">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              </div>
+              <div class="contact-info-details">
+                <h4>Email</h4>
+                <a href="mailto:amarnadhkarella664@gmail.com" id="contact-email-link">amarnadhkarella664@gmail.com</a>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">We'll respond within 24 hours</p>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <div class="contact-icon-box">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              </div>
+              <div class="contact-info-details">
+                <h4>Location</h4>
+                <p id="contact-address-text">Undrajavaram, Undrajavaram Mandal, West Godavari District, Andhra Pradesh - 534216</p>
+              </div>
+            </div>
+
+            <div class="contact-info-item">
+              <div class="contact-icon-box">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              </div>
+              <div class="contact-info-details">
+                <h4>Business Hours</h4>
+                <p>Monday - Sunday: 6:00 AM - 9:00 PM</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 2px;">Sunday: Closed (Direct orders only)</p>
+              </div>
+            </div>
+
+          </div>
+
+          <a href="#" id="direct-wa-btn" class="contact-whatsapp-direct-btn" target="_blank" rel="noopener noreferrer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px;"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.504-5.714-1.464L0 24zm6.273-3.832c1.616.96 3.197 1.48 4.887 1.481 5.485 0 9.948-4.467 9.951-9.957.002-2.66-1.033-5.161-2.915-7.045C16.37 2.76 13.868 1.72 11.2 1.72c-5.49 0-9.956 4.467-9.959 9.96-.001 1.79.475 3.535 1.38 5.093l-.998 3.64 3.731-.977zm12.355-7.37c-.305-.152-1.805-.892-2.084-.993-.28-.101-.484-.152-.687.152-.203.305-.788 1.002-.966 1.206-.178.203-.356.228-.661.076-.305-.152-1.288-.475-2.454-1.517-.908-.81-1.52-1.812-1.698-2.117-.178-.305-.019-.47.133-.621.137-.136.305-.356.457-.533.152-.178.203-.305.305-.508.102-.203.051-.381-.025-.533-.076-.152-.687-1.657-.941-2.27-.248-.599-.5-.517-.688-.527l-.587-.01c-.203 0-.533.076-.813.381-.28.305-1.067 1.042-1.067 2.542 0 1.5 1.092 2.946 1.244 3.15.152.203 2.15 3.284 5.207 4.602.727.314 1.295.5 1.737.64.73.232 1.393.198 1.918.12.585-.087 1.805-.737 2.06-1.45.253-.712.253-1.322.178-1.45-.076-.127-.28-.203-.585-.355z"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+
+        <!-- Send Message Form -->
+        <div class="contact-form-premium-card">
+          <h3>
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+            Send Message
+          </h3>
+          <form id="inquiry-form" onsubmit="event.preventDefault(); sendWhatsappInquiry();">
+            <div class="contact-form-grid">
+              
+              <div class="contact-form-group">
+                <label for="form-name">Full Name *</label>
+                <input type="text" id="form-name" required placeholder="Enter your name">
+              </div>
+
+              <div class="contact-form-group">
+                <label for="form-phone">Mobile Number *</label>
+                <input type="tel" id="form-phone" required pattern="[0-9]{10}" placeholder="10-digit mobile number">
+              </div>
+
+              <div class="contact-form-group full-width">
+                <label for="form-message">Your Message *</label>
+                <textarea id="form-message" required rows="5" placeholder="How can we help you? (e.g., Bulk order inquiries, wedding menu planning, sweet customized requests)"></textarea>
+              </div>
+
+            </div>
+            
+            <button type="submit" class="contact-submit-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 4px;"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              Send Message via WhatsApp
+            </button>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-about" style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="logo-container" style="cursor: default;">
+            <img src="assets/logo.png" alt="Dhanalakshmi Food Products Logo" class="logo-img">
+            <div>
+              <h4 id="footer-brand-title" style="margin: 0; font-family: var(--font-heading);">Dhanalakshmi Food Products</h4>
+              <span class="brand-subtitle" style="font-size: 0.65rem; color: var(--accent-gold); font-weight: 600; text-transform: uppercase;">Traditional & Authentic</span>
+            </div>
+          </div>
+          <p id="footer-brand-desc" style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.75); max-width: 320px; line-height: 1.6;">Serving authentic homemade sweets and traditional food products for over 10 years.</p>
+          <div class="footer-socials" style="display: flex; gap: 16px; margin-top: 8px;">
+            <a href="https://instagram.com/dhanalakshmifoods" class="social-btn" id="footer-insta" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="https://facebook.com/dhanalakshmifoods" class="social-btn" id="footer-fb" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+            </a>
+            <a href="https://twitter.com/dhanalakshmifoods" class="social-btn" id="footer-twitter" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+            </a>
+            <a href="https://youtube.com/dhanalakshmifoods" class="social-btn" id="footer-yt" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-contact" style="display: flex; flex-direction: column; gap: 16px;">
+          <h4 style="color: var(--white); font-family: var(--font-heading); font-size: 1.2rem; border-bottom: 2px solid var(--accent-gold); padding-bottom: 8px; width: max-content;">Contact Us</h4>
+          
+          <div class="contact-item" style="display: flex; gap: 12px; align-items: flex-start;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-gold); margin-top: 3px; flex-shrink: 0;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <div>
+              <a href="tel:+918919051435" id="footer-phone" style="font-weight: 600; font-size: 0.95rem; color: var(--white); display: block; transition: var(--transition);">+91 89190 51435</a>
+              <span style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); display: block; margin-top: 2px;">Mon-Sun: 6AM - 9PM</span>
+            </div>
+          </div>
+          
+          <div class="contact-item" style="display: flex; gap: 12px; align-items: flex-start;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-gold); margin-top: 3px; flex-shrink: 0;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <a href="mailto:amarnadhkarella664@gmail.com" id="footer-email" style="font-size: 0.9rem; color: var(--white); word-break: break-all; transition: var(--transition);">amarnadhkarella664@gmail.com</a>
+          </div>
+          
+          <div class="contact-item" style="display: flex; gap: 12px; align-items: flex-start;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-gold); margin-top: 3px; flex-shrink: 0;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span id="footer-address" style="font-size: 0.9rem; color: var(--white); line-height: 1.4;">Undrajavaram, West Godavari District, Andhra Pradesh - 534216</span>
+          </div>
+        </div>
+        
+        <div class="footer-links" style="display: flex; flex-direction: column; gap: 16px;">
+          <h4 style="color: var(--white); font-family: var(--font-heading); font-size: 1.2rem; border-bottom: 2px solid var(--accent-gold); padding-bottom: 8px; width: max-content;">Our Promise</h4>
+          <ul style="display: flex; flex-direction: column; gap: 10px; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;">
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> No Added Colors
+            </li>
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> No Palm Oil
+            </li>
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> No Preservatives
+            </li>
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> 100% Homemade
+            </li>
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> Traditional Recipes
+            </li>
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> Pan India Shipping
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 24px; margin-top: 40px; text-align: center; display: flex; flex-direction: column; gap: 8px;">
+        <p style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6);">&copy; 2026 Dhanalakshmi Food Products. All Rights Reserved.</p>
+        <p style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); letter-spacing: 0.5px;">
+          Founded by <strong style="color: var(--white);">Karella Srinu</strong> | Digitally Expanded by <strong style="color: var(--white);">Karella Amarnadh</strong>
+        </p>
+        <p style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.4);">
+          Designed and Developed by <a href="#" style="color: var(--accent-gold); font-weight: 600; text-decoration: underline; transition: var(--transition);">Siva</a> &amp; <a href="#" style="color: var(--accent-gold); font-weight: 600; text-decoration: underline; transition: var(--transition);">Astra Ai Solutions</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cart-drawer-overlay">
+    <div class="cart-drawer">
+      <div class="cart-header">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          Your Cart
+        </h3>
+        <button class="close-btn" id="close-cart-btn">&times;</button>
+      </div>
+      
+      <div class="cart-items-list" id="cart-items-container">
+        <!-- Dynamically populated cart items -->
+      </div>
+
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span>Items Weight:</span>
+          <span id="cart-total-weight">0g</span>
+        </div>
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span id="cart-subtotal">₹0</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping:</span>
+          <span id="cart-shipping">₹0</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total Amount:</span>
+          <span id="cart-total">₹0</span>
+        </div>
+        <div id="cart-weight-warning" style="color: var(--primary-red); font-size: 0.75rem; font-weight: 700; text-align: center; margin-bottom: 12px; display: none; background-color: #FEE2E2; border: 1px solid rgba(220, 38, 38, 0.2); padding: 8px 12px; border-radius: var(--radius-sm);">
+          ⚠️ Minimum order weight is 2 kg (combined). Add more snacks to proceed!
+        </div>
+        <button class="cart-checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Delivery & Payment Details</h3>
+        <button class="close-btn" id="close-checkout-btn">&times;</button>
+      </div>
+      
+      <!-- Step 1: Form Details -->
+      <div class="modal-body" id="checkout-step-details">
+        <form id="checkout-form">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="cust-name">Full Name *</label>
+            <input type="text" id="cust-name" required placeholder="Enter your full name">
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="cust-phone">Mobile Number (WhatsApp) *</label>
+            <input type="tel" id="cust-phone" required pattern="[0-9]{10}" placeholder="10-digit mobile number">
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="cust-address">Delivery Address *</label>
+            <textarea id="cust-address" required rows="3" placeholder="House/Flat No., Street, Landmark"></textarea>
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="cust-state">State (For Shipping Calculation) *</label>
+            <select id="cust-state" required>
+              <!-- Loaded dynamically -->
+            </select>
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label for="cust-pin">Pincode *</label>
+            <input type="text" id="cust-pin" required pattern="[0-9]{6}" placeholder="6-digit pincode">
+          </div>
+
+          <div class="cart-summary" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); margin-bottom: 16px; background-color: var(--white);">
+            <div class="summary-row">
+              <span>Total Weight:</span>
+              <span id="checkout-summary-weight">0g</span>
+            </div>
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span id="checkout-summary-subtotal">₹0</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping Charges:</span>
+              <span id="checkout-summary-shipping">₹0</span>
+            </div>
+            <div class="summary-row total">
+              <span>Total Payable:</span>
+              <span id="checkout-summary-total">₹0</span>
+            </div>
+          </div>
+
+          <button type="submit" class="cart-checkout-btn" style="margin-top: 0;">Proceed to Payment</button>
+        </form>
+      </div>
+
+      <!-- Step 2: UPI Payment -->
+      <div class="modal-body" id="checkout-step-payment" style="display: none;">
+        <p style="font-size: 0.8rem; text-align: center; color: var(--text-muted);">
+          Scan this QR code using any UPI app (GPay, PhonePe, Paytm, BHIM) to make the payment.
+        </p>
+        
+        <div class="upi-payment-box">
+          <div class="upi-amount-display" id="upi-payable-amount">₹0.00</div>
+          
+          <div class="qr-code-placeholder">
+            <img id="upi-qr-image" class="qr-code-img" src="" alt="Scan to Pay">
+          </div>
+          
+          <p style="font-size: 0.75rem; font-weight: 700; color: var(--primary-maroon);">
+            UPI ID: <span id="upi-target-id">dhanalakshmi@okaxis</span>
+          </p>
+          
+          <!-- Mobile Intent Direct Payment Link -->
+          <a href="#" class="upi-intent-link" id="upi-mobile-link">
+            📱 Open UPI App to Pay
+          </a>
+        </div>
+
+        <div style="margin-top: 10px;">
+          <div class="form-group">
+            <label for="upi-ref-no">Payment Transaction ID / UTR *</label>
+            <input type="text" id="upi-ref-no" required placeholder="Enter 12-digit transaction ID">
+            <span style="font-size: 0.65rem; color: var(--text-muted);">Enter the UPI transaction number to verify payment.</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 12px;">
+          <button class="btn-secondary" id="back-to-details-btn" style="color: var(--primary-maroon); border-color: var(--primary-maroon); flex:1;">Back</button>
+          <button class="btn-primary" id="confirm-payment-btn" style="flex:2;">Place Order</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Success Screen -->
+      <div class="modal-body" id="checkout-step-success" style="display: none; text-align: center; padding: 24px 16px;">
+        <div style="font-size: 3.5rem; color: #059669; margin-bottom: 12px;">🎉</div>
+        <h3 style="color: #059669; font-size: 1.4rem; margin-bottom: 8px;">Order Placed Successfully!</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
+          Your order ID is <strong id="success-order-id" style="color: var(--primary-maroon);">#DFP-XXXXXX</strong>. We have received your payment reference and will prepare your fresh batch shortly!
+        </p>
+        
+        <div class="upi-payment-box" style="background-color: var(--bg-cream); border: 1px solid var(--border-color); text-align: left; align-items: flex-start; gap: 6px; width: 100%;">
+          <div style="font-size: 0.8rem; font-weight: bold; border-bottom: 1px solid var(--border-color); width:100%; padding-bottom:4px; margin-bottom:4px; color: var(--primary-maroon);">Order Details</div>
+          <div style="font-size: 0.75rem;"><strong>Name:</strong> <span id="success-name">Customer</span></div>
+          <div style="font-size: 0.75rem;"><strong>Phone:</strong> <span id="success-phone">9999999999</span></div>
+          <div style="font-size: 0.75rem;"><strong>Amount Paid:</strong> <span id="success-total">₹0</span></div>
+          <div style="font-size: 0.75rem;"><strong>Payment Ref:</strong> <span id="success-ref">XYZ</span></div>
+          <div style="font-size: 0.75rem;"><strong>Address:</strong> <span id="success-address">Address</span></div>
+        </div>
+        
+        <a href="#" target="_blank" class="cart-checkout-btn" id="track-whatsapp-btn" style="background-color: #25D366; border-color: #25D366; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; margin-top: 20px;">
+          💬 Track Order via WhatsApp
+        </a>
+        
+        <button class="btn-secondary" id="success-close-btn" style="color: var(--primary-maroon); border: 1px solid var(--primary-maroon); width: 100%; margin-top: 12px; font-weight: 600;">Back to Shop</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Shared DB and Settings logic -->
+  <script src="db.js"></script>
+  <script>
+    let settings = {};
+    let shippingRates = [];
+    let cart = [];
+    let selectedShippingRate = 0;
+    let selectedStateName = "";
+
+    // DOM Elements
+    const cartBadgeCount = document.getElementById('cart-badge-count');
+    const cartDrawerOverlay = document.getElementById('cart-drawer-overlay');
+    const openCartBtn = document.getElementById('open-cart-btn');
+    const closeCartBtn = document.getElementById('close-cart-btn');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartTotalWeight = document.getElementById('cart-total-weight');
+    const cartSubtotal = document.getElementById('cart-subtotal');
+    const cartShipping = document.getElementById('cart-shipping');
+    const cartTotal = document.getElementById('cart-total');
+    
+    // Checkout Elements
+    const checkoutModal = document.getElementById('checkout-modal');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const closeCheckoutBtn = document.getElementById('close-checkout-btn');
+    const checkoutForm = document.getElementById('checkout-form');
+    const custStateSelect = document.getElementById('cust-state');
+    
+    const checkoutStepDetails = document.getElementById('checkout-step-details');
+    const checkoutStepPayment = document.getElementById('checkout-step-payment');
+    const checkoutStepSuccess = document.getElementById('checkout-step-success');
+    
+    // Payment Elements
+    const upiPayableAmount = document.getElementById('upi-payable-amount');
+    const upiQrImage = document.getElementById('upi-qr-image');
+    const upiTargetId = document.getElementById('upi-target-id');
+    const upiMobileLink = document.getElementById('upi-mobile-link');
+    const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
+    const upiRefNoInput = document.getElementById('upi-ref-no');
+    const backToDetailsBtn = document.getElementById('back-to-details-btn');
+    
+    // Success Elements
+    const successOrderId = document.getElementById('success-order-id');
+    const successName = document.getElementById('success-name');
+    const successPhone = document.getElementById('success-phone');
+    const successTotal = document.getElementById('success-total');
+    const successRef = document.getElementById('success-ref');
+    const successAddress = document.getElementById('success-address');
+    const trackWhatsappBtn = document.getElementById('track-whatsapp-btn');
+    const successCloseBtn = document.getElementById('success-close-btn');
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      await loadData();
+      setupEvents();
+    });
+
+    // Handle Storage Update
+    window.addEventListener('storage', async () => {
+      await loadData();
+    });
+
+    async function loadData() {
+      settings = await DB.getSettings();
+      shippingRates = await DB.getShippingRates();
+      const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
+      
+      // Update header/brand
+      const storeTitle = document.getElementById('store-title');
+      if (storeTitle) storeTitle.textContent = settings.businessName.split(' ')[0] || "Dhanalakshmi";
+      
+      const footerBrandTitle = document.getElementById('footer-brand-title');
+      if (footerBrandTitle) footerBrandTitle.textContent = settings.businessName;
+      
+      const footerAddress = document.getElementById('footer-address');
+      if (footerAddress) footerAddress.textContent = settings.contactAddress.split(',').slice(-3).join(',').trim();
+      
+      const footerEmail = document.getElementById('footer-email');
+      if (footerEmail) {
+        footerEmail.textContent = settings.emailAddress;
+        footerEmail.href = "mailto:" + settings.emailAddress;
+      }
+      
+      const phoneBtn = document.getElementById('footer-phone');
+      if (phoneBtn) {
+        phoneBtn.textContent = settings.whatsappNumber;
+        phoneBtn.href = "tel:" + cleanWa.replace('+', '');
+      }
+      
+      // Contact page custom updates
+      document.getElementById('contact-phone-link').textContent = settings.whatsappNumber;
+      document.getElementById('contact-phone-link').href = "tel:" + cleanWa.replace('+', '');
+      
+      document.getElementById('contact-email-link').textContent = settings.emailAddress;
+      document.getElementById('contact-email-link').href = "mailto:" + settings.emailAddress;
+      
+      document.getElementById('contact-address-text').textContent = settings.contactAddress;
+      
+      // WhatsApp chat direct link
+      const textMsg = encodeURIComponent("Hello Dhanalakshmi Food Products! I visited your website and would love to order some traditional snacks. Could you please help me confirm my order?");
+      document.getElementById('direct-wa-btn').href = `https://wa.me/${cleanWa.replace('+', '')}?text=${textMsg}`;
+      
+      const floatWaBtn = document.getElementById('whatsapp-float-btn');
+      if (floatWaBtn) {
+        floatWaBtn.href = `https://wa.me/${cleanWa.replace('+', '')}?text=${textMsg}`;
+      }
+      
+      const footerInsta = document.getElementById('footer-insta');
+      if (footerInsta) footerInsta.href = settings.instagramUrl;
+    }
+
+    function setupEvents() {
+      // Mobile Navigation Menu Toggle
+      const mobileMenuToggleBtn = document.getElementById('mobile-menu-toggle-btn');
+      const closeMobileMenuBtn = document.getElementById('close-mobile-menu-btn');
+      const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+
+      if (mobileMenuToggleBtn) mobileMenuToggleBtn.addEventListener('click', () => toggleMobileMenu(true));
+      if (closeMobileMenuBtn) closeMobileMenuBtn.addEventListener('click', () => toggleMobileMenu(false));
+      if (mobileNavOverlay) mobileNavOverlay.addEventListener('click', () => toggleMobileMenu(false));
+
+      window.toggleMobileMenu = function(isOpen) {
+        const drawer = document.getElementById('mobile-nav-drawer');
+        const overlay = document.getElementById('mobile-nav-overlay');
+        if (isOpen) {
+          drawer.classList.add('active');
+          overlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        } else {
+          drawer.classList.remove('active');
+          overlay.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      }
+
+      // Cart Drawer Toggle
+      openCartBtn.addEventListener('click', () => {
+        renderCart();
+        cartDrawerOverlay.classList.add('active');
+      });
+      closeCartBtn.addEventListener('click', () => {
+        cartDrawerOverlay.classList.remove('active');
+      });
+      cartDrawerOverlay.addEventListener('click', (e) => {
+        if (e.target === cartDrawerOverlay) cartDrawerOverlay.classList.remove('active');
+      });
+
+      // Checkout Button
+      checkoutBtn.addEventListener('click', () => {
+        if (cart.length === 0) {
+          alert("Your cart is empty!");
+          return;
+        }
+        
+        let totalWeightGrams = 0;
+        cart.forEach(item => {
+          const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
+          totalWeightGrams += weightInt * item.quantity;
+        });
+
+        if (totalWeightGrams < 2000) {
+          alert("Minimum order weight is 2 kg (combined). Your current order is " + formatWeight(totalWeightGrams) + ". Please add more snacks to proceed.");
+          return;
+        }
+
+        cartDrawerOverlay.classList.remove('active');
+        openCheckout();
+      });
+
+      closeCheckoutBtn.addEventListener('click', () => {
+        checkoutModal.classList.remove('active');
+      });
+
+      // State selector shipping rates
+      custStateSelect.addEventListener('change', (e) => {
+        const stateVal = e.target.value;
+        const rateObj = shippingRates.find(r => r.state === stateVal);
+        selectedStateName = stateVal;
+        selectedShippingRate = rateObj ? rateObj.rate : 120;
+        updateCheckoutSummaries();
+      });
+
+      // Checkout Form Submit -> Go to Payment
+      checkoutForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        showPaymentScreen();
+      });
+
+      // Go back to form details
+      backToDetailsBtn.addEventListener('click', () => {
+        checkoutStepPayment.style.display = 'none';
+        checkoutStepDetails.style.display = 'block';
+      });
+
+      // Confirm Payment -> Place Order
+      confirmPaymentBtn.addEventListener('click', async () => {
+        const refNo = upiRefNoInput.value.trim();
+        if (!refNo || refNo.length < 6) {
+          alert("Please enter a valid UPI transaction/reference number.");
+          return;
+        }
+        await placeFinalOrder(refNo);
+      });
+
+      // Success screen back to shop
+      successCloseBtn.addEventListener('click', () => {
+        checkoutModal.classList.remove('active');
+        cart = [];
+        updateCartBadge();
+        saveCartToSession();
+      });
+
+      // Restore cart from session storage if present
+      const savedCart = sessionStorage.getItem('dfp_cart');
+      if (savedCart) {
+        cart = JSON.parse(savedCart);
+        updateCartBadge();
+      }
+    }
+
+    // CART OPERATIONS
+    function saveCartToSession() {
+      sessionStorage.setItem('dfp_cart', JSON.stringify(cart));
+    }
+
+    function updateCartBadge() {
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      
+      // Update header cart badge
+      if (cartBadgeCount) {
+        cartBadgeCount.textContent = count;
+        cartBadgeCount.style.display = count > 0 ? "flex" : "none";
+      }
+      
+      // Update floating cart badge
+      const floatBadge = document.getElementById('cart-badge-count-float');
+      if (floatBadge) {
+        floatBadge.textContent = count;
+        floatBadge.style.display = count > 0 ? "flex" : "none";
+      }
+    }
+
+    function renderCart() {
+      cartItemsContainer.innerHTML = "";
+      
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+          <div class="cart-empty-state">
+            <span class="cart-empty-icon">🛒</span>
+            <p>Your cart is empty.</p>
+            <button class="btn-primary" style="margin-top: 16px; font-size: 0.8rem; padding: 8px 16px; flex:none;" onclick="location.href='index.html#products-section'">Shop Snacks</button>
+          </div>
+        `;
+        cartTotalWeight.textContent = "0g";
+        cartSubtotal.textContent = "₹0";
+        cartShipping.textContent = "₹0";
+        cartTotal.textContent = "₹0";
+        return;
+      }
+
+      let subtotal = 0;
+      let totalWeightGrams = 0;
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        
+        const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
+        totalWeightGrams += weightInt * item.quantity;
+
+        const cartItemEl = document.createElement('div');
+        cartItemEl.className = "cart-item";
+        cartItemEl.innerHTML = `
+          <img class="cart-item-img" src="${item.product.image}" alt="${item.product.name}" onerror="this.src='assets/hero_lifestyle.png'">
+          <div class="cart-item-details">
+            <div class="cart-item-name">${item.product.name}</div>
+            <span class="cart-item-weight">${item.weight}</span>
+            <div class="cart-item-footer">
+              <span class="cart-item-price">₹${itemTotal}</span>
+              <div class="quantity-selector">
+                <button class="qty-btn minus-btn">-</button>
+                <span class="qty-val">${item.quantity}</span>
+                <button class="qty-btn plus-btn">+</button>
+              </div>
+            </div>
+            <span class="cart-item-remove" style="margin-top:4px; display:inline-block;">Remove</span>
+          </div>
+        `;
+
+        cartItemEl.querySelector('.plus-btn').addEventListener('click', () => {
+          item.quantity++;
+          saveCartToSession();
+          updateCartBadge();
+          renderCart();
+        });
+
+        cartItemEl.querySelector('.minus-btn').addEventListener('click', () => {
+          if (item.quantity > 1) {
+            item.quantity--;
+          } else {
+            cart.splice(index, 1);
+          }
+          saveCartToSession();
+          updateCartBadge();
+          renderCart();
+        });
+
+        cartItemEl.querySelector('.cart-item-remove').addEventListener('click', () => {
+          cart.splice(index, 1);
+          saveCartToSession();
+          updateCartBadge();
+          renderCart();
+        });
+
+        cartItemsContainer.appendChild(cartItemEl);
+      });
+
+      cartTotalWeight.textContent = formatWeight(totalWeightGrams);
+      cartSubtotal.textContent = `₹${subtotal}`;
+      
+      let shippingCharge = 0;
+      if (selectedStateName) {
+        shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
+        cartShipping.textContent = `₹${shippingCharge}`;
+      } else {
+        cartShipping.textContent = "Select State at checkout";
+      }
+      
+      cartTotal.textContent = `₹${subtotal + shippingCharge}`;
+
+      const warningEl = document.getElementById('cart-weight-warning');
+      const checkBtn = document.getElementById('checkout-btn');
+      if (warningEl && checkBtn) {
+        if (totalWeightGrams < 2000) {
+          warningEl.style.display = "block";
+          checkBtn.style.opacity = "0.6";
+        } else {
+          warningEl.style.display = "none";
+          checkBtn.style.opacity = "1";
+        }
+      }
+    }
+
+    function formatWeight(grams) {
+      if (grams >= 1000) {
+        return (grams / 1000).toFixed(1) + " kg";
+      }
+      return grams + " g";
+    }
+
+    function calculateShippingFee(totalWeightGrams, stateBaseRate) {
+      if (totalWeightGrams === 0) return 0;
+      const weightKg = totalWeightGrams / 1000;
+      if (weightKg <= 1) return stateBaseRate;
+      
+      let extraKgCharge = 80;
+      if (stateBaseRate <= 60) extraKgCharge = 40;
+      else if (stateBaseRate <= 80) extraKgCharge = 50;
+      
+      const extraWeight = weightKg - 1;
+      const incrementalCharge = Math.ceil(extraWeight) * extraKgCharge;
+      return stateBaseRate + incrementalCharge;
+    }
+
+    // OPEN CHECKOUT
+    function openCheckout() {
+      custStateSelect.innerHTML = `<option value="" disabled selected>Select your delivery State</option>`;
+      shippingRates.forEach(rate => {
+        const option = document.createElement('option');
+        option.value = rate.state;
+        option.textContent = `${rate.state} (Base: ₹${rate.rate}/kg)`;
+        custStateSelect.appendChild(option);
+      });
+
+      checkoutStepDetails.style.display = 'block';
+      checkoutStepPayment.style.display = 'none';
+      checkoutStepSuccess.style.display = 'none';
+      
+      checkoutModal.classList.add('active');
+      updateCheckoutSummaries();
+    }
+
+    function updateCheckoutSummaries() {
+      let subtotal = 0;
+      let totalWeightGrams = 0;
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+        const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
+        totalWeightGrams += weightInt * item.quantity;
+      });
+
+      document.getElementById('checkout-summary-weight').textContent = formatWeight(totalWeightGrams);
+      document.getElementById('checkout-summary-subtotal').textContent = `₹${subtotal}`;
+      const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
+      document.getElementById('checkout-summary-shipping').textContent = selectedStateName ? `₹${shippingCharge}` : "Select State";
+      const grandTotal = subtotal + shippingCharge;
+      document.getElementById('checkout-summary-total').textContent = `₹${grandTotal}`;
+      upiPayableAmount.textContent = `₹${grandTotal}.00`;
+    }
+
+    // PAYMENT SCREEN
+    function showPaymentScreen() {
+      checkoutStepDetails.style.display = 'none';
+      checkoutStepPayment.style.display = 'block';
+      
+      let subtotal = 0;
+      let totalWeightGrams = 0;
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+        const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
+        totalWeightGrams += weightInt * item.quantity;
+      });
+      const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
+      const grandTotal = subtotal + shippingCharge;
+      
+      const tempOrderRef = "DFP" + Math.floor(100000 + Math.random() * 900000);
+      
+      const upiId = settings.upiId;
+      const merchantName = encodeURIComponent(settings.businessName);
+      const transactionNote = encodeURIComponent(`Order ${tempOrderRef}`);
+      const formattedAmount = Number(grandTotal).toFixed(2);
+      const upiUrl = `upi://pay?pa=${upiId}&pn=${merchantName}&am=${formattedAmount}&tn=${transactionNote}&cu=INR`;
+      
+      upiTargetId.textContent = upiId;
+      upiMobileLink.href = upiUrl;
+      
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
+      upiQrImage.src = qrApiUrl;
+      upiRefNoInput.value = "";
+      confirmPaymentBtn.setAttribute('data-temp-ref', tempOrderRef);
+    }
+
+    // PLACE FINAL ORDER
+    async function placeFinalOrder(refNo) {
+      const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const address = document.getElementById('cust-address').value.trim();
+      const pin = document.getElementById('cust-pin').value.trim();
+      
+      let subtotal = 0;
+      let totalWeightGrams = 0;
+      const orderItems = cart.map(item => {
+        subtotal += item.price * item.quantity;
+        const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
+        totalWeightGrams += weightInt * item.quantity;
+        return {
+          productId: item.product.id,
+          name: item.product.name,
+          weight: item.weight,
+          price: item.price,
+          quantity: item.quantity
+        };
+      });
+
+      const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
+      const grandTotal = subtotal + shippingCharge;
+
+      const orderData = {
+        customer: {
+          name: name,
+          phone: phone,
+          address: address,
+          state: selectedStateName,
+          pincode: pin
+        },
+        items: orderItems,
+        totalWeight: formatWeight(totalWeightGrams),
+        subtotal: subtotal,
+        shipping: shippingCharge,
+        total: grandTotal,
+        paymentRef: refNo,
+        notes: `Paid ₹${grandTotal} via UPI Reference: ${refNo}`
+      };
+
+      const placedOrder = await DB.addOrder(orderData);
+
+      checkoutStepPayment.style.display = 'none';
+      checkoutStepSuccess.style.display = 'block';
+      
+      successOrderId.textContent = `#${placedOrder.id}`;
+      successName.textContent = placedOrder.customer.name;
+      successPhone.textContent = placedOrder.customer.phone;
+      successTotal.textContent = `₹${placedOrder.total}`;
+      successRef.textContent = placedOrder.paymentRef;
+      successAddress.textContent = `${placedOrder.customer.address}, ${placedOrder.customer.state} - ${placedOrder.customer.pincode}`;
+      
+      const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
+      const waMsg = `Hello Dhanalakshmi Food Products, I have placed order #${placedOrder.id}. Total Amount: ₹${placedOrder.total}. Payment reference ID: ${placedOrder.paymentRef}. Please confirm receipt.`;
+      trackWhatsappBtn.href = `https://wa.me/${cleanWa.replace('+', '')}?text=${encodeURIComponent(waMsg)}`;
+    }
+
+    function sendWhatsappInquiry() {
+      const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
+      
+      const name = document.getElementById('form-name').value.trim();
+      const phone = document.getElementById('form-phone').value.trim();
+      const message = document.getElementById('form-message').value.trim();
+      
+      const text = `Hello Dhanalakshmi Food Products! I would like to make an inquiry.\n\n*Name:* ${name}\n*Phone:* ${phone}\n*Message:* ${message}`;
+      const waUrl = `https://wa.me/${cleanWa.replace('+', '')}?text=${encodeURIComponent(text)}`;
+      
+      window.open(waUrl, '_blank');
+    }
+  </script>
+
+  <!-- Floating WhatsApp Widget -->
+  <a href="#" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" id="whatsapp-float-btn">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.504-5.714-1.464L0 24zm6.273-3.832c1.616.96 3.197 1.48 4.887 1.481 5.485 0 9.948-4.467 9.951-9.957.002-2.66-1.033-5.161-2.915-7.045C16.37 2.76 13.868 1.72 11.2 1.72c-5.49 0-9.956 4.467-9.959 9.96-.001 1.79.475 3.535 1.38 5.093l-.998 3.64 3.731-.977zm12.355-7.37c-.305-.152-1.805-.892-2.084-.993-.28-.101-.484-.152-.687.152-.203.305-.788 1.002-.966 1.206-.178.203-.356.228-.661.076-.305-.152-1.288-.475-2.454-1.517-.908-.81-1.52-1.812-1.698-2.117-.178-.305-.019-.47.133-.621.137-.136.305-.356.457-.533.152-.178.203-.305.305-.508.102-.203.051-.381-.025-.533-.076-.152-.687-1.657-.941-2.27-.248-.599-.5-.517-.688-.527l-.587-.01c-.203 0-.533.076-.813.381-.28.305-1.067 1.042-1.067 2.542 0 1.5 1.092 2.946 1.244 3.15.152.203 2.15 3.284 5.207 4.602.727.314 1.295.5 1.737.64.73.232 1.393.198 1.918.12.585-.087 1.805-.737 2.06-1.45.253-.712.253-1.322.178-1.45-.076-.127-.28-.203-.585-.355z"/></svg>
+    <span class="whatsapp-tooltip">Chat on WhatsApp</span>
+  </a>
+
+  <!-- Floating Cart Button -->
+  <a href="#" class="cart-float" id="cart-float-btn" aria-label="View Cart" onclick="event.preventDefault(); document.getElementById('open-cart-btn').click();">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+    <span class="cart-badge-float" id="cart-badge-count-float">0</span>
+    <span class="cart-float-tooltip">View Cart</span>
+  </a>
+</body>
+</html>

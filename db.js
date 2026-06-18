@@ -1,0 +1,529 @@
+// db.js - Unified Cloud & LocalStorage Database Client Layer for Dhanalakshmi Food Products
+
+const DEFAULT_PRODUCTS = [
+  {
+    id: "prod_mixture",
+    name: "Special Mixture",
+    category: "Mixtures",
+    description: "A crunchy and savory blend of sev, boondi, roasted peanuts, cashews, and traditional Andhra spices.",
+    image: "assets/product_mixture.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: true
+  },
+  {
+    id: "prod_dal_mixture",
+    name: "Dal Mixture",
+    category: "Mixtures",
+    description: "Crispy fried lentils mixed with roasted spices, curry leaves, and a touch of chili.",
+    image: "assets/product_dal_mixture.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: false
+  },
+  {
+    id: "prod_chekodi",
+    name: "Chekodi",
+    category: "Chekodilu",
+    description: "Classic golden-fried rings made of rice flour and sesame seeds, offering a perfect traditional crunch.",
+    image: "assets/product_chekodi.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: true
+  },
+  {
+    id: "prod_pappu_chekodi",
+    name: "Pappu Chekodi",
+    category: "Chekodilu",
+    description: "Traditional crunchy ring snack enriched with chana dal (lentils) for an extra layer of texture and taste.",
+    image: "assets/product_pappu_chekodi.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: false
+  },
+  {
+    id: "prod_karapusa",
+    name: "Arra Karapusa",
+    category: "Karapusa",
+    description: "Super fine, spicy gram flour sev seasoned with hand-ground red chilies and garlic.",
+    image: "assets/product_arra_karapusa.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: false
+  },
+  {
+    id: "prod_vammu_pusa",
+    name: "Vammu Pusa",
+    category: "Karapusa",
+    description: "Traditional savory sev flavored with carom seeds (ajwain), gentle on the stomach and extremely flavorful.",
+    image: "assets/product_vammu_pusa.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: true
+  },
+  {
+    id: "prod_janthukulu",
+    name: "Janthukulu",
+    category: "Traditional Snacks",
+    description: "Traditional spiral snack made of rice flour and black gram, flavored with cumin and sesame seeds.",
+    image: "assets/product_janthukulu.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: true
+  },
+  {
+    id: "prod_star_kommulu",
+    name: "Star Kommulu",
+    category: "Traditional Snacks",
+    description: "Crispy star-shaped snack sticks seasoned with mild spices, perfect for tea time.",
+    image: "assets/product_star_kommulu.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: false
+  },
+  {
+    id: "prod_panchadhara_kommulu",
+    name: "Panchadhara Kommulu",
+    category: "Traditional Snacks",
+    description: "Sweet, crispy snack sticks coated with sugar syrup. A traditional festive favorite.",
+    image: "assets/product_panchadhara_kommulu.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: false
+  },
+  {
+    id: "prod_bellam_gavvalu",
+    name: "Bellam Gavvalu",
+    category: "Gavvalu",
+    description: "Shell-shaped sweet crisps made of wheat flour, fried to golden perfection and soaked in pure jaggery syrup.",
+    image: "assets/product_bellam_gavvalu.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: true
+  },
+  {
+    id: "prod_hot_gavvalu",
+    name: "Hot Gavvalu",
+    category: "Gavvalu",
+    description: "Savory shell-shaped crisps spiced with red chili powder, garlic, and curry leaves.",
+    image: "assets/product_hot_gavvalu.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: false
+  },
+  {
+    id: "prod_chitti_appadalu",
+    name: "Chitti Appadalu",
+    category: "Appadalu",
+    description: "Mini-sized, sun-dried lentil papads. Deep fry or roast for a crunchy companion to your meals.",
+    image: "assets/product_chitti_appadalu.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: false
+  },
+  {
+    id: "prod_pedda_appadalu",
+    name: "Pedda Appadalu",
+    category: "Appadalu",
+    description: "Large, traditional papadums hand-rolled with premium quality black gram flour and spices.",
+    image: "assets/product_pedda_appadalu.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: false
+  },
+  {
+    id: "prod_diamond_chips",
+    name: "Diamond Chips",
+    category: "Others",
+    description: "Sweet and crunchy diamond-cut flour pastries. Light, crispy, and mildly sweet.",
+    image: "assets/product_diamond_chips.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: false
+  },
+  {
+    id: "prod_little_hearts",
+    name: "Little Hearts Biscuits",
+    category: "Others",
+    description: "Puff pastry biscuits baked in the shape of hearts, glazed with caramelized sugar.",
+    image: "assets/product_little_hearts.jpg",
+    prices: { "500g": 125, "1kg": 250 },
+    inStock: true,
+    isBestSeller: false
+  }
+];
+
+const DEFAULT_SHIPPING_RATES = [
+  { state: "Andhra Pradesh", rate: 60 },
+  { state: "Telangana", rate: 60 },
+  { state: "Tamil Nadu", rate: 80 },
+  { state: "Karnataka", rate: 80 },
+  { state: "Kerala", rate: 80 },
+  { state: "Maharashtra", rate: 100 },
+  { state: "Gujarat", rate: 120 },
+  { state: "Delhi", rate: 120 },
+  { state: "Uttar Pradesh", rate: 120 },
+  { state: "West Bengal", rate: 120 },
+  { state: "Rajasthan", rate: 120 },
+  { state: "Madhya Pradesh", rate: 120 },
+  { state: "Bihar", rate: 120 },
+  { state: "Punjab", rate: 120 },
+  { state: "Haryana", rate: 120 },
+  { state: "Odisha", rate: 120 },
+  { state: "Assam", rate: 140 },
+  { state: "Jammu & Kashmir", rate: 140 },
+  { state: "Goa", rate: 100 },
+  { state: "Other States", rate: 120 }
+];
+
+const DEFAULT_SETTINGS = {
+  businessName: "Dhanalakshmi Food Products",
+  tagline: "Authentic Andhra Snacks Delivered Across India",
+  description: "Serving authentic homemade sweets and traditional food products for over 10 years.",
+  whatsappNumber: "+918919051435",
+  upiId: "8919051435@axl",
+  instagramUrl: "https://instagram.com/dhanalakshmifoods",
+  emailAddress: "amarnadhkarella664@gmail.com",
+  contactAddress: "Door No. 18/87, Nimmathota, Undrajavaram, West Godavari District, Andhra Pradesh - 534216",
+  adminPassword: "dhanalakshmi123"
+};
+
+class UnifiedDatabase {
+  constructor() {
+    this.apiUrl = window.location.origin;
+    // Resolve absolute path when running locally over file:// protocol
+    if (this.apiUrl.startsWith('file://')) {
+      this.apiUrl = 'http://localhost:5000';
+    }
+    
+    this.online = false;
+    this.checkedOnline = false;
+    this.adminToken = localStorage.getItem('dfp_admin_token') || '';
+    this.initLocalStorageFallback();
+  }
+
+  // Detect serverless backend availability
+  async checkConnection() {
+    if (this.checkedOnline) return this.online;
+
+    // First try: test the current origin
+    try {
+      const res = await fetch(`${this.apiUrl}/api/status`, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' }
+      });
+      const data = await res.json();
+      if (data && data.status === 'online') {
+        this.online = true;
+        this.checkedOnline = true;
+        console.log(`Dhanalakshmi DB Mode: Cloud (Supabase) via ${this.apiUrl}`);
+        return this.online;
+      }
+    } catch (e) {
+      // Ignored, try local fallback below
+    }
+
+    // Second try: If current origin is local / file, check if local dev server on port 5000 is running
+    const isLocal = window.location.hostname === 'localhost' || 
+                    window.location.hostname === '127.0.0.1' || 
+                    window.location.protocol === 'file:';
+
+    if (isLocal && this.apiUrl !== 'http://localhost:5000') {
+      try {
+        const fallbackUrl = 'http://localhost:5000';
+        const res = await fetch(`${fallbackUrl}/api/status`, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json' }
+        });
+        const data = await res.json();
+        if (data && data.status === 'online') {
+          this.apiUrl = fallbackUrl;
+          this.online = true;
+          this.checkedOnline = true;
+          console.log(`Dhanalakshmi DB Mode: Cloud (Supabase) via local server ${this.apiUrl}`);
+          return this.online;
+        }
+      } catch (e) {
+        // Ignored
+      }
+    }
+
+    this.online = false;
+    this.checkedOnline = true;
+    console.log(`Dhanalakshmi DB Mode: Fallback (LocalStorage)`);
+    return this.online;
+  }
+
+  getHeaders() {
+    const headers = { 'Content-Type': 'application/json' };
+    if (this.adminToken) {
+      headers['x-admin-password'] = this.adminToken;
+    }
+    return headers;
+  }
+
+  // --- LOCALSTORAGE FALLBACK INITIALIZER ---
+  initLocalStorageFallback() {
+    if (!localStorage.getItem("dfp_products")) {
+      localStorage.setItem("dfp_products", JSON.stringify(DEFAULT_PRODUCTS));
+    }
+    if (!localStorage.getItem("dfp_shipping_rates")) {
+      localStorage.setItem("dfp_shipping_rates", JSON.stringify(DEFAULT_SHIPPING_RATES));
+    }
+    if (!localStorage.getItem("dfp_settings")) {
+      localStorage.setItem("dfp_settings", JSON.stringify(DEFAULT_SETTINGS));
+    }
+    if (!localStorage.getItem("dfp_orders")) {
+      localStorage.setItem("dfp_orders", JSON.stringify([]));
+    }
+  }
+
+  // --- PRODUCTS ---
+  async getProducts() {
+    if (await this.checkConnection()) {
+      try {
+        const res = await fetch(`${this.apiUrl}/api/products`);
+        return await res.json();
+      } catch (e) {
+        console.error("Failed to fetch products from cloud, returning fallback", e);
+      }
+    }
+    return JSON.parse(localStorage.getItem("dfp_products")) || [];
+  }
+
+  async addProduct(product) {
+    if (await this.checkConnection()) {
+      const res = await fetch(`${this.apiUrl}/api/products`, {
+        method: 'POST',
+        headers: this.getHeaders(),
+        body: JSON.stringify(product)
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    
+    // Fallback
+    const products = JSON.parse(localStorage.getItem("dfp_products")) || [];
+    product.id = "prod_" + Date.now();
+    products.push(product);
+    localStorage.setItem("dfp_products", JSON.stringify(products));
+    window.dispatchEvent(new Event("storage"));
+    return product;
+  }
+
+  async updateProduct(id, updatedFields) {
+    if (await this.checkConnection()) {
+      const payload = { id, ...updatedFields };
+      const res = await fetch(`${this.apiUrl}/api/products`, {
+        method: 'PUT',
+        headers: this.getHeaders(),
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    
+    // Fallback
+    const products = JSON.parse(localStorage.getItem("dfp_products")) || [];
+    const idx = products.findIndex(p => p.id === id);
+    if (idx !== -1) {
+      products[idx] = { ...products[idx], ...updatedFields };
+      localStorage.setItem("dfp_products", JSON.stringify(products));
+      window.dispatchEvent(new Event("storage"));
+      return products[idx];
+    }
+    return null;
+  }
+
+  async deleteProduct(id) {
+    if (await this.checkConnection()) {
+      const res = await fetch(`${this.apiUrl}/api/products`, {
+        method: 'DELETE',
+        headers: this.getHeaders(),
+        body: JSON.stringify({ id })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    
+    // Fallback
+    let products = JSON.parse(localStorage.getItem("dfp_products")) || [];
+    products = products.filter(p => p.id !== id);
+    localStorage.setItem("dfp_products", JSON.stringify(products));
+    window.dispatchEvent(new Event("storage"));
+  }
+
+  // --- SHIPPING RATES ---
+  async getShippingRates() {
+    if (await this.checkConnection()) {
+      try {
+        const res = await fetch(`${this.apiUrl}/api/shipping`);
+        return await res.json();
+      } catch (e) {
+        console.error("Failed to fetch shipping rates from cloud", e);
+      }
+    }
+    return JSON.parse(localStorage.getItem("dfp_shipping_rates")) || [];
+  }
+
+  async updateShippingRate(stateName, newRate) {
+    if (await this.checkConnection()) {
+      const res = await fetch(`${this.apiUrl}/api/shipping`, {
+        method: 'PUT',
+        headers: this.getHeaders(),
+        body: JSON.stringify({ state: stateName, rate: newRate })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    
+    // Fallback
+    const rates = JSON.parse(localStorage.getItem("dfp_shipping_rates")) || [];
+    const rateItem = rates.find(r => r.state.toLowerCase() === stateName.toLowerCase());
+    if (rateItem) {
+      rateItem.rate = parseFloat(newRate);
+    } else {
+      rates.push({ state: stateName, rate: parseFloat(newRate) });
+    }
+    localStorage.setItem("dfp_shipping_rates", JSON.stringify(rates));
+    window.dispatchEvent(new Event("storage"));
+  }
+
+  // --- ORDERS ---
+  async getOrders() {
+    if (await this.checkConnection()) {
+      try {
+        const res = await fetch(`${this.apiUrl}/api/orders`, {
+          headers: this.getHeaders()
+        });
+        if (!res.ok) throw new Error(await res.text());
+        return await res.json();
+      } catch (e) {
+        console.error("Failed to fetch orders from cloud", e);
+      }
+    }
+    return JSON.parse(localStorage.getItem("dfp_orders")) || [];
+  }
+
+  async addOrder(order) {
+    if (await this.checkConnection()) {
+      const res = await fetch(`${this.apiUrl}/api/orders`, {
+        method: 'POST',
+        headers: this.getHeaders(),
+        body: JSON.stringify(order)
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    
+    // Fallback
+    const orders = JSON.parse(localStorage.getItem("dfp_orders")) || [];
+    order.id = "DFP-" + Math.floor(100000 + Math.random() * 900000);
+    order.timestamp = new Date().toISOString();
+    order.status = "Pending";
+    orders.unshift(order);
+    localStorage.setItem("dfp_orders", JSON.stringify(orders));
+    window.dispatchEvent(new Event("storage"));
+    return order;
+  }
+
+  async updateOrderStatus(orderId, status) {
+    if (await this.checkConnection()) {
+      const res = await fetch(`${this.apiUrl}/api/orders`, {
+        method: 'PUT',
+        headers: this.getHeaders(),
+        body: JSON.stringify({ id: orderId, status })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    
+    // Fallback
+    const orders = JSON.parse(localStorage.getItem("dfp_orders")) || [];
+    const idx = orders.findIndex(o => o.id === orderId);
+    if (idx !== -1) {
+      orders[idx].status = status;
+      localStorage.setItem("dfp_orders", JSON.stringify(orders));
+      window.dispatchEvent(new Event("storage"));
+      return orders[idx];
+    }
+    return null;
+  }
+
+  // --- SETTINGS ---
+  async getSettings() {
+    if (await this.checkConnection()) {
+      try {
+        const res = await fetch(`${this.apiUrl}/api/settings`);
+        return await res.json();
+      } catch (e) {
+        console.error("Failed to fetch settings from cloud", e);
+      }
+    }
+    return JSON.parse(localStorage.getItem("dfp_settings")) || DEFAULT_SETTINGS;
+  }
+
+  async saveSettings(settings) {
+    if (await this.checkConnection()) {
+      const res = await fetch(`${this.apiUrl}/api/settings`, {
+        method: 'PUT',
+        headers: this.getHeaders(),
+        body: JSON.stringify(settings)
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    
+    // Fallback
+    localStorage.setItem("dfp_settings", JSON.stringify(settings));
+    window.dispatchEvent(new Event("storage"));
+  }
+
+  // --- AUTHENTICATION ---
+  async login(password) {
+    if (await this.checkConnection()) {
+      try {
+        const res = await fetch(`${this.apiUrl}/api/auth`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          this.adminToken = data.token;
+          localStorage.setItem('dfp_admin_token', data.token);
+          return { success: true };
+        }
+        return { success: false, error: data.error };
+      } catch (e) {
+        return { success: false, error: "Network error trying to authenticate." };
+      }
+    }
+    
+    // Fallback Local Auth
+    const settings = JSON.parse(localStorage.getItem("dfp_settings")) || DEFAULT_SETTINGS;
+    if (password === settings.adminPassword) {
+      this.adminToken = password;
+      localStorage.setItem('dfp_admin_token', password);
+      return { success: true };
+    }
+    return { success: false, error: "Incorrect admin password." };
+  }
+
+  logout() {
+    this.adminToken = '';
+    localStorage.removeItem('dfp_admin_token');
+  }
+
+  // --- RESET SYSTEM ---
+  async resetToDefaults() {
+    localStorage.setItem("dfp_products", JSON.stringify(DEFAULT_PRODUCTS));
+    localStorage.setItem("dfp_shipping_rates", JSON.stringify(DEFAULT_SHIPPING_RATES));
+    localStorage.setItem("dfp_settings", JSON.stringify(DEFAULT_SETTINGS));
+    localStorage.setItem("dfp_orders", JSON.stringify([]));
+    window.dispatchEvent(new Event("storage"));
+  }
+}
+
+const DB = new UnifiedDatabase();
+window.DB = DB;

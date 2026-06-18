@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dhanalakshmi Food Products - Authentic Andhra Snacks</title>
+  <meta name="description" content="Freshly prepared traditional Andhra snacks made using authentic recipes and quality ingredients. Delivered directly to your doorstep across India.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <div class="announcement-bar">
+    <div class="ticker-track">
+      <div class="ticker-content">
+        <span>✦ No Palm Oil</span>
+        <span>✦ No Preservatives</span>
+        <span>✦ 100% Pure & Traditional</span>
+        <span>✦ Pan India Shipping</span>
+        <span>✦ No Added Colors</span>
+      </div>
+      <div class="ticker-content">
+        <span>✦ No Palm Oil</span>
+        <span>✦ No Preservatives</span>
+        <span>✦ 100% Pure & Traditional</span>
+        <span>✦ Pan India Shipping</span>
+        <span>✦ No Added Colors</span>
+      </div>
+      <div class="ticker-content">
+        <span>✦ No Palm Oil</span>
+        <span>✦ No Preservatives</span>
+        <span>✦ 100% Pure & Traditional</span>
+        <span>✦ Pan India Shipping</span>
+        <span>✦ No Added Colors</span>
+      </div>
+      <div class="ticker-content">
+        <span>✦ No Palm Oil</span>
+        <span>✦ No Preservatives</span>
+        <span>✦ 100% Pure & Traditional</span>
+        <span>✦ Pan India Shipping</span>
+        <span>✦ No Added Colors</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-top">
+        <div class="logo-container" onclick="scrollToHero()" style="cursor:pointer;">
+          <img src="assets/logo.png" alt="Dhanalakshmi Food Products Logo" class="logo-img">
+          <div>
+            <h1 class="brand-title" id="store-title">Dhanalakshmi</h1>
+            <span class="brand-subtitle">Food Products</span>
+          </div>
+        </div>
+
+        <!-- Desktop Navigation Menu -->
+        <nav class="desktop-nav">
+          <a href="#" class="nav-link" onclick="scrollToHero(); return false;">Home</a>
+          <a href="#" class="nav-link" onclick="scrollToCategories(); return false;">Categories</a>
+          <div class="nav-dropdown">
+            <a href="#" class="nav-link dropdown-toggle" onclick="scrollToProducts(); return false;">Snack Types ▾</a>
+            <div class="dropdown-menu">
+              <a href="#" onclick="selectStorefrontCategory('All'); return false;" style="border-bottom: 1px solid var(--border-color); font-weight: 700; color: var(--primary-maroon);">All Snacks</a>
+              <a href="#" onclick="selectStorefrontCategory('Mixtures'); return false;">Mixtures</a>
+              <a href="#" onclick="selectStorefrontCategory('Chekodilu'); return false;">Chekodilu</a>
+              <a href="#" onclick="selectStorefrontCategory('Karapusa'); return false;">Karapusa</a>
+              <a href="#" onclick="selectStorefrontCategory('Traditional Snacks'); return false;">Traditional Snacks</a>
+              <a href="#" onclick="selectStorefrontCategory('Gavvalu'); return false;">Gavvalu</a>
+              <a href="#" onclick="selectStorefrontCategory('Appadalu'); return false;">Appadalu</a>
+              <a href="#" onclick="selectStorefrontCategory('Others'); return false;">Others</a>
+            </div>
+          </div>
+          <a href="#" class="nav-link" onclick="scrollToHowToOrder(); return false;">How to Order</a>
+          <a href="#" class="nav-link" onclick="scrollToFaq(); return false;">FAQs</a>
+          <a href="contact.html" class="nav-link">Contact Us</a>
+        </nav>
+
+        <div class="header-actions">
+          <!-- Mobile Menu Toggle -->
+          <button class="menu-toggle-btn" id="mobile-menu-toggle-btn" aria-label="Toggle Menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+          </button>
+          <button class="cart-icon-btn" id="open-cart-btn" aria-label="Open Cart">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <span class="cart-badge" id="cart-badge-count">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation Drawer Overlay -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+      <div class="mobile-nav-header">
+        <div class="logo-container">
+          <img src="assets/logo.png" alt="Dhanalakshmi Food Products Logo" class="logo-img">
+          <div>
+            <span class="brand-title" style="font-size: 1.1rem; line-height: 1;">Dhanalakshmi</span>
+            <span class="brand-subtitle" style="font-size: 0.65rem;">Food Products</span>
+          </div>
+        </div>
+        <button class="close-btn" id="close-mobile-menu-btn" aria-label="Close Menu">&times;</button>
+      </div>
+      <div class="mobile-nav-links">
+        <a href="#" onclick="scrollToHero(); toggleMobileMenu(false); return false;">🏠 Home</a>
+        <a href="#" onclick="scrollToCategories(); toggleMobileMenu(false); return false;">📂 Categories</a>
+        <a href="#" onclick="scrollToHowToOrder(); toggleMobileMenu(false); return false;">📋 How to Order</a>
+        <a href="#" onclick="scrollToFaq(); toggleMobileMenu(false); return false;">❓ FAQs</a>
+        <a href="contact.html">📞 Contact Us</a>
+        <div style="border-top: 1px solid var(--border-color); margin-top: 8px; padding-top: 8px;">
+          <strong style="font-size: 0.75rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px; display: block; padding: 4px 24px;">Snack Types Available</strong>
+          <a href="#" onclick="selectStorefrontCategory('All'); toggleMobileMenu(false); return false;" style="font-weight: 700; color: var(--primary-maroon);">• All Snacks</a>
+          <a href="#" onclick="selectStorefrontCategory('Mixtures'); toggleMobileMenu(false); return false;">• Mixtures</a>
+          <a href="#" onclick="selectStorefrontCategory('Chekodilu'); toggleMobileMenu(false); return false;">• Chekodilu</a>
+          <a href="#" onclick="selectStorefrontCategory('Karapusa'); toggleMobileMenu(false); return false;">• Karapusa</a>
+          <a href="#" onclick="selectStorefrontCategory('Traditional Snacks'); toggleMobileMenu(false); return false;">• Traditional Snacks</a>
+          <a href="#" onclick="selectStorefrontCategory('Gavvalu'); toggleMobileMenu(false); return false;">• Gavvalu</a>
+          <a href="#" onclick="selectStorefrontCategory('Appadalu'); toggleMobileMenu(false); return false;">• Appadalu</a>
+          <a href="#" onclick="selectStorefrontCategory('Others'); toggleMobileMenu(false); return false;">• Others</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero-section">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-tag">Traditional & Authentic</span>
+        <h2 id="hero-title">DHANALAKSHMI FOOD PRODUCTS</h2>
+        <p class="hero-desc" id="hero-desc">Authentic Andhra Snacks Delivered Across India. Freshly prepared using heritage recipes and premium ingredients.</p>
+        <div class="hero-ctas">
+          <button class="btn-primary" onclick="scrollToProducts()">Shop Now</button>
+          <button class="btn-secondary" onclick="scrollToCategories()">Explore Categories</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Category Showcase -->
+  <section class="category-showcase" id="categories-section">
+    <div class="container">
+      <div class="section-title-wrapper">
+        <h3 class="section-title" onclick="scrollToCategories()">Explore Categories</h3>
+        <span class="section-subtitle">Our Specialities</span>
+      </div>
+      <div class="categories-scroll-wrapper">
+        <div class="categories-container" id="categories-list">
+          <!-- Dynamically populated categories (Collections design) -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="featured-products" id="products-section">
+    <div class="container">
+      <div class="section-title-wrapper">
+        <h3 class="section-title" id="selected-category-title" onclick="scrollToProducts()">All Snacks</h3>
+        <span class="section-subtitle">Fresh Batches Ready</span>
+      </div>
+      <div class="product-grid" id="product-grid">
+        <!-- Dynamically populated products -->
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Why Customers Love Us -->
+  <section class="why-us">
+    <div class="container">
+      <h3 class="section-title" style="margin-bottom: 12px; cursor:default;">Why Choose Dhanalakshmi?</h3>
+      <div class="why-us-grid">
+        <div class="why-us-item">
+          <div class="why-us-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9z"></path><path d="M12 7V3"></path><path d="M5 12h14"></path></svg>
+          </div>
+          <div class="why-us-info">
+            <h4>Traditional Recipes</h4>
+            <p>Handed down through generations, preserving the genuine flavor of home.</p>
+          </div>
+        </div>
+        <div class="why-us-item">
+          <div class="why-us-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></svg>
+          </div>
+          <div class="why-us-info">
+            <h4>Fresh Preparation</h4>
+            <p>We prepare snacks in small batches upon receiving orders for maximum freshness.</p>
+          </div>
+        </div>
+        <div class="why-us-item">
+          <div class="why-us-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="21 8 21 21 3 21 3 8"></polyline><rect x="1" y="3" width="22" height="5"></rect><line x1="10" y1="12" x2="14" y2="12"></line></svg>
+          </div>
+          <div class="why-us-info">
+            <h4>Hygienic Packaging</h4>
+            <p>Prepared in sanitised kitchens and sealed securely to prevent leakage and moisture.</p>
+          </div>
+        </div>
+        <div class="why-us-item">
+          <div class="why-us-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+          </div>
+          <div class="why-us-info">
+            <h4>Nationwide Delivery</h4>
+            <p>Partnership with top courier services for reliable shipping to any corner of India.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Story -->
+  <section class="story-section">
+    <div class="container">
+      <div class="story-flex-container">
+        <div class="story-content">
+          <h3>Our Andhra Heritage</h3>
+          <p>At Dhanalakshmi Food Products, we carry forward a heritage of culinary perfection. Rooted in the heart of Andhra Pradesh, we cherish the traditional methods of preparation, choosing select local ingredients, hand-grinding our spices, and frying in clean, high-quality oils.</p>
+          <p>Every packet is a promise of crunch, warmth, and authentic homemade taste that connects Telugu families and food lovers across distances.</p>
+        </div>
+        <div class="story-image-wrapper">
+          <img class="story-image" src="assets/hero_lifestyle.png" alt="Traditional Andhra Kitchen Cooking">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How Ordering Works -->
+  <section class="process-section" id="how-to-order-section">
+    <div class="container">
+      <h3 class="section-title" style="margin-bottom: 12px; cursor:default;">How to Order</h3>
+      <div class="timeline">
+        <div class="timeline-step">
+          <div class="timeline-dot"></div>
+          <span class="timeline-title">Step 1: Choose Snacks</span>
+          <span class="timeline-desc">Browse our rich selection of Mixtures, Chekodilu, and sweets.</span>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-dot"></div>
+          <span class="timeline-title">Step 2: Select Weight (Min. 2 kg Combined)</span>
+          <span class="timeline-desc">Choose pack sizes (500g or 1kg). Note: Your total combined order weight must be at least 2 kg.</span>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-dot"></div>
+          <span class="timeline-title">Step 3: Enter Address</span>
+          <span class="timeline-desc">Fill in your delivery details and choose your state.</span>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-dot"></div>
+          <span class="timeline-title">Step 4: Complete UPI Payment</span>
+          <span class="timeline-desc">Scan the dynamic QR code or use the payment app link.</span>
+        </div>
+        <div class="timeline-step">
+          <div class="timeline-dot"></div>
+          <span class="timeline-title">Step 5: Receive Delivery</span>
+          <span class="timeline-desc">Your fresh batch will be dispatched via courier right to your door!</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <div class="container">
+      <h3 class="section-title" style="margin-bottom: 12px; cursor:default;">What Our Customers Say</h3>
+      <div class="testimonials-slider">
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"The Chekodilu brought back memories of my grandmother's house in Mandapeta. Extremely crispy and fresh!"</p>
+          <div class="testimonial-author">
+            <div class="author-initial">S</div>
+            <div class="author-info">
+              <h5>Srinivas Rao</h5>
+              <p>Hyderabad</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Ordered Special Mixture and Bellam Gavvalu to Bangalore. The packaging was superb, no damage or oil leakage. Highly recommended!"</p>
+          <div class="testimonial-author">
+            <div class="author-initial">K</div>
+            <div class="author-info">
+              <h5>Kalyani P.</h5>
+              <p>Bangalore</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="testimonial-stars">★★★★★</div>
+          <p class="testimonial-text">"Clean ingredients, authentic taste, and very fast courier delivery to Delhi. Kids loved the sweet Kommulu."</p>
+          <div class="testimonial-author">
+            <div class="author-initial">R</div>
+            <div class="author-info">
+              <h5>Rajesh Kumar</h5>
+              <p>Delhi</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="faq-section" id="faq-section">
+    <div class="container">
+      <h3 class="section-title" style="margin-bottom: 12px; cursor:default;">Frequently Asked Questions</h3>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-question">What is the minimum order quantity?<span class="faq-icon">▼</span></div>
+          <div class="faq-answer">The minimum order weight is 2 kg for delivery.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Do you ship pan India?<span class="faq-icon">▼</span></div>
+          <div class="faq-answer">Yes, we deliver to all states across India with weight-based shipping charges.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">Are your products preservative-free?<span class="faq-icon">▼</span></div>
+          <div class="faq-answer">Yes, all our products are made fresh without any artificial colors, preservatives, or palm oil.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">How do I place a bulk order?<span class="faq-icon">▼</span></div>
+          <div class="faq-answer">For bulk orders and wedding events, please contact us directly via WhatsApp or phone.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">What payment methods do you accept?<span class="faq-icon">▼</span></div>
+          <div class="faq-answer">We accept online payments, UPI, bank transfers, and cash on delivery (COD) for select locations.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-question">How long does delivery take?<span class="faq-icon">▼</span></div>
+          <div class="faq-answer">Delivery typically takes 3-7 business days depending on your location. Priority zones receive faster delivery.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Banner Section -->
+  <section class="trust-banner-section">
+    <div class="container">
+      <div class="trust-banner-grid">
+        <div class="trust-banner-item">
+          <div class="trust-banner-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 0 8.5C17 15 15 18 11 20z"></path><path d="M19 2L9.8 13.9"></path></svg>
+          </div>
+          <div class="trust-banner-info">
+            <h4>Freshly Prepared</h4>
+            <p>Made in small batches upon order receipt.</p>
+          </div>
+        </div>
+        <div class="trust-banner-item">
+          <div class="trust-banner-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
+          <div class="trust-banner-info">
+            <h4>Hygienically Packed</h4>
+            <p>Strict sanitization standards and double-sealed packs.</p>
+          </div>
+        </div>
+        <div class="trust-banner-item">
+          <div class="trust-banner-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          </div>
+          <div class="trust-banner-info">
+            <h4>Premium Ingredients</h4>
+            <p>Prepared using woodpressed oils and handpicked spices.</p>
+          </div>
+        </div>
+        <div class="trust-banner-item">
+          <div class="trust-banner-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          </div>
+          <div class="trust-banner-info">
+            <h4>Delivered Across India</h4>
+            <p>Reliable courier partners tracking to your doorstep.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-about" style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="logo-container" style="cursor: default;">
+            <img src="assets/logo.png" alt="Dhanalakshmi Food Products Logo" class="logo-img">
+            <div>
+              <h4 id="footer-brand-title" style="margin: 0; font-family: var(--font-heading);">Dhanalakshmi Food Products</h4>
+              <span class="brand-subtitle" style="font-size: 0.65rem; color: var(--accent-gold); font-weight: 600; text-transform: uppercase;">Traditional & Authentic</span>
+            </div>
+          </div>
+          <p id="footer-brand-desc" style="font-size: 0.9rem; color: rgba(255, 255, 255, 0.75); max-width: 320px; line-height: 1.6;">Serving authentic homemade sweets and traditional food products for over 10 years.</p>
+          <div class="footer-socials" style="display: flex; gap: 16px; margin-top: 8px;">
+            <a href="https://instagram.com/dhanalakshmifoods" class="social-btn" id="footer-insta" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="https://facebook.com/dhanalakshmifoods" class="social-btn" id="footer-fb" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+            </a>
+            <a href="https://twitter.com/dhanalakshmifoods" class="social-btn" id="footer-twitter" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+            </a>
+            <a href="https://youtube.com/dhanalakshmifoods" class="social-btn" id="footer-yt" aria-label="YouTube" target="_blank" rel="noopener noreferrer">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+            </a>
+          </div>
+        </div>
+        
+        <div class="footer-contact" style="display: flex; flex-direction: column; gap: 16px;">
+          <h4 style="font-family: var(--font-heading); font-size: 1.2rem; border-bottom: 2px solid var(--accent-gold); padding-bottom: 8px; width: max-content;"><a href="contact.html" style="color: var(--accent-gold); transition: var(--transition);">Contact Us &rarr;</a></h4>
+          
+          <div class="contact-item" style="display: flex; gap: 12px; align-items: flex-start;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-gold); margin-top: 3px; flex-shrink: 0;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <div>
+              <a href="tel:+918919051435" id="footer-phone" style="font-weight: 600; font-size: 0.95rem; color: var(--white); display: block; transition: var(--transition);">+91 89190 51435</a>
+              <span style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.5); display: block; margin-top: 2px;">Mon-Sun: 6AM - 9PM</span>
+            </div>
+          </div>
+          
+          <div class="contact-item" style="display: flex; gap: 12px; align-items: flex-start;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-gold); margin-top: 3px; flex-shrink: 0;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            <a href="mailto:amarnadhkarella664@gmail.com" id="footer-email" style="font-size: 0.9rem; color: var(--white); word-break: break-all; transition: var(--transition);">amarnadhkarella664@gmail.com</a>
+          </div>
+          
+          <div class="contact-item" style="display: flex; gap: 12px; align-items: flex-start;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-gold); margin-top: 3px; flex-shrink: 0;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            <span id="footer-address" style="font-size: 0.9rem; color: var(--white); line-height: 1.4;">Undrajavaram, West Godavari District, Andhra Pradesh - 534216</span>
+          </div>
+        </div>
+        
+        <div class="footer-links" style="display: flex; flex-direction: column; gap: 16px;">
+          <h4 style="color: var(--white); font-family: var(--font-heading); font-size: 1.2rem; border-bottom: 2px solid var(--accent-gold); padding-bottom: 8px; width: max-content;">Our Promise</h4>
+          <ul style="display: flex; flex-direction: column; gap: 10px; color: rgba(255, 255, 255, 0.85); font-size: 0.9rem;">
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> No Added Colors
+            </li>
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> No Palm Oil
+            </li>
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> No Preservatives
+            </li>
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> 100% Homemade
+            </li>
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> Traditional Recipes
+            </li>
+            <li style="display: flex; align-items: center; gap: 8px;">
+              <span style="color: var(--accent-gold); font-weight: bold;">✓</span> Pan India Shipping
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom" style="border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 24px; margin-top: 40px; text-align: center; display: flex; flex-direction: column; gap: 8px;">
+        <p style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6);">&copy; 2026 Dhanalakshmi Food Products. All Rights Reserved.</p>
+        <p style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.4); letter-spacing: 0.5px;">
+          Founded by <strong style="color: var(--white);">Karella Srinu</strong> | Digitally Expanded by <strong style="color: var(--white);">Karella Amarnadh</strong>
+        </p>
+        <p style="font-size: 0.8rem; color: rgba(255, 255, 255, 0.4);">
+          Designed and Developed by <a href="#" style="color: var(--accent-gold); font-weight: 600; text-decoration: underline; transition: var(--transition);">Siva</a> &amp; <a href="#" style="color: var(--accent-gold); font-weight: 600; text-decoration: underline; transition: var(--transition);">Astra Ai Solutions</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Cart Drawer -->
+  <div class="cart-drawer-overlay" id="cart-drawer-overlay">
+    <div class="cart-drawer">
+      <div class="cart-header">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+          Your Cart
+        </h3>
+        <button class="close-btn" id="close-cart-btn">&times;</button>
+      </div>
+      
+      <div class="cart-items-list" id="cart-items-container">
+        <!-- Dynamically populated cart items -->
+      </div>
+
+      <div class="cart-summary">
+        <div class="summary-row">
+          <span>Items Weight:</span>
+          <span id="cart-total-weight">0g</span>
+        </div>
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span id="cart-subtotal">₹0</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping:</span>
+          <span id="cart-shipping">₹0</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total Amount:</span>
+          <span id="cart-total">₹0</span>
+        </div>
+        <div id="cart-weight-warning" style="color: var(--primary-red); font-size: 0.75rem; font-weight: 700; text-align: center; margin-bottom: 12px; display: none; background-color: #FEE2E2; border: 1px solid rgba(220, 38, 38, 0.2); padding: 8px 12px; border-radius: var(--radius-sm);">
+          ⚠️ Minimum order weight is 2 kg (combined). Add more snacks to proceed!
+        </div>
+        <button class="cart-checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div class="modal-overlay" id="checkout-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Delivery & Payment Details</h3>
+        <button class="close-btn" id="close-checkout-btn">&times;</button>
+      </div>
+      
+      <!-- Step 1: Form Details -->
+      <div class="modal-body" id="checkout-step-details">
+        <form id="checkout-form">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="cust-name">Full Name *</label>
+            <input type="text" id="cust-name" required placeholder="Enter your full name">
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="cust-phone">Mobile Number (WhatsApp) *</label>
+            <input type="tel" id="cust-phone" required pattern="[0-9]{10}" placeholder="10-digit mobile number">
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="cust-address">Delivery Address *</label>
+            <textarea id="cust-address" required rows="3" placeholder="House/Flat No., Street, Landmark"></textarea>
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label for="cust-state">State (For Shipping Calculation) *</label>
+            <select id="cust-state" required>
+              <!-- Loaded dynamically -->
+            </select>
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label for="cust-pin">Pincode *</label>
+            <input type="text" id="cust-pin" required pattern="[0-9]{6}" placeholder="6-digit pincode">
+          </div>
+
+          <div class="cart-summary" style="border: 1px solid var(--border-color); border-radius: var(--radius-sm); margin-bottom: 16px; background-color: var(--white);">
+            <div class="summary-row">
+              <span>Total Weight:</span>
+              <span id="checkout-summary-weight">0g</span>
+            </div>
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span id="checkout-summary-subtotal">₹0</span>
+            </div>
+            <div class="summary-row">
+              <span>Shipping Charges:</span>
+              <span id="checkout-summary-shipping">₹0</span>
+            </div>
+            <div class="summary-row total">
+              <span>Total Payable:</span>
+              <span id="checkout-summary-total">₹0</span>
+            </div>
+          </div>
+
+          <button type="submit" class="cart-checkout-btn" style="margin-top: 0;">Proceed to Payment</button>
+        </form>
+      </div>
+
+      <!-- Step 2: UPI Payment -->
+      <div class="modal-body" id="checkout-step-payment" style="display: none;">
+        <p style="font-size: 0.8rem; text-align: center; color: var(--text-muted);">
+          Scan this QR code using any UPI app (GPay, PhonePe, Paytm, BHIM) to make the payment.
+        </p>
+        
+        <div class="upi-payment-box">
+          <div class="upi-amount-display" id="upi-payable-amount">₹0.00</div>
+          
+          <div class="qr-code-placeholder">
+            <img id="upi-qr-image" class="qr-code-img" src="" alt="Scan to Pay">
+          </div>
+          
+          <p style="font-size: 0.75rem; font-weight: 700; color: var(--primary-maroon);">
+            UPI ID: <span id="upi-target-id">dhanalakshmi@okaxis</span>
+          </p>
+          
+          <!-- Mobile Intent Direct Payment Link -->
+          <a href="#" class="upi-intent-link" id="upi-mobile-link">
+            📱 Open UPI App to Pay
+          </a>
+        </div>
+
+        <div style="margin-top: 10px;">
+          <div class="form-group">
+            <label for="upi-ref-no">Payment Transaction ID / UTR *</label>
+            <input type="text" id="upi-ref-no" required placeholder="Enter 12-digit transaction ID">
+            <span style="font-size: 0.65rem; color: var(--text-muted);">Enter the UPI transaction number to verify payment.</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 12px;">
+          <button class="btn-secondary" id="back-to-details-btn" style="color: var(--primary-maroon); border-color: var(--primary-maroon); flex:1;">Back</button>
+          <button class="btn-primary" id="confirm-payment-btn" style="flex:2;">Place Order</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Success Screen -->
+      <div class="modal-body" id="checkout-step-success" style="display: none; text-align: center; padding: 24px 16px;">
+        <div style="font-size: 3.5rem; color: #059669; margin-bottom: 12px;">🎉</div>
+        <h3 style="color: #059669; font-size: 1.4rem; margin-bottom: 8px;">Order Placed Successfully!</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
+          Your order ID is <strong id="success-order-id" style="color: var(--primary-maroon);">#DFP-XXXXXX</strong>. We have received your payment reference and will prepare your fresh batch shortly!
+        </p>
+        
+        <div class="upi-payment-box" style="background-color: var(--bg-cream); border: 1px solid var(--border-color); text-align: left; align-items: flex-start; gap: 6px; width: 100%;">
+          <div style="font-size: 0.8rem; font-weight: bold; border-bottom: 1px solid var(--border-color); width:100%; padding-bottom:4px; margin-bottom:4px; color: var(--primary-maroon);">Order Details</div>
+          <div style="font-size: 0.75rem;"><strong>Name:</strong> <span id="success-name">Customer</span></div>
+          <div style="font-size: 0.75rem;"><strong>Phone:</strong> <span id="success-phone">9999999999</span></div>
+          <div style="font-size: 0.75rem;"><strong>Amount Paid:</strong> <span id="success-total">₹0</span></div>
+          <div style="font-size: 0.75rem;"><strong>Payment Ref:</strong> <span id="success-ref">XYZ</span></div>
+          <div style="font-size: 0.75rem;"><strong>Address:</strong> <span id="success-address">Address</span></div>
+        </div>
+        
+        <a href="#" target="_blank" class="cart-checkout-btn" id="track-whatsapp-btn" style="background-color: #25D366; border-color: #25D366; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; margin-top: 20px;">
+          💬 Track Order via WhatsApp
+        </a>
+        
+        <button class="btn-secondary" id="success-close-btn" style="color: var(--primary-maroon); border: 1px solid var(--primary-maroon); width: 100%; margin-top: 12px; font-weight: 600;">Back to Shop</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Javascript Logic -->
+  <script src="db.js"></script>
+  <script>
+    // Global Storefront State
+    let products = [];
+    let settings = {};
+    let shippingRates = [];
+    let selectedCategory = "All";
+    let cart = []; // Array of { product: {...}, weight: '500g'|'1kg', price: Number, quantity: Number }
+    let selectedShippingRate = 0;
+    let selectedStateName = "";
+
+    // Mappings of Category names to generated image files for collections thumbnails
+    const catImages = {
+      "All": "assets/hero_lifestyle.png",
+      "Mixtures": "assets/product_mixture.jpg",
+      "Chekodilu": "assets/product_chekodi.jpg",
+      "Karapusa": "assets/product_arra_karapusa.jpg",
+      "Traditional Snacks": "assets/product_janthukulu.jpg",
+      "Gavvalu": "assets/product_bellam_gavvalu.jpg",
+      "Appadalu": "assets/product_chitti_appadalu.jpg",
+      "Others": "assets/product_diamond_chips.jpg"
+    };
+
+    // DOM Elements
+    const categoriesList = document.getElementById('categories-list');
+    const productGrid = document.getElementById('product-grid');
+    const categoryTitle = document.getElementById('selected-category-title');
+    
+    const cartBadgeCount = document.getElementById('cart-badge-count');
+    const cartDrawerOverlay = document.getElementById('cart-drawer-overlay');
+    const openCartBtn = document.getElementById('open-cart-btn');
+    const closeCartBtn = document.getElementById('close-cart-btn');
+    const cartItemsContainer = document.getElementById('cart-items-container');
+    const cartTotalWeight = document.getElementById('cart-total-weight');
+    const cartSubtotal = document.getElementById('cart-subtotal');
+    const cartShipping = document.getElementById('cart-shipping');
+    const cartTotal = document.getElementById('cart-total');
+    
+    // Checkout Elements
+    const checkoutModal = document.getElementById('checkout-modal');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const closeCheckoutBtn = document.getElementById('close-checkout-btn');
+    const checkoutForm = document.getElementById('checkout-form');
+    const custStateSelect = document.getElementById('cust-state');
+    
+    const checkoutStepDetails = document.getElementById('checkout-step-details');
+    const checkoutStepPayment = document.getElementById('checkout-step-payment');
+    const checkoutStepSuccess = document.getElementById('checkout-step-success');
+    
+    // Payment Elements
+    const upiPayableAmount = document.getElementById('upi-payable-amount');
+    const upiQrImage = document.getElementById('upi-qr-image');
+    const upiTargetId = document.getElementById('upi-target-id');
+    const upiMobileLink = document.getElementById('upi-mobile-link');
+    const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
+    const upiRefNoInput = document.getElementById('upi-ref-no');
+    const backToDetailsBtn = document.getElementById('back-to-details-btn');
+    
+    // Success Elements
+    const successOrderId = document.getElementById('success-order-id');
+    const successName = document.getElementById('success-name');
+    const successPhone = document.getElementById('success-phone');
+    const successTotal = document.getElementById('success-total');
+    const successRef = document.getElementById('success-ref');
+    const successAddress = document.getElementById('success-address');
+    const trackWhatsappBtn = document.getElementById('track-whatsapp-btn');
+    const successCloseBtn = document.getElementById('success-close-btn');
+
+    // Page Load
+    window.addEventListener('DOMContentLoaded', async () => {
+      await loadData();
+      
+      // Check if a category redirect filter is set from another page
+      const redirectCat = sessionStorage.getItem('filter_cat');
+      if (redirectCat) {
+        selectedCategory = redirectCat;
+        const categoryTitle = document.getElementById('selected-category-title');
+        if (categoryTitle) {
+          categoryTitle.textContent = redirectCat === "All" ? "All Snacks" : redirectCat;
+        }
+        sessionStorage.removeItem('filter_cat');
+      }
+      
+      renderStorefront();
+      setupEvents();
+    });
+
+    // Handle Storage Update (sync across tabs/admin settings)
+    window.addEventListener('storage', async () => {
+      await loadData();
+      renderStorefront();
+    });
+
+    async function loadData() {
+      products = await DB.getProducts();
+      settings = await DB.getSettings();
+      shippingRates = await DB.getShippingRates();
+      
+      // Update store settings in UI with safety checks
+      const storeTitle = document.getElementById('store-title');
+      if (storeTitle) storeTitle.textContent = settings.businessName.split(' ')[0] || "Dhanalakshmi";
+      
+      const heroTitle = document.getElementById('hero-title');
+      if (heroTitle) heroTitle.textContent = settings.businessName.toUpperCase();
+      
+      const heroDesc = document.getElementById('hero-desc');
+      if (heroDesc) heroDesc.textContent = settings.tagline + ". " + settings.description;
+      
+      const footerBrandTitle = document.getElementById('footer-brand-title');
+      if (footerBrandTitle) footerBrandTitle.textContent = settings.businessName;
+      
+      // Note: We do NOT overwrite footer-brand-desc dynamically to preserve the authentic custom tagline
+      
+      const footerAddress = document.getElementById('footer-address');
+      if (footerAddress) footerAddress.textContent = settings.contactAddress.split(',').slice(-3).join(',').trim();
+      
+      const footerEmail = document.getElementById('footer-email');
+      if (footerEmail) {
+        footerEmail.textContent = settings.emailAddress;
+        footerEmail.href = "mailto:" + settings.emailAddress;
+      }
+      
+      const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
+      const waTextMsg = encodeURIComponent("Hello Dhanalakshmi Food Products! I visited your website and would love to order some traditional snacks. Could you please help me confirm my order?");
+      
+      const phoneBtn = document.getElementById('footer-phone');
+      if (phoneBtn) {
+        phoneBtn.textContent = settings.whatsappNumber;
+        phoneBtn.href = "tel:" + cleanWa.replace('+', '');
+      }
+      
+      const floatWaBtn = document.getElementById('whatsapp-float-btn');
+      if (floatWaBtn) {
+        floatWaBtn.href = `https://wa.me/${cleanWa.replace('+', '')}?text=${waTextMsg}`;
+      }
+      
+      const footerInsta = document.getElementById('footer-insta');
+      if (footerInsta) footerInsta.href = settings.instagramUrl;
+    }
+
+    function setupEvents() {
+      // Mobile Navigation Menu Toggle
+      const mobileMenuToggleBtn = document.getElementById('mobile-menu-toggle-btn');
+      const closeMobileMenuBtn = document.getElementById('close-mobile-menu-btn');
+      const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+
+      mobileMenuToggleBtn.addEventListener('click', () => toggleMobileMenu(true));
+      closeMobileMenuBtn.addEventListener('click', () => toggleMobileMenu(false));
+      mobileNavOverlay.addEventListener('click', () => toggleMobileMenu(false));
+
+      window.toggleMobileMenu = function(isOpen) {
+        const drawer = document.getElementById('mobile-nav-drawer');
+        const overlay = document.getElementById('mobile-nav-overlay');
+        if (isOpen) {
+          drawer.classList.add('active');
+          overlay.classList.add('active');
+          document.body.style.overflow = 'hidden';
+        } else {
+          drawer.classList.remove('active');
+          overlay.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      }
+
+      window.selectStorefrontCategory = function(cat) {
+        selectedCategory = cat;
+        categoryTitle.textContent = cat === "All" ? "All Snacks" : cat;
+        renderStorefront();
+        scrollToProducts();
+      }
+
+      // Cart Drawer Toggle
+      openCartBtn.addEventListener('click', () => {
+        renderCart();
+        cartDrawerOverlay.classList.add('active');
+      });
+      closeCartBtn.addEventListener('click', () => {
+        cartDrawerOverlay.classList.remove('active');
+      });
+      cartDrawerOverlay.addEventListener('click', (e) => {
+        if (e.target === cartDrawerOverlay) cartDrawerOverlay.classList.remove('active');
+      });
+
+      // Checkout Button
+      checkoutBtn.addEventListener('click', () => {
+        if (cart.length === 0) {
+          alert("Your cart is empty!");
+          return;
+        }
+        
+        let totalWeightGrams = 0;
+        cart.forEach(item => {
+          const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
+          totalWeightGrams += weightInt * item.quantity;
+        });
+
+        if (totalWeightGrams < 2000) {
+          alert("Minimum order weight is 2 kg (combined). Your current order is " + formatWeight(totalWeightGrams) + ". Please add more snacks to proceed.");
+          return;
+        }
+
+        cartDrawerOverlay.classList.remove('active');
+        openCheckout();
+      });
+
+      closeCheckoutBtn.addEventListener('click', () => {
+        checkoutModal.classList.remove('active');
+      });
+
+      // State selector shipping rates recalculator
+      custStateSelect.addEventListener('change', (e) => {
+        const stateVal = e.target.value;
+        const rateObj = shippingRates.find(r => r.state === stateVal);
+        selectedStateName = stateVal;
+        selectedShippingRate = rateObj ? rateObj.rate : 120;
+        updateCheckoutSummaries();
+      });
+
+      // Checkout Form Submit -> Go to Payment
+      checkoutForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        showPaymentScreen();
+      });
+
+      // Go back to form details
+      backToDetailsBtn.addEventListener('click', () => {
+        checkoutStepPayment.style.display = 'none';
+        checkoutStepDetails.style.display = 'block';
+      });
+
+      // Confirm Payment -> Place Order
+      confirmPaymentBtn.addEventListener('click', async () => {
+        const refNo = upiRefNoInput.value.trim();
+        if (!refNo || refNo.length < 6) {
+          alert("Please enter a valid UPI transaction/reference number.");
+          return;
+        }
+        await placeFinalOrder(refNo);
+      });
+
+      // Success screen back to shop
+      successCloseBtn.addEventListener('click', () => {
+        checkoutModal.classList.remove('active');
+        cart = [];
+        updateCartBadge();
+        saveCartToSession();
+      });
+
+      // FAQ accordion
+      const faqQuestions = document.querySelectorAll('.faq-question');
+      faqQuestions.forEach(q => {
+        q.addEventListener('click', () => {
+          const item = q.parentElement;
+          item.classList.toggle('active');
+        });
+      });
+
+      // Restore cart from session storage if present
+      const savedCart = sessionStorage.getItem('dfp_cart');
+      if (savedCart) {
+        cart = JSON.parse(savedCart);
+        updateCartBadge();
+      }
+    }
+
+    // SCROLL HELPERS
+    window.scrollToHero = function() {
+      document.getElementById('hero-section').scrollIntoView({ behavior: 'smooth' });
+    }
+    window.scrollToCategories = function() {
+      document.getElementById('categories-section').scrollIntoView({ behavior: 'smooth' });
+    }
+    window.scrollToProducts = function() {
+      document.getElementById('products-section').scrollIntoView({ behavior: 'smooth' });
+    }
+    window.scrollToHowToOrder = function() {
+      document.getElementById('how-to-order-section').scrollIntoView({ behavior: 'smooth' });
+    }
+    window.scrollToFaq = function() {
+      document.getElementById('faq-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // RENDER STORE FRONT
+    function renderStorefront() {
+      // 1. Categories (Collections Design using Square Image Thumbnails)
+      const categories = ["All", "Mixtures", "Chekodilu", "Karapusa", "Traditional Snacks", "Gavvalu", "Appadalu", "Others"];
+      categoriesList.innerHTML = "";
+
+      categories.forEach(cat => {
+        const activeClass = selectedCategory === cat ? "active" : "";
+        const catWrapper = document.createElement('div');
+        catWrapper.className = `category-item-wrapper ${activeClass}`;
+        
+        const imgPath = catImages[cat] || "assets/hero_lifestyle.png";
+        
+        catWrapper.innerHTML = `
+          <div class="category-card">
+            <img class="category-card-img" src="${imgPath}" alt="${cat}" onerror="this.src='assets/hero_lifestyle.png'">
+          </div>
+          <span class="category-arrow-link">${cat} &rarr;</span>
+        `;
+        
+        catWrapper.addEventListener('click', () => {
+          selectedCategory = cat;
+          categoryTitle.textContent = cat === "All" ? "All Snacks" : cat;
+          renderStorefront();
+          scrollToProducts(); // Smooth scroll to filtered products
+        });
+        
+        categoriesList.appendChild(catWrapper);
+      });
+
+      // 2. Product Grid
+      const filteredProducts = selectedCategory === "All" 
+        ? products 
+        : products.filter(p => p.category === selectedCategory);
+        
+      productGrid.innerHTML = "";
+      if (filteredProducts.length === 0) {
+        productGrid.innerHTML = `<p style="grid-column: span 4; text-align: center; color: var(--text-muted); padding: 60px 0;">No products found in this category.</p>`;
+      } else {
+        filteredProducts.forEach(prod => {
+          productGrid.appendChild(createProductCard(prod));
+        });
+      }
+
+
+    }
+
+    // CREATE PRODUCT CARD
+    function createProductCard(product, isFeatured = false) {
+      const card = document.createElement('div');
+      card.className = "product-card";
+      
+      let selectedWeight = "500g";
+      let price = product.prices[selectedWeight] || 125;
+
+      const inCartItem = cart.find(item => item.product.id === product.id && item.weight === selectedWeight);
+      const isAdded = inCartItem ? "added" : "";
+
+      card.innerHTML = `
+        <div class="product-img-wrapper">
+          ${product.isBestSeller ? '<span class="badge-bestseller">Best Seller</span>' : ''}
+          ${!product.inStock ? '<span class="badge-outofstock">Out of Stock</span>' : ''}
+          <img class="product-card-img" src="${product.image}" alt="${product.name}" onerror="this.src='assets/hero_lifestyle.png'">
+        </div>
+        <div class="product-info">
+          <h4 class="product-card-title">${product.name}</h4>
+          <p class="product-card-desc">${product.description}</p>
+          
+          <div class="product-weight-selector">
+            <button class="weight-pill active" data-weight="500g">500g</button>
+            <button class="weight-pill" data-weight="1kg">1kg</button>
+          </div>
+          
+          <div class="product-card-price-label">Price: ₹${price} (${selectedWeight})</div>
+          
+          <button class="btn-choose-options ${isAdded}" ${!product.inStock ? 'disabled style="background:var(--border-color); color:var(--text-muted); border-color:var(--border-color); cursor:not-allowed;"' : ''}>
+            ${!product.inStock ? 'Out of Stock' : (inCartItem ? 'Added ✓' : 'Add to Cart')}
+          </button>
+        </div>
+      `;
+
+      // Weight Selection Event Listener
+      const weightButtons = card.querySelectorAll('.weight-pill');
+      const priceDisplay = card.querySelector('.product-card-price-label');
+      const cartButton = card.querySelector('.btn-choose-options');
+
+      weightButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          weightButtons.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          selectedWeight = btn.getAttribute('data-weight');
+          
+          price = product.prices[selectedWeight] || (selectedWeight === "500g" ? 125 : 250);
+          priceDisplay.textContent = `Price: ₹${price} (${selectedWeight})`;
+
+          const exists = cart.find(item => item.product.id === product.id && item.weight === selectedWeight);
+          if (exists) {
+            cartButton.classList.add('added');
+            cartButton.textContent = "Added ✓";
+          } else {
+            cartButton.classList.remove('added');
+            cartButton.textContent = "Add to Cart";
+          }
+        });
+      });
+
+      card.querySelector('.product-card-title').addEventListener('click', () => {
+        cartDrawerOverlay.classList.add('active');
+        renderCart();
+      });
+
+      // Add to Cart Event Listener (Full Width Button)
+      cartButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!product.inStock) return;
+
+        const weight = selectedWeight;
+        const currentPrice = price;
+
+        const cartIndex = cart.findIndex(item => item.product.id === product.id && item.weight === weight);
+        
+        if (cartIndex !== -1) {
+          cart.splice(cartIndex, 1);
+          cartButton.classList.remove('added');
+          cartButton.textContent = "Add to Cart";
+        } else {
+          cart.push({
+            product: product,
+            weight: weight,
+            price: currentPrice,
+            quantity: 1
+          });
+          cartButton.classList.add('added');
+          cartButton.textContent = "Added ✓";
+          
+          openCartBtn.style.transform = "scale(1.2)";
+          setTimeout(() => openCartBtn.style.transform = "scale(1)", 200);
+        }
+        
+        updateCartBadge();
+        saveCartToSession();
+      });
+
+      return card;
+    }
+
+    function saveCartToSession() {
+      sessionStorage.setItem('dfp_cart', JSON.stringify(cart));
+    }
+
+    function updateCartBadge() {
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      
+      // Update header cart badge
+      if (cartBadgeCount) {
+        cartBadgeCount.textContent = count;
+        cartBadgeCount.style.display = count > 0 ? "flex" : "none";
+      }
+      
+      // Update floating cart badge
+      const floatBadge = document.getElementById('cart-badge-count-float');
+      if (floatBadge) {
+        floatBadge.textContent = count;
+        floatBadge.style.display = count > 0 ? "flex" : "none";
+      }
+    }
+
+    // RENDER CART DRAWER
+    function renderCart() {
+      cartItemsContainer.innerHTML = "";
+      
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = `
+          <div class="cart-empty-state">
+            <span class="cart-empty-icon">🛒</span>
+            <p>Your cart is empty.</p>
+            <button class="btn-primary" style="margin-top: 16px; font-size: 0.8rem; padding: 8px 16px; flex:none;" onclick="scrollToProducts(); document.getElementById('cart-drawer-overlay').classList.remove('active');">Shop Snacks</button>
+          </div>
+        `;
+        cartTotalWeight.textContent = "0g";
+        cartSubtotal.textContent = "₹0";
+        cartShipping.textContent = "₹0";
+        cartTotal.textContent = "₹0";
+        return;
+      }
+
+      let subtotal = 0;
+      let totalWeightGrams = 0;
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        
+        const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
+        totalWeightGrams += weightInt * item.quantity;
+
+        const cartItemEl = document.createElement('div');
+        cartItemEl.className = "cart-item";
+        cartItemEl.innerHTML = `
+          <img class="cart-item-img" src="${item.product.image}" alt="${item.product.name}" onerror="this.src='assets/hero_lifestyle.png'">
+          <div class="cart-item-details">
+            <div class="cart-item-name">${item.product.name}</div>
+            <span class="cart-item-weight">${item.weight}</span>
+            <div class="cart-item-footer">
+              <span class="cart-item-price">₹${itemTotal}</span>
+              <div class="quantity-selector">
+                <button class="qty-btn minus-btn">-</button>
+                <span class="qty-val">${item.quantity}</span>
+                <button class="qty-btn plus-btn">+</button>
+              </div>
+            </div>
+            <span class="cart-item-remove" style="margin-top:4px; display:inline-block;">Remove</span>
+          </div>
+        `;
+
+        cartItemEl.querySelector('.plus-btn').addEventListener('click', () => {
+          item.quantity++;
+          saveCartToSession();
+          updateCartBadge();
+          renderCart();
+        });
+
+        cartItemEl.querySelector('.minus-btn').addEventListener('click', () => {
+          if (item.quantity > 1) {
+            item.quantity--;
+          } else {
+            cart.splice(index, 1);
+          }
+          saveCartToSession();
+          updateCartBadge();
+          renderCart();
+          renderStorefront();
+        });
+
+        cartItemEl.querySelector('.cart-item-remove').addEventListener('click', () => {
+          cart.splice(index, 1);
+          saveCartToSession();
+          updateCartBadge();
+          renderCart();
+          renderStorefront();
+        });
+
+        cartItemsContainer.appendChild(cartItemEl);
+      });
+
+      cartTotalWeight.textContent = formatWeight(totalWeightGrams);
+      cartSubtotal.textContent = `₹${subtotal}`;
+      
+      let shippingCharge = 0;
+      if (selectedStateName) {
+        shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
+        cartShipping.textContent = `₹${shippingCharge}`;
+      } else {
+        cartShipping.textContent = "Select State at checkout";
+      }
+      
+      cartTotal.textContent = `₹${subtotal + shippingCharge}`;
+
+      const warningEl = document.getElementById('cart-weight-warning');
+      const checkBtn = document.getElementById('checkout-btn');
+      if (warningEl && checkBtn) {
+        if (totalWeightGrams < 2000) {
+          warningEl.style.display = "block";
+          checkBtn.style.opacity = "0.6";
+        } else {
+          warningEl.style.display = "none";
+          checkBtn.style.opacity = "1";
+        }
+      }
+    }
+
+    function formatWeight(grams) {
+      if (grams >= 1000) {
+        return (grams / 1000).toFixed(1) + " kg";
+      }
+      return grams + " g";
+    }
+
+    function calculateShippingFee(totalWeightGrams, stateBaseRate) {
+      if (totalWeightGrams === 0) return 0;
+      const weightKg = totalWeightGrams / 1000;
+      
+      if (weightKg <= 1) {
+        return stateBaseRate;
+      }
+      
+      let extraKgCharge = 80;
+      if (stateBaseRate <= 60) extraKgCharge = 40;
+      else if (stateBaseRate <= 80) extraKgCharge = 50;
+      
+      const extraWeight = weightKg - 1;
+      const incrementalCharge = Math.ceil(extraWeight) * extraKgCharge;
+      
+      return stateBaseRate + incrementalCharge;
+    }
+
+    // OPEN CHECKOUT
+    function openCheckout() {
+      custStateSelect.innerHTML = `<option value="" disabled selected>Select your delivery State</option>`;
+      shippingRates.forEach(rate => {
+        const option = document.createElement('option');
+        option.value = rate.state;
+        option.textContent = `${rate.state} (Base: ₹${rate.rate}/kg)`;
+        custStateSelect.appendChild(option);
+      });
+
+      checkoutStepDetails.style.display = 'block';
+      checkoutStepPayment.style.display = 'none';
+      checkoutStepSuccess.style.display = 'none';
+      
+      checkoutModal.classList.add('active');
+      updateCheckoutSummaries();
+    }
+
+    function updateCheckoutSummaries() {
+      let subtotal = 0;
+      let totalWeightGrams = 0;
+      
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+        const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
+        totalWeightGrams += weightInt * item.quantity;
+      });
+
+      document.getElementById('checkout-summary-weight').textContent = formatWeight(totalWeightGrams);
+      document.getElementById('checkout-summary-subtotal').textContent = `₹${subtotal}`;
+      
+      const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
+      document.getElementById('checkout-summary-shipping').textContent = selectedStateName ? `₹${shippingCharge}` : "Select State";
+      
+      const grandTotal = subtotal + shippingCharge;
+      document.getElementById('checkout-summary-total').textContent = `₹${grandTotal}`;
+      
+      upiPayableAmount.textContent = `₹${grandTotal}.00`;
+    }
+
+    // PAYMENT SCREEN
+    function showPaymentScreen() {
+      checkoutStepDetails.style.display = 'none';
+      checkoutStepPayment.style.display = 'block';
+      
+      let subtotal = 0;
+      let totalWeightGrams = 0;
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+        const weightInt = parseInt(item.weight) * 1000 * (item.weight.includes('kg') ? 1 : 0.5);
+        totalWeightGrams += weightInt * item.quantity;
+      });
+      const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
+      const grandTotal = subtotal + shippingCharge;
+      
+      const tempOrderRef = "DFP" + Math.floor(100000 + Math.random() * 900000);
+      
+      const upiId = settings.upiId;
+      const merchantName = encodeURIComponent(settings.businessName);
+      const transactionNote = encodeURIComponent(`Order ${tempOrderRef}`);
+      
+      const formattedAmount = Number(grandTotal).toFixed(2);
+      const upiUrl = `upi://pay?pa=${upiId}&pn=${merchantName}&am=${formattedAmount}&tn=${transactionNote}&cu=INR`;
+      
+      upiTargetId.textContent = upiId;
+      upiMobileLink.href = upiUrl;
+      
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
+      upiQrImage.src = qrApiUrl;
+      upiRefNoInput.value = "";
+      
+      confirmPaymentBtn.setAttribute('data-temp-ref', tempOrderRef);
+    }
+
+    // PLACE FINAL ORDER
+    async function placeFinalOrder(refNo) {
+      const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const address = document.getElementById('cust-address').value.trim();
+      const pin = document.getElementById('cust-pin').value.trim();
+      
+      let subtotal = 0;
+      let totalWeightGrams = 0;
+      const orderItems = cart.map(item => {
+        subtotal += item.price * item.quantity;
+        const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
+        totalWeightGrams += weightInt * item.quantity;
+        
+        return {
+          productId: item.product.id,
+          name: item.product.name,
+          weight: item.weight,
+          price: item.price,
+          quantity: item.quantity
+        };
+      });
+
+      const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
+      const grandTotal = subtotal + shippingCharge;
+
+      const orderData = {
+        customer: {
+          name: name,
+          phone: phone,
+          address: address,
+          state: selectedStateName,
+          pincode: pin
+        },
+        items: orderItems,
+        totalWeight: formatWeight(totalWeightGrams),
+        subtotal: subtotal,
+        shipping: shippingCharge,
+        total: grandTotal,
+        paymentRef: refNo,
+        notes: `Paid ₹${grandTotal} via UPI Reference: ${refNo}`
+      };
+
+      const placedOrder = await DB.addOrder(orderData);
+
+      checkoutStepPayment.style.display = 'none';
+      checkoutStepSuccess.style.display = 'block';
+      
+      successOrderId.textContent = `#${placedOrder.id}`;
+      successName.textContent = placedOrder.customer.name;
+      successPhone.textContent = placedOrder.customer.phone;
+      successTotal.textContent = `₹${placedOrder.total}`;
+      successRef.textContent = placedOrder.paymentRef;
+      successAddress.textContent = `${placedOrder.customer.address}, ${placedOrder.customer.state} - ${placedOrder.customer.pincode}`;
+      
+      const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
+      const waMsg = `Hello Dhanalakshmi Food Products, I have placed order #${placedOrder.id}. Total Amount: ₹${placedOrder.total}. Payment reference ID: ${placedOrder.paymentRef}. Please confirm receipt.`;
+      trackWhatsappBtn.href = `https://wa.me/${cleanWa.replace('+', '')}?text=${encodeURIComponent(waMsg)}`;
+      
+      renderStorefront();
+    }
+  </script>
+
+  <!-- Floating WhatsApp Widget -->
+  <a href="#" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" id="whatsapp-float-btn">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.504-5.714-1.464L0 24zm6.273-3.832c1.616.96 3.197 1.48 4.887 1.481 5.485 0 9.948-4.467 9.951-9.957.002-2.66-1.033-5.161-2.915-7.045C16.37 2.76 13.868 1.72 11.2 1.72c-5.49 0-9.956 4.467-9.959 9.96-.001 1.79.475 3.535 1.38 5.093l-.998 3.64 3.731-.977zm12.355-7.37c-.305-.152-1.805-.892-2.084-.993-.28-.101-.484-.152-.687.152-.203.305-.788 1.002-.966 1.206-.178.203-.356.228-.661.076-.305-.152-1.288-.475-2.454-1.517-.908-.81-1.52-1.812-1.698-2.117-.178-.305-.019-.47.133-.621.137-.136.305-.356.457-.533.152-.178.203-.305.305-.508.102-.203.051-.381-.025-.533-.076-.152-.687-1.657-.941-2.27-.248-.599-.5-.517-.688-.527l-.587-.01c-.203 0-.533.076-.813.381-.28.305-1.067 1.042-1.067 2.542 0 1.5 1.092 2.946 1.244 3.15.152.203 2.15 3.284 5.207 4.602.727.314 1.295.5 1.737.64.73.232 1.393.198 1.918.12.585-.087 1.805-.737 2.06-1.45.253-.712.253-1.322.178-1.45-.076-.127-.28-.203-.585-.355z"/></svg>
+    <span class="whatsapp-tooltip">Chat on WhatsApp</span>
+  </a>
+
+  <!-- Floating Cart Button -->
+  <a href="#" class="cart-float" id="cart-float-btn" aria-label="View Cart" onclick="event.preventDefault(); document.getElementById('open-cart-btn').click();">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+    <span class="cart-badge-float" id="cart-badge-count-float">0</span>
+    <span class="cart-float-tooltip">View Cart</span>
+  </a>
+</body>
+</html>

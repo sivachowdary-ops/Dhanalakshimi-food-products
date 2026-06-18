@@ -1,0 +1,20 @@
+{
+  "name": "dhanalakshmi-food-products",
+  "version": "1.0.0",
+  "description": "Production e-commerce backend and storefront for Dhanalakshmi Food Products",
+  "main": "api/status.js",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.8",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node api/status.js",
+    "dev": "node server.js",
+    "vercel-dev": "vercel dev --listen 5000"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

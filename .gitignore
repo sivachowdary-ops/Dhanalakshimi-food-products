@@ -1,0 +1,14 @@
+# Environment variables (contains secret database keys)
+.env
+
+# Node.js dependencies
+node_modules/
+
+# Local Vercel configuration/cache
+.vercel/
+
+# System files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
