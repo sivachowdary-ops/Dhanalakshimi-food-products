@@ -282,7 +282,10 @@ class UnifiedDatabase {
     if (await this.checkConnection()) {
       try {
         const res = await fetch(`${this.apiUrl}/api/products`);
-        return await res.json();
+        if (!res.ok) throw new Error("Server responded with status " + res.status);
+        const data = await res.json();
+        if (Array.isArray(data)) return data;
+        throw new Error("Invalid products response: expected array");
       } catch (e) {
         console.error("Failed to fetch products from cloud, returning fallback", e);
       }
@@ -357,7 +360,10 @@ class UnifiedDatabase {
     if (await this.checkConnection()) {
       try {
         const res = await fetch(`${this.apiUrl}/api/shipping`);
-        return await res.json();
+        if (!res.ok) throw new Error("Server responded with status " + res.status);
+        const data = await res.json();
+        if (Array.isArray(data)) return data;
+        throw new Error("Invalid shipping rates response: expected array");
       } catch (e) {
         console.error("Failed to fetch shipping rates from cloud", e);
       }
@@ -396,7 +402,9 @@ class UnifiedDatabase {
           headers: this.getHeaders()
         });
         if (!res.ok) throw new Error(await res.text());
-        return await res.json();
+        const data = await res.json();
+        if (Array.isArray(data)) return data;
+        throw new Error("Invalid orders response: expected array");
       } catch (e) {
         console.error("Failed to fetch orders from cloud", e);
       }
