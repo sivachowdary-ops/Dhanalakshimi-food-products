@@ -541,18 +541,45 @@
     const successCloseBtn = document.getElementById('success-close-btn');
 
     document.addEventListener("DOMContentLoaded", async () => {
-      await loadData();
+      // 1. Instantly load cache & render
+      loadCachedData();
       setupEvents();
+      
+      // 2. Fetch fresh data in the background in parallel
+      try {
+        await loadFreshData();
+      } catch (err) {
+        console.warn("Background revalidation failed:", err);
+      }
     });
 
     // Handle Storage Update
-    window.addEventListener('storage', async () => {
-      await loadData();
+    window.addEventListener('storage', () => {
+      loadCachedData();
     });
 
-    async function loadData() {
-      settings = await DB.getSettings();
-      shippingRates = await DB.getShippingRates();
+    function loadCachedData() {
+      settings = JSON.parse(localStorage.getItem("dfp_settings")) || DEFAULT_SETTINGS;
+      shippingRates = JSON.parse(localStorage.getItem("dfp_shipping_rates")) || DEFAULT_SHIPPING_RATES;
+      updateStoreUI();
+    }
+
+    async function loadFreshData() {
+      const [settingsData, shippingData] = await Promise.all([
+        DB.getSettings(),
+        DB.getShippingRates()
+      ]);
+      settings = settingsData;
+      shippingRates = shippingData;
+
+      // Sync cache
+      localStorage.setItem("dfp_settings", JSON.stringify(settings));
+      localStorage.setItem("dfp_shipping_rates", JSON.stringify(shippingRates));
+      
+      updateStoreUI();
+    }
+
+    function updateStoreUI() {
       const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
       
       // Update header/brand
@@ -578,17 +605,29 @@
       }
       
       // Contact page custom updates
-      document.getElementById('contact-phone-link').textContent = settings.whatsappNumber;
-      document.getElementById('contact-phone-link').href = "tel:" + cleanWa.replace('+', '');
+      const contactPhoneLink = document.getElementById('contact-phone-link');
+      if (contactPhoneLink) {
+        contactPhoneLink.textContent = settings.whatsappNumber;
+        contactPhoneLink.href = "tel:" + cleanWa.replace('+', '');
+      }
       
-      document.getElementById('contact-email-link').textContent = settings.emailAddress;
-      document.getElementById('contact-email-link').href = "mailto:" + settings.emailAddress;
+      const contactEmailLink = document.getElementById('contact-email-link');
+      if (contactEmailLink) {
+        contactEmailLink.textContent = settings.emailAddress;
+        contactEmailLink.href = "mailto:" + settings.emailAddress;
+      }
       
-      document.getElementById('contact-address-text').textContent = settings.contactAddress;
+      const contactAddressText = document.getElementById('contact-address-text');
+      if (contactAddressText) {
+        contactAddressText.textContent = settings.contactAddress;
+      }
       
       // WhatsApp chat direct link
       const textMsg = encodeURIComponent("Hello Dhanalakshmi Food Products! I visited your website and would love to order some traditional snacks. Could you please help me confirm my order?");
-      document.getElementById('direct-wa-btn').href = `https://wa.me/${cleanWa.replace('+', '')}?text=${textMsg}`;
+      const directWaBtn = document.getElementById('direct-wa-btn');
+      if (directWaBtn) {
+        directWaBtn.href = `https://wa.me/${cleanWa.replace('+', '')}?text=${textMsg}`;
+      }
       
       const floatWaBtn = document.getElementById('whatsapp-float-btn');
       if (floatWaBtn) {

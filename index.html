@@ -709,9 +709,12 @@
 
     // Page Load
     window.addEventListener('DOMContentLoaded', async () => {
-      await loadData();
+      // 1. Instantly load cache & render to prevent blank/crashed layout
+      loadCachedData();
+      renderStorefront();
+      setupEvents();
       
-      // Check if a category redirect filter is set from another page
+      // 2. Process redirect category filters
       const redirectCat = sessionStorage.getItem('filter_cat');
       if (redirectCat) {
         selectedCategory = redirectCat;
@@ -720,23 +723,50 @@
           categoryTitle.textContent = redirectCat === "All" ? "All Snacks" : redirectCat;
         }
         sessionStorage.removeItem('filter_cat');
+        renderStorefront();
       }
-      
-      renderStorefront();
-      setupEvents();
+
+      // 3. Fetch fresh data in the background in parallel
+      try {
+        await loadFreshData();
+        renderStorefront();
+      } catch (err) {
+        console.warn("Background revalidation failed:", err);
+      }
     });
 
     // Handle Storage Update (sync across tabs/admin settings)
-    window.addEventListener('storage', async () => {
-      await loadData();
+    window.addEventListener('storage', () => {
+      loadCachedData();
       renderStorefront();
     });
 
-    async function loadData() {
-      products = await DB.getProducts();
-      settings = await DB.getSettings();
-      shippingRates = await DB.getShippingRates();
+    function loadCachedData() {
+      products = JSON.parse(localStorage.getItem("dfp_products")) || [];
+      settings = JSON.parse(localStorage.getItem("dfp_settings")) || DEFAULT_SETTINGS;
+      shippingRates = JSON.parse(localStorage.getItem("dfp_shipping_rates")) || DEFAULT_SHIPPING_RATES;
+      updateStoreUI();
+    }
+
+    async function loadFreshData() {
+      const [prodData, settingsData, shippingData] = await Promise.all([
+        DB.getProducts(),
+        DB.getSettings(),
+        DB.getShippingRates()
+      ]);
+      products = prodData;
+      settings = settingsData;
+      shippingRates = shippingData;
+
+      // Sync cache
+      localStorage.setItem("dfp_products", JSON.stringify(products));
+      localStorage.setItem("dfp_settings", JSON.stringify(settings));
+      localStorage.setItem("dfp_shipping_rates", JSON.stringify(shippingRates));
       
+      updateStoreUI();
+    }
+
+    function updateStoreUI() {
       // Update store settings in UI with safety checks
       const storeTitle = document.getElementById('store-title');
       if (storeTitle) storeTitle.textContent = settings.businessName.split(' ')[0] || "Dhanalakshmi";
@@ -749,8 +779,6 @@
       
       const footerBrandTitle = document.getElementById('footer-brand-title');
       if (footerBrandTitle) footerBrandTitle.textContent = settings.businessName;
-      
-      // Note: We do NOT overwrite footer-brand-desc dynamically to preserve the authentic custom tagline
       
       const footerAddress = document.getElementById('footer-address');
       if (footerAddress) footerAddress.textContent = settings.contactAddress.split(',').slice(-3).join(',').trim();
