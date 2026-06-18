@@ -1267,7 +1267,7 @@
       let totalWeightGrams = 0;
       cart.forEach(item => {
         subtotal += item.price * item.quantity;
-        const weightInt = parseInt(item.weight) * 1000 * (item.weight.includes('kg') ? 1 : 0.5);
+        const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
         totalWeightGrams += weightInt * item.quantity;
       });
       const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
