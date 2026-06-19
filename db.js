@@ -305,7 +305,14 @@ class UnifiedDatabase {
   // --- LOCALSTORAGE FALLBACK INITIALIZER ---
   initLocalStorageFallback() {
     if (!localStorage.getItem("dfp_products")) {
-      localStorage.setItem("dfp_products", JSON.stringify(DEFAULT_PRODUCTS));
+      const seeded = DEFAULT_PRODUCTS.map(p => ({
+        ...p,
+        cost_price_500g: 80.00,
+        cost_price_1kg: 160.00,
+        stock_qty_500g: Math.floor(Math.random() * 50) + 10,
+        stock_qty_1kg: Math.floor(Math.random() * 30) + 5
+      }));
+      localStorage.setItem("dfp_products", JSON.stringify(seeded));
     }
     if (!localStorage.getItem("dfp_shipping_rates")) {
       localStorage.setItem("dfp_shipping_rates", JSON.stringify(DEFAULT_SHIPPING_RATES));
@@ -315,6 +322,9 @@ class UnifiedDatabase {
     }
     if (!localStorage.getItem("dfp_orders")) {
       localStorage.setItem("dfp_orders", JSON.stringify([]));
+    }
+    if (!localStorage.getItem("dfp_expenses")) {
+      localStorage.setItem("dfp_expenses", JSON.stringify([]));
     }
   }
 
@@ -585,6 +595,193 @@ class UnifiedDatabase {
     return { success: false, error: "Incorrect admin password." };
   }
 
+  // --- EXPENSES ---
+  async getExpenses() {
+    if (await this.checkConnection()) {
+      try {
+        const res = await fetch(`${this.apiUrl}/api/expenses`, { headers: this.getHeaders() });
+        if (!res.ok) throw new Error("Server status " + res.status);
+        const data = await res.json();
+        if (Array.isArray(data)) return data;
+        throw new Error("Expected array response for expenses");
+      } catch (e) {
+        console.error("Failed to fetch expenses, returning fallback", e);
+      }
+    }
+    return JSON.parse(localStorage.getItem("dfp_expenses")) || [];
+  }
+
+  async addExpense(expense) {
+    if (await this.checkConnection()) {
+      const res = await fetch(`${this.apiUrl}/api/expenses`, {
+        method: 'POST',
+        headers: this.getHeaders(),
+        body: JSON.stringify(expense)
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    const expenses = JSON.parse(localStorage.getItem("dfp_expenses")) || [];
+    expense.id = "exp_" + Date.now();
+    expense.created_at = new Date().toISOString();
+    expense.expense_date = expense.expense_date || new Date().toISOString().split('T')[0];
+    expenses.unshift(expense);
+    localStorage.setItem("dfp_expenses", JSON.stringify(expenses));
+    window.dispatchEvent(new Event("storage"));
+    return expense;
+  }
+
+  async updateExpense(id, updatedFields) {
+    if (await this.checkConnection()) {
+      const res = await fetch(`${this.apiUrl}/api/expenses`, {
+        method: 'PUT',
+        headers: this.getHeaders(),
+        body: JSON.stringify({ id, ...updatedFields })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    const expenses = JSON.parse(localStorage.getItem("dfp_expenses")) || [];
+    const idx = expenses.findIndex(e => e.id === id);
+    if (idx !== -1) {
+      expenses[idx] = { ...expenses[idx], ...updatedFields };
+      localStorage.setItem("dfp_expenses", JSON.stringify(expenses));
+      window.dispatchEvent(new Event("storage"));
+      return expenses[idx];
+    }
+    return null;
+  }
+
+  async deleteExpense(id) {
+    if (await this.checkConnection()) {
+      const res = await fetch(`${this.apiUrl}/api/expenses`, {
+        method: 'DELETE',
+        headers: this.getHeaders(),
+        body: JSON.stringify({ id })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    let expenses = JSON.parse(localStorage.getItem("dfp_expenses")) || [];
+    expenses = expenses.filter(e => e.id !== id);
+    localStorage.setItem("dfp_expenses", JSON.stringify(expenses));
+    window.dispatchEvent(new Event("storage"));
+    return { success: true };
+  }
+
+  // --- FINANCE SUMMARY ---
+  async getFinanceSummary() {
+    if (await this.checkConnection()) {
+      try {
+        const res = await fetch(`${this.apiUrl}/api/finance-summary`, { headers: this.getHeaders() });
+        if (!res.ok) throw new Error("Server status " + res.status);
+        return await res.json();
+      } catch (e) {
+        console.error("Failed to fetch finance summary, computing fallback", e);
+      }
+    }
+    return this.compileLocalFinanceSummary();
+  }
+
+  compileLocalFinanceSummary() {
+    const orders = JSON.parse(localStorage.getItem("dfp_orders")) || [];
+    const expenses = JSON.parse(localStorage.getItem("dfp_expenses")) || [];
+    const products = JSON.parse(localStorage.getItem("dfp_products")) || [];
+
+    const todayIST = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }); // YYYY-MM-DD
+    const currentMonthIST = todayIST.substring(0, 7); // YYYY-MM
+    const currentYearIST = todayIST.substring(0, 4); // YYYY
+
+    // Count paid orders (as confirmed payment or not Cancelled/New)
+    const paidOrders = orders.filter(o => o.status !== 'New Order' && o.status !== 'Cancelled');
+
+    let todayIncome = 0;
+    let monthIncome = 0;
+    let yearIncome = 0;
+
+    paidOrders.forEach(o => {
+      const orderDateIST = new Date(o.timestamp || o.created_at).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+      const orderAmount = parseFloat(o.total) || 0;
+
+      if (orderDateIST === todayIST) todayIncome += orderAmount;
+      if (orderDateIST.startsWith(currentMonthIST)) monthIncome += orderAmount;
+      if (orderDateIST.startsWith(currentYearIST)) yearIncome += orderAmount;
+    });
+
+    let todayExpenses = 0;
+    let monthExpenses = 0;
+    let yearExpenses = 0;
+
+    expenses.forEach(e => {
+      const expDate = e.expense_date || todayIST;
+      const expAmount = parseFloat(e.amount) || 0;
+
+      if (expDate === todayIST) todayExpenses += expAmount;
+      if (expDate.startsWith(currentMonthIST)) monthExpenses += expAmount;
+      if (expDate.startsWith(currentYearIST)) yearExpenses += expAmount;
+    });
+
+    let stockVal = 0;
+    let anyCostPrice = false;
+
+    products.forEach(p => {
+      const qty500 = parseInt(p.stock_qty_500g) || 0;
+      const qty1k = parseInt(p.stock_qty_1kg) || 0;
+      let cost500 = parseFloat(p.cost_price_500g) || 0;
+      let cost1k = parseFloat(p.cost_price_1kg) || 0;
+
+      if (cost500 > 0 || cost1k > 0) {
+        anyCostPrice = true;
+      } else {
+        cost500 = parseFloat(p.prices?.["500g"] || p.price_500g || 0);
+        cost1k = parseFloat(p.prices?.["1kg"] || p.price_1kg || 0);
+      }
+
+      stockVal += (qty500 * cost500) + (qty1k * cost1k);
+    });
+
+    // Monthly trends mapping (last 12 months)
+    const monthlyData = {};
+    paidOrders.forEach(o => {
+      const m = new Date(o.timestamp || o.created_at).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' }).substring(0, 7) + "-01";
+      if (!monthlyData[m]) monthlyData[m] = { income: 0, expenses: 0 };
+      monthlyData[m].income += parseFloat(o.total) || 0;
+    });
+
+    expenses.forEach(e => {
+      const m = (e.expense_date || todayIST).substring(0, 7) + "-01";
+      if (!monthlyData[m]) monthlyData[m] = { income: 0, expenses: 0 };
+      monthlyData[m].expenses += parseFloat(e.amount) || 0;
+    });
+
+    const sortedMonths = Object.keys(monthlyData).sort();
+    if (sortedMonths.length === 0) {
+      sortedMonths.push(currentMonthIST + "-01");
+    }
+
+    const trends = sortedMonths.map(m => {
+      const inc = monthlyData[m]?.income || 0;
+      const exp = monthlyData[m]?.expenses || 0;
+      const dateObj = new Date(m);
+      const label = dateObj.toLocaleString('en-US', { month: 'short', year: '2-digit', timeZone: 'UTC' });
+      return {
+        monthKey: m,
+        label: label,
+        income: inc,
+        expenses: exp,
+        profit: inc - exp
+      };
+    });
+
+    return {
+      today: { income: todayIncome, expenses: todayExpenses, profit: todayIncome - todayExpenses },
+      thisMonth: { income: monthIncome, expenses: monthExpenses, profit: monthIncome - monthExpenses },
+      thisYear: { income: yearIncome, expenses: yearExpenses, profit: yearIncome - yearExpenses },
+      stockValue: { value: stockVal, isEstimate: !anyCostPrice },
+      trends: trends
+    };
+  }
+
   logout() {
     this.adminToken = '';
     localStorage.removeItem('dfp_admin_token');
@@ -592,10 +789,18 @@ class UnifiedDatabase {
 
   // --- RESET SYSTEM ---
   async resetToDefaults() {
-    localStorage.setItem("dfp_products", JSON.stringify(DEFAULT_PRODUCTS));
+    const seeded = DEFAULT_PRODUCTS.map(p => ({
+      ...p,
+      cost_price_500g: 80.00,
+      cost_price_1kg: 160.00,
+      stock_qty_500g: Math.floor(Math.random() * 50) + 10,
+      stock_qty_1kg: Math.floor(Math.random() * 30) + 5
+    }));
+    localStorage.setItem("dfp_products", JSON.stringify(seeded));
     localStorage.setItem("dfp_shipping_rates", JSON.stringify(DEFAULT_SHIPPING_RATES));
     localStorage.setItem("dfp_settings", JSON.stringify(DEFAULT_SETTINGS));
     localStorage.setItem("dfp_orders", JSON.stringify([]));
+    localStorage.setItem("dfp_expenses", JSON.stringify([]));
     window.dispatchEvent(new Event("storage"));
   }
 }

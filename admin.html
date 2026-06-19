@@ -441,6 +441,28 @@
           </div>
         </div>
 
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <div class="form-group" style="flex:1;">
+            <label for="prod-cost-500g" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Cost Price (500g) *</label>
+            <input type="number" id="prod-cost-500g" required min="0" value="80" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+          </div>
+          <div class="form-group" style="flex:1;">
+            <label for="prod-cost-1kg" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Cost Price (1kg) *</label>
+            <input type="number" id="prod-cost-1kg" required min="0" value="160" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
+          <div class="form-group" style="flex:1;">
+            <label for="prod-stock-500g" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Stock Qty (500g) *</label>
+            <input type="number" id="prod-stock-500g" required min="0" value="0" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+          </div>
+          <div class="form-group" style="flex:1;">
+            <label for="prod-stock-1kg" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Stock Qty (1kg) *</label>
+            <input type="number" id="prod-stock-1kg" required min="0" value="0" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+          </div>
+        </div>
+
         <div class="form-group" style="margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #F3F4F6; padding-bottom: 12px;">
           <label for="prod-instock" style="font-weight: 600; font-size: 0.85rem; cursor: pointer; color: var(--text-dark);">Available in Stock</label>
           <label class="switch">
@@ -886,10 +908,12 @@
             <div class="card-price">
               500g: ₹${p.prices["500g"]} &nbsp;|&nbsp; 1kg: ₹${p.prices["1kg"]}
             </div>
-            <div class="card-stats">
-              <span class="${p.inStock ? 'success-text' : 'danger-text'}" style="font-weight: 600;">
+            <div class="card-stats" style="font-size: 0.8rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 2px;">
+              <span class="${p.inStock ? 'success-text' : 'danger-text'}" style="font-weight: 600; margin-bottom: 2px;">
                 ${p.inStock ? '● In Stock' : '○ Out of Stock'}
               </span>
+              <span>Stock 500g: <strong>${p.stock_qty_500g !== undefined ? p.stock_qty_500g : 0}</strong> pcs (Cost: ₹${p.cost_price_500g !== undefined ? p.cost_price_500g : 0})</span>
+              <span>Stock 1kg: <strong>${p.stock_qty_1kg !== undefined ? p.stock_qty_1kg : 0}</strong> pcs (Cost: ₹${p.cost_price_1kg !== undefined ? p.cost_price_1kg : 0})</span>
             </div>
             <div class="card-footer">
               <div style="display: flex; flex-direction: column; gap: 4px;">
@@ -938,6 +962,10 @@
             document.getElementById('prod-image').value = p.image || "";
             document.getElementById('prod-price-500g').value = p.prices["500g"];
             document.getElementById('prod-price-1kg').value = p.prices["1kg"];
+            document.getElementById('prod-cost-500g').value = p.cost_price_500g !== undefined ? p.cost_price_500g : "80";
+            document.getElementById('prod-cost-1kg').value = p.cost_price_1kg !== undefined ? p.cost_price_1kg : "160";
+            document.getElementById('prod-stock-500g').value = p.stock_qty_500g !== undefined ? p.stock_qty_500g : "0";
+            document.getElementById('prod-stock-1kg').value = p.stock_qty_1kg !== undefined ? p.stock_qty_1kg : "0";
             document.getElementById('prod-instock').checked = p.inStock;
             document.getElementById('prod-bestseller').checked = p.isBestSeller || false;
 
@@ -984,6 +1012,10 @@
       const imageVal = document.getElementById('prod-image').value.trim() || "assets/hero_lifestyle.png";
       const p500 = parseFloat(document.getElementById('prod-price-500g').value);
       const p1k = parseFloat(document.getElementById('prod-price-1kg').value);
+      const cost500 = parseFloat(document.getElementById('prod-cost-500g').value) || 0;
+      const cost1k = parseFloat(document.getElementById('prod-cost-1kg').value) || 0;
+      const stock500 = parseInt(document.getElementById('prod-stock-500g').value) || 0;
+      const stock1k = parseInt(document.getElementById('prod-stock-1kg').value) || 0;
       const inStock = document.getElementById('prod-instock').checked;
       const isBestSeller = document.getElementById('prod-bestseller').checked;
 
@@ -997,7 +1029,11 @@
           "1kg": p1k
         },
         inStock,
-        isBestSeller
+        isBestSeller,
+        cost_price_500g: cost500,
+        cost_price_1kg: cost1k,
+        stock_qty_500g: stock500,
+        stock_qty_1kg: stock1k
       };
 
       try {
@@ -1024,6 +1060,10 @@
       document.getElementById('product-form-title').textContent = "Add New Product";
       document.getElementById('prod-price-500g').value = "125";
       document.getElementById('prod-price-1kg').value = "250";
+      document.getElementById('prod-cost-500g').value = "80";
+      document.getElementById('prod-cost-1kg').value = "160";
+      document.getElementById('prod-stock-500g').value = "0";
+      document.getElementById('prod-stock-1kg').value = "0";
     }
 
     // --- PANEL 3: ORDERS ---
