@@ -151,14 +151,19 @@ async function handler(req, res) {
 
   if (method === 'PUT') {
     try {
-      const { id, status } = req.body;
-      if (!id || !status) {
-        return res.status(400).json({ error: 'Missing order ID or status.' });
+      const { id, status, paymentRef, notes } = req.body;
+      if (!id) {
+        return res.status(400).json({ error: 'Missing order ID.' });
       }
+
+      const updateFields = {};
+      if (status) updateFields.status = status;
+      if (paymentRef) updateFields.payment_ref = paymentRef;
+      if (notes) updateFields.notes = notes;
 
       const { data: orderData, error: updateError } = await supabase
         .from('orders')
-        .update({ status: status })
+        .update(updateFields)
         .eq('id', id)
         .select()
         .single();

@@ -311,7 +311,10 @@
                 <div class="form-group" style="margin-bottom: 12px;">
                   <label for="set-upi-id">UPI ID for Payment (Direct QR & Intent Link) *</label>
                   <input type="text" id="set-upi-id" required placeholder="e.g. account@upi">
-                  <span style="font-size: 0.65rem; color: var(--text-muted);">All storefront UPI payment deep-links and QR codes will point directly to this account.</span>
+                  <span style="font-size: 0.65rem; color: var(--text-muted); display: block; margin-bottom: 6px;">All storefront UPI payment deep-links and QR codes will point directly to this account.</span>
+                  <div style="background-color: #FEF3C7; border: 1px solid #F59E0B; border-radius: 8px; padding: 8px 12px; font-size: 0.72rem; color: #B45309; line-height: 1.4;">
+                    💡 <strong>UPI ₹2,000 limit tip:</strong> To bypass GPay/PhonePe's default safety limit for phone-number VPAs, enter your bank account VPA format: <code>AccountNo@IFSC.ifsc.npci</code> (e.g. <code>501001234567@HDFC0000123.ifsc.npci</code>). This routes payments directly to your bank account as a merchant transfer.
+                  </div>
                 </div>
 
                 <div class="form-group" style="margin-bottom: 12px;">
@@ -729,7 +732,7 @@
             <td>${o.customer.state}</td>
             <td>${o.totalWeight}</td>
             <td style="font-weight:700;">₹${o.total}</td>
-            <td><span class="badge-status ${o.status.toLowerCase()}">${o.status}</span></td>
+            <td><span class="badge-status ${o.status.toLowerCase().replace(/\s+/g, '-')}">${o.status}</span></td>
             <td>
               <button class="btn-primary btn-view-order" style="font-size:0.75rem; padding: 4px 8px; flex:none;">Manage</button>
             </td>
@@ -1053,10 +1056,11 @@
             <td>${o.totalWeight}</td>
             <td style="font-weight:700;">₹${o.total} <br><span style="font-size:0.7rem; font-weight:normal; color:var(--text-muted);">Ship: ₹${o.shipping}</span></td>
             <td><code style="background:#ECEFF1; padding:2px 4px; border-radius:4px; font-weight:700;">${o.paymentRef}</code></td>
-            <td><span class="badge-status ${o.status.toLowerCase()}">${o.status}</span></td>
+            <td><span class="badge-status ${o.status.toLowerCase().replace(/\s+/g, '-')}">${o.status}</span></td>
             <td>
               <select class="order-status-update" style="font-size:0.75rem; padding:4px; border:1px solid var(--border-color); border-radius:4px; background:var(--white);">
                 <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending Verification</option>
+                <option value="Payment Pending" ${o.status === 'Payment Pending' ? 'selected' : ''}>Payment Pending</option>
                 <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
                 <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
                 <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>

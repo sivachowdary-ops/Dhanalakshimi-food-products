@@ -2390,6 +2390,11 @@ tr:hover td {
   color: #DC2626;
 }
 
+.badge-status.payment-pending {
+  background-color: #E5E7EB;
+  color: #4B5563;
+}
+
 /* Split grids for Shipping and Settings */
 .admin-row {
   display: flex;

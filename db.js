@@ -457,6 +457,31 @@ class UnifiedDatabase {
     return null;
   }
 
+  async confirmOrderPayment(orderId, paymentRef, notes) {
+    if (await this.checkConnection()) {
+      const res = await fetch(`${this.apiUrl}/api/orders`, {
+        method: 'PUT',
+        headers: this.getHeaders(),
+        body: JSON.stringify({ id: orderId, status: 'Pending', paymentRef, notes })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    
+    // Fallback
+    const orders = JSON.parse(localStorage.getItem("dfp_orders")) || [];
+    const idx = orders.findIndex(o => o.id === orderId);
+    if (idx !== -1) {
+      orders[idx].status = 'Pending';
+      orders[idx].paymentRef = paymentRef;
+      orders[idx].notes = notes;
+      localStorage.setItem("dfp_orders", JSON.stringify(orders));
+      window.dispatchEvent(new Event("storage"));
+      return orders[idx];
+    }
+    return null;
+  }
+
   // --- SETTINGS ---
   async getSettings() {
     if (await this.checkConnection()) {

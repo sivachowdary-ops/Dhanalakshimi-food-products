@@ -886,9 +886,20 @@
       });
 
       // Checkout Form Submit -> Go to Payment
-      checkoutForm.addEventListener('submit', (e) => {
+      checkoutForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        showPaymentScreen();
+        const submitBtn = checkoutForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Processing Checkout...";
+        try {
+          await showPaymentScreen();
+        } catch (err) {
+          alert("Error creating order: " + err.message);
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        }
       });
 
       // Go back to form details
@@ -1286,54 +1297,22 @@
       upiPayableAmount.textContent = `₹${grandTotal}.00`;
     }
 
-    // PAYMENT SCREEN
-    function showPaymentScreen() {
-      checkoutStepDetails.style.display = 'none';
-      checkoutStepPayment.style.display = 'block';
-      
-      let subtotal = 0;
-      let totalWeightGrams = 0;
-      cart.forEach(item => {
-        subtotal += item.price * item.quantity;
-        const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
-        totalWeightGrams += weightInt * item.quantity;
-      });
-      const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
-      const grandTotal = subtotal + shippingCharge;
-      
-      const tempOrderRef = "DFP" + Math.floor(100000 + Math.random() * 900000);
-      
-      const upiId = settings.upiId;
-      const merchantName = encodeURIComponent(settings.businessName);
-      const transactionNote = encodeURIComponent(`Order ${tempOrderRef}`);
-      
-      const formattedAmount = Number(grandTotal).toFixed(2);
-      const upiUrl = `upi://pay?pa=${upiId}&pn=${merchantName}&am=${formattedAmount}&tn=${transactionNote}&cu=INR`;
-      
-      upiTargetId.textContent = upiId;
-      upiMobileLink.href = upiUrl;
-      
-      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
-      upiQrImage.src = qrApiUrl;
-      upiRefNoInput.value = "";
-      
-      confirmPaymentBtn.setAttribute('data-temp-ref', tempOrderRef);
-    }
+    // Global variable to keep track of pre-created order ID
+    let currentPreOrderId = "";
 
-    // PLACE FINAL ORDER
-    async function placeFinalOrder(refNo) {
+    // PAYMENT SCREEN
+    async function showPaymentScreen() {
       const name = document.getElementById('cust-name').value.trim();
       const phone = document.getElementById('cust-phone').value.trim();
       const address = document.getElementById('cust-address').value.trim();
       const pin = document.getElementById('cust-pin').value.trim();
-      
+
       let subtotal = 0;
       let totalWeightGrams = 0;
       const orderItems = cart.map(item => {
         subtotal += item.price * item.quantity;
         const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
         totalWeightGrams += weightInt * item.quantity;
-        
         return {
           productId: item.product.id,
           name: item.product.name,
@@ -1342,10 +1321,10 @@
           quantity: item.quantity
         };
       });
-
       const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
       const grandTotal = subtotal + shippingCharge;
-
+      
+      // Pre-save order in DB as "Payment Pending"
       const orderData = {
         customer: {
           name: name,
@@ -1359,26 +1338,67 @@
         subtotal: subtotal,
         shipping: shippingCharge,
         total: grandTotal,
-        paymentRef: refNo,
-        notes: `Paid ₹${grandTotal} via UPI Reference: ${refNo}`
+        paymentRef: `PENDING_${Date.now()}`,
+        status: 'Payment Pending',
+        notes: `Customer is performing UPI payment checkout for ₹${grandTotal}`
       };
 
       const placedOrder = await DB.addOrder(orderData);
+      currentPreOrderId = placedOrder.id;
+
+      checkoutStepDetails.style.display = 'none';
+      checkoutStepPayment.style.display = 'block';
+      
+      const upiId = settings.upiId;
+      const merchantName = encodeURIComponent(settings.businessName);
+      const transactionNote = encodeURIComponent(`Order ${currentPreOrderId}`);
+      
+      const formattedAmount = Number(grandTotal).toFixed(2);
+      const upiUrl = `upi://pay?pa=${upiId}&pn=${merchantName}&am=${formattedAmount}&tn=${transactionNote}&cu=INR`;
+      
+      upiTargetId.textContent = upiId;
+      upiMobileLink.href = upiUrl;
+      
+      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
+      upiQrImage.src = qrApiUrl;
+      upiRefNoInput.value = "";
+      
+      confirmPaymentBtn.setAttribute('data-temp-ref', currentPreOrderId);
+    }
+
+    // PLACE FINAL ORDER
+    async function placeFinalOrder(refNo) {
+      let subtotal = 0;
+      let totalWeightGrams = 0;
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+        const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
+        totalWeightGrams += weightInt * item.quantity;
+      });
+
+      const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
+      const grandTotal = subtotal + shippingCharge;
+      const notes = `Paid ₹${grandTotal} via UPI Reference: ${refNo}`;
+
+      // Update the pre-saved order to Pending Verification status and insert actual reference
+      const placedOrder = await DB.confirmOrderPayment(currentPreOrderId, refNo, notes);
 
       checkoutStepPayment.style.display = 'none';
       checkoutStepSuccess.style.display = 'block';
       
-      successOrderId.textContent = `#${placedOrder.id}`;
-      successName.textContent = placedOrder.customer.name;
-      successPhone.textContent = placedOrder.customer.phone;
-      successTotal.textContent = `₹${placedOrder.total}`;
-      successRef.textContent = placedOrder.paymentRef;
-      successAddress.textContent = `${placedOrder.customer.address}, ${placedOrder.customer.state} - ${placedOrder.customer.pincode}`;
+      successOrderId.textContent = `#${currentPreOrderId}`;
+      successName.textContent = document.getElementById('cust-name').value.trim();
+      successPhone.textContent = document.getElementById('cust-phone').value.trim();
+      successTotal.textContent = `₹${grandTotal}`;
+      successRef.textContent = refNo;
+      successAddress.textContent = `${document.getElementById('cust-address').value.trim()}, ${selectedStateName} - ${document.getElementById('cust-pin').value.trim()}`;
       
       const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
-      const waMsg = `Hello Dhanalakshmi Food Products, I have placed order #${placedOrder.id}. Total Amount: ₹${placedOrder.total}. Payment reference ID: ${placedOrder.paymentRef}. Please confirm receipt.`;
+      const waMsg = `Hello Dhanalakshmi Food Products, I have placed order #${currentPreOrderId}. Total Amount: ₹${grandTotal}. Payment reference ID: ${refNo}. Please confirm receipt.`;
       trackWhatsappBtn.href = `https://wa.me/${cleanWa.replace('+', '')}?text=${encodeURIComponent(waMsg)}`;
       
+      cart = [];
+      saveCartToSession();
       renderStorefront();
     }
   </script>
