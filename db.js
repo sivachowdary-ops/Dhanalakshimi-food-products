@@ -560,3 +560,53 @@ class UnifiedDatabase {
 
 const DB = new UnifiedDatabase();
 window.DB = DB;
+
+// --- PAYMENT GATEWAY WRAPPER ---
+const PaymentHandler = {
+  // Initiates the payment process.
+  // For UPI: Configures and displays UPI details/QR code.
+  // For Razorpay: Would initialize and open the Razorpay SDK checkout overlay.
+  async initiatePayment(orderData, settings) {
+    const upiId = settings.upiId;
+    const merchantName = encodeURIComponent(settings.businessName);
+    const transactionNote = encodeURIComponent(`Order ${orderData.id}`);
+    
+    // Ensure amount is formatted exactly to two decimal places
+    const formattedAmount = Number(orderData.total).toFixed(2);
+    const upiUrl = `upi://pay?pa=${upiId}&pn=${merchantName}&am=${formattedAmount}&tn=${transactionNote}&cu=INR`;
+    
+    // Update DOM elements on the checkout page
+    const upiTargetId = document.getElementById('upi-target-id');
+    const upiMobileLink = document.getElementById('upi-mobile-link');
+    const upiQrImage = document.getElementById('upi-qr-image');
+    const upiRefNoInput = document.getElementById('upi-ref-no');
+    const confirmPaymentBtn = document.getElementById('confirm-payment-btn');
+    
+    if (upiTargetId) upiTargetId.textContent = upiId;
+    if (upiMobileLink) upiMobileLink.href = upiUrl;
+    if (upiQrImage) {
+      upiQrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
+    }
+    if (upiRefNoInput) upiRefNoInput.value = "";
+    if (confirmPaymentBtn) {
+      confirmPaymentBtn.setAttribute('data-temp-ref', orderData.id);
+    }
+    
+    return {
+      success: true,
+      amount: formattedAmount,
+      upiUrl: upiUrl
+    };
+  },
+
+  // Confirms/Verifies payment.
+  // For UPI: Submits the customer's manual UTR transaction reference to update status.
+  // For Razorpay: Would verify the Razorpay response signature server-side.
+  async confirmPayment(orderId, referenceNo, amount) {
+    const notes = `Paid ₹${amount} via UPI Reference: ${referenceNo}`;
+    return await DB.confirmOrderPayment(orderId, referenceNo, notes);
+  }
+};
+
+window.PaymentHandler = PaymentHandler;
+

@@ -450,7 +450,15 @@
           </a>
         </div>
 
-        <div style="margin-top: 10px;">
+        <!-- Helper text box alerting about payment app warning -->
+        <div style="margin-top: 12px; padding: 12px; background-color: #FEF3C7; border: 1px solid #FCD34D; border-radius: var(--radius-md); text-align: left; display: flex; gap: 8px; align-items: flex-start; line-height: 1.35;">
+          <span style="font-size: 1.1rem; line-height: 1;">💡</span>
+          <div style="font-size: 0.72rem; color: #78350F;">
+            <strong>Important Tip for Mobile Users:</strong> If your UPI app (like GPay) shows a limit warning (e.g., <em>"You can pay up to ₹2,000 with QR codes via gallery"</em>), please note that this is a <strong>standard security policy of the UPI app itself</strong> on screenshot uploads, not a website limit. To avoid this warning entirely, click the <strong>"Open UPI App to Pay"</strong> button above for direct, secure payment.
+          </div>
+        </div>
+
+        <div style="margin-top: 12px;">
           <div class="form-group">
             <label for="upi-ref-no">Payment Transaction ID / UTR *</label>
             <input type="text" id="upi-ref-no" required placeholder="Enter 12-digit transaction ID">
@@ -1020,21 +1028,11 @@
       checkoutStepDetails.style.display = 'none';
       checkoutStepPayment.style.display = 'block';
       
-      const upiId = settings.upiId;
-      const merchantName = encodeURIComponent(settings.businessName);
-      const transactionNote = encodeURIComponent(`Order ${currentPreOrderId}`);
-      
-      const formattedAmount = Number(grandTotal).toFixed(2);
-      const upiUrl = `upi://pay?pa=${upiId}&pn=${merchantName}&am=${formattedAmount}&tn=${transactionNote}&cu=INR`;
-      
-      upiTargetId.textContent = upiId;
-      upiMobileLink.href = upiUrl;
-      
-      const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiUrl)}`;
-      upiQrImage.src = qrApiUrl;
-      upiRefNoInput.value = "";
-      
-      confirmPaymentBtn.setAttribute('data-temp-ref', currentPreOrderId);
+      // Initiate payment through the PaymentHandler wrapper
+      await PaymentHandler.initiatePayment({
+        id: currentPreOrderId,
+        total: grandTotal
+      }, settings);
     }
 
     // PLACE FINAL ORDER
@@ -1049,10 +1047,9 @@
 
       const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
       const grandTotal = subtotal + shippingCharge;
-      const notes = `Paid ₹${grandTotal} via UPI Reference: ${refNo}`;
 
-      // Update the pre-saved order to Pending Verification status and insert actual reference
-      const placedOrder = await DB.confirmOrderPayment(currentPreOrderId, refNo, notes);
+      // Confirm payment through the PaymentHandler wrapper
+      const placedOrder = await PaymentHandler.confirmPayment(currentPreOrderId, refNo, grandTotal);
 
       // Reset success screen changes for standard checkout
       const successDescription = document.querySelector('#checkout-step-success p');
