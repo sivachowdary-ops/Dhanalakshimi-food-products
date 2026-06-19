@@ -885,7 +885,7 @@
         updateCheckoutSummaries();
       });
 
-      // Checkout Form Submit -> Go to Payment
+      // Checkout Form Submit -> Go to Payment or WhatsApp Order
       checkoutForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const submitBtn = checkoutForm.querySelector('button[type="submit"]');
@@ -893,7 +893,28 @@
         submitBtn.disabled = true;
         submitBtn.textContent = "Processing Checkout...";
         try {
-          await showPaymentScreen();
+          let subtotal = 0;
+          let totalWeightGrams = 0;
+          const orderItems = cart.map(item => {
+            subtotal += item.price * item.quantity;
+            const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
+            totalWeightGrams += weightInt * item.quantity;
+            return {
+              productId: item.product.id,
+              name: item.product.name,
+              weight: item.weight,
+              price: item.price,
+              quantity: item.quantity
+            };
+          });
+          const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
+          const grandTotal = subtotal + shippingCharge;
+
+          if (grandTotal <= 2000) {
+            await showPaymentScreen();
+          } else {
+            await placeWhatsAppOrder(grandTotal, subtotal, shippingCharge, totalWeightGrams, orderItems);
+          }
         } catch (err) {
           alert("Error creating order: " + err.message);
         } finally {
@@ -1383,6 +1404,24 @@
       // Update the pre-saved order to Pending Verification status and insert actual reference
       const placedOrder = await DB.confirmOrderPayment(currentPreOrderId, refNo, notes);
 
+      // Reset success screen changes for standard checkout
+      const successDescription = document.querySelector('#checkout-step-success p');
+      if (successDescription) {
+        successDescription.innerHTML = `Your order ID is <strong id="success-order-id" style="color: var(--primary-maroon);">#${currentPreOrderId}</strong>. We have received your payment reference and will prepare your fresh batch shortly!`;
+      }
+      
+      const successRefElement = document.getElementById('success-ref');
+      if (successRefElement) {
+        successRefElement.textContent = refNo;
+        const parent = successRefElement.parentElement;
+        const strongTag = parent.querySelector('strong');
+        if (strongTag) {
+          strongTag.textContent = "Payment Ref:";
+        }
+      }
+      
+      trackWhatsappBtn.innerHTML = `💬 Track Order via WhatsApp`;
+
       checkoutStepPayment.style.display = 'none';
       checkoutStepSuccess.style.display = 'block';
       
@@ -1390,11 +1429,75 @@
       successName.textContent = document.getElementById('cust-name').value.trim();
       successPhone.textContent = document.getElementById('cust-phone').value.trim();
       successTotal.textContent = `₹${grandTotal}`;
-      successRef.textContent = refNo;
       successAddress.textContent = `${document.getElementById('cust-address').value.trim()}, ${selectedStateName} - ${document.getElementById('cust-pin').value.trim()}`;
       
       const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
       const waMsg = `Hello Dhanalakshmi Food Products, I have placed order #${currentPreOrderId}. Total Amount: ₹${grandTotal}. Payment reference ID: ${refNo}. Please confirm receipt.`;
+      trackWhatsappBtn.href = `https://wa.me/${cleanWa.replace('+', '')}?text=${encodeURIComponent(waMsg)}`;
+      
+      cart = [];
+      saveCartToSession();
+      renderStorefront();
+    }
+
+    // PLACE WHATSAPP ORDER
+    async function placeWhatsAppOrder(grandTotal, subtotal, shippingCharge, totalWeightGrams, orderItems) {
+      const name = document.getElementById('cust-name').value.trim();
+      const phone = document.getElementById('cust-phone').value.trim();
+      const address = document.getElementById('cust-address').value.trim();
+      const pin = document.getElementById('cust-pin').value.trim();
+
+      const orderData = {
+        customer: {
+          name: name,
+          phone: phone,
+          address: address,
+          state: selectedStateName,
+          pincode: pin
+        },
+        items: orderItems,
+        totalWeight: formatWeight(totalWeightGrams),
+        subtotal: subtotal,
+        shipping: shippingCharge,
+        total: grandTotal,
+        paymentRef: 'WhatsApp Order',
+        status: 'Pending',
+        notes: `High-value order exceeding ₹2000. Redirected to WhatsApp for offline payment.`
+      };
+
+      const placedOrder = await DB.addOrder(orderData);
+
+      // Update success screen text for WhatsApp checkout
+      const successDescription = document.querySelector('#checkout-step-success p');
+      if (successDescription) {
+        successDescription.innerHTML = `Your order ID is <strong id="success-order-id" style="color: var(--primary-maroon);">#${placedOrder.id}</strong>. Since your order exceeds ₹2,000, please send the order summary to us on WhatsApp to receive payment details and complete your order.`;
+      }
+      
+      const successRefElement = document.getElementById('success-ref');
+      if (successRefElement) {
+        successRefElement.textContent = "WhatsApp Order";
+        const parent = successRefElement.parentElement;
+        const strongTag = parent.querySelector('strong');
+        if (strongTag) {
+          strongTag.textContent = "Payment Method:";
+        }
+      }
+      
+      trackWhatsappBtn.innerHTML = `💬 Complete Order via WhatsApp`;
+
+      checkoutStepDetails.style.display = 'none';
+      checkoutStepSuccess.style.display = 'block';
+
+      successOrderId.textContent = `#${placedOrder.id}`;
+      successName.textContent = name;
+      successPhone.textContent = phone;
+      successTotal.textContent = `₹${grandTotal}`;
+      successAddress.textContent = `${address}, ${selectedStateName} - ${pin}`;
+
+      const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
+      const waMsg = `Hello Dhanalakshmi Food Products, I have placed order #${placedOrder.id} from the website.\n` +
+                    `Total Amount: ₹${grandTotal}.\n` +
+                    `Since the order is above ₹2000, please share your payment details (UPI/Bank Transfer) so I can transfer the money.`;
       trackWhatsappBtn.href = `https://wa.me/${cleanWa.replace('+', '')}?text=${encodeURIComponent(waMsg)}`;
       
       cart = [];
