@@ -775,6 +775,32 @@
         saveCartToSession();
       });
 
+      // Sanitize phone & pin inputs for village user friendliness
+      const phoneInput = document.getElementById('cust-phone');
+      if (phoneInput) {
+        phoneInput.addEventListener('input', (e) => {
+          let val = e.target.value.replace(/\D/g, ''); // keep only digits
+          if (val.startsWith('91') && val.length > 10) {
+            val = val.substring(2);
+          }
+          if (val.length > 10) {
+            val = val.substring(0, 10);
+          }
+          e.target.value = val;
+        });
+      }
+
+      const pinInput = document.getElementById('cust-pin');
+      if (pinInput) {
+        pinInput.addEventListener('input', (e) => {
+          let val = e.target.value.replace(/\D/g, ''); // keep only digits
+          if (val.length > 6) {
+            val = val.substring(0, 6);
+          }
+          e.target.value = val;
+        });
+      }
+
       // Restore cart from session storage if present
       const savedCart = sessionStorage.getItem('dfp_cart');
       if (savedCart) {
@@ -981,7 +1007,7 @@
         subtotal: subtotal,
         shipping: shippingCharge,
         total: grandTotal,
-        paymentRef: 'WhatsApp Order',
+        paymentRef: '',
         status: 'New Order',
         notes: 'WhatsApp Order'
       };
