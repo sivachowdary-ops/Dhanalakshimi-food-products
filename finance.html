@@ -2,38 +2,62 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dhanalakshmi Foods - Business Finance</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Dhanalakshmi Foods - Business Finance Portal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
+      /* Palette */
       --primary: #0F172A;
       --primary-light: #1E293B;
-      --bg-app: #F8FAFC;
-      --card-bg: #FFFFFF;
-      --border: #E2E8F0;
-      --text-main: #0F172A;
-      --text-muted: #64748B;
+      --slate-50: #F8FAFC;
+      --slate-100: #F1F5F9;
+      --slate-200: #E2E8F0;
+      --slate-300: #CBD5E1;
+      --slate-400: #94A3B8;
+      --slate-500: #64748B;
+      --slate-600: #475569;
       
-      --income: #10B981;
+      /* Accents */
+      --income: #059669;
       --income-bg: #ECFDF5;
-      --expense: #EF4444;
+      --income-light: #10B981;
+      --income-border: #A7F3D0;
+      
+      --expense: #DC2626;
       --expense-bg: #FEF2F2;
-      --accent: #3B82F6;
-      --accent-bg: #EFF6FF;
+      --expense-light: #EF4444;
+      --expense-border: #FCA5A5;
       
-      --font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
-      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
-      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+      --brand: #4F46E5;
+      --brand-bg: #EEF2FF;
+      --brand-light: #6366F1;
+      --brand-border: #C7D2FE;
       
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
+      /* Neutral */
+      --card-bg: #FFFFFF;
+      --border-color: rgba(226, 232, 240, 0.7);
+      
+      /* Typography */
+      --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      
+      /* Shadows & Blur */
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
+      --shadow-md: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 8px -1px rgba(15, 23, 42, 0.02);
+      --shadow-lg: 0 12px 30px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.03);
+      --glass-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.04);
+      --glass-border: 1px solid rgba(255, 255, 255, 0.7);
+      
+      /* Radius */
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
       --radius-full: 9999px;
-      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * {
@@ -44,112 +68,118 @@
     }
 
     body {
-      font-family: var(--font);
-      background-color: var(--bg-app);
-      color: var(--text-main);
+      font-family: var(--font-body);
+      background-color: var(--slate-50);
+      color: var(--primary);
       line-height: 1.5;
-      padding-bottom: 90px; /* Space for mobile bottom bar */
+      padding-bottom: 96px; /* Spacing for bottom navbar */
+      overflow-x: hidden;
     }
 
-    /* --- AUTHENTICATION OVERLAY --- */
+    /* --- AUTH LOCK SCREEN --- */
     #auth-screen {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: var(--bg-app);
+      background-color: var(--slate-50);
       z-index: 99999;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 24px;
     }
-    
-    .auth-card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border);
+
+    .auth-glass-card {
+      background: var(--card-bg);
+      border: 1px solid var(--slate-200);
       border-radius: var(--radius-lg);
-      padding: 32px 24px;
+      padding: 40px 28px;
       width: 100%;
-      max-width: 400px;
+      max-width: 420px;
       box-shadow: var(--shadow-lg);
       text-align: center;
       position: relative;
+      overflow: hidden;
     }
 
-    .auth-card::before {
+    .auth-glass-card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--income), var(--accent));
-      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      height: 6px;
+      background: linear-gradient(90deg, var(--brand), var(--income-light));
     }
 
-    .auth-logo {
-      width: 56px;
-      height: 56px;
-      background-color: var(--accent-bg);
+    .auth-icon {
+      width: 64px;
+      height: 64px;
+      background-color: var(--brand-bg);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 16px auto;
-      font-size: 24px;
+      margin: 0 auto 20px auto;
+      font-size: 28px;
     }
 
-    .auth-card h2 {
-      font-size: 1.35rem;
+    .auth-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
       font-weight: 700;
       color: var(--primary);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
-    .auth-card p {
+    .auth-desc {
       font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 24px;
+      color: var(--slate-500);
+      margin-bottom: 28px;
+      line-height: 1.5;
     }
 
+    /* --- FORM ELEMENTS --- */
     .form-group {
       text-align: left;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .form-group label {
-      font-weight: 600;
+      font-weight: 700;
       font-size: 0.75rem;
-      color: var(--text-muted);
+      color: var(--slate-500);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 6px;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
       display: block;
     }
 
     .form-control {
       width: 100%;
-      padding: 12px 16px;
-      border: 1px solid var(--border);
+      padding: 14px 16px;
+      border: 1px solid var(--slate-200);
       border-radius: var(--radius-md);
-      font-size: 1rem;
+      font-family: inherit;
+      font-size: 0.95rem;
       outline: none;
       transition: var(--transition);
-      background-color: #F9FAFB;
+      background-color: var(--slate-100);
       color: var(--primary);
     }
 
     .form-control:focus {
-      border-color: var(--accent);
+      border-color: var(--brand-light);
       background-color: var(--card-bg);
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
     }
 
     .btn-submit {
       width: 100%;
-      padding: 14px;
+      padding: 16px;
+      font-family: var(--font-display);
       font-size: 0.95rem;
       font-weight: 700;
       border-radius: var(--radius-full);
@@ -157,6 +187,7 @@
       color: white;
       border: none;
       cursor: pointer;
+      box-shadow: var(--shadow-sm);
       transition: var(--transition);
     }
 
@@ -165,17 +196,17 @@
     }
 
     .auth-error {
-      color: var(--expense);
+      color: var(--expense-light);
       font-size: 0.8rem;
-      font-weight: 600;
-      margin-top: 12px;
+      font-weight: 700;
+      margin-top: 14px;
       display: none;
     }
 
-    /* --- LAYOUT STRUCTURE --- */
+    /* --- MOBILE APP HEADER --- */
     .app-header {
       background-color: var(--card-bg);
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--border-color);
       padding: 16px 20px;
       position: sticky;
       top: 0;
@@ -185,190 +216,206 @@
       justify-content: space-between;
     }
 
+    .brand-group {
+      display: flex;
+      flex-direction: column;
+    }
+
     .brand-title {
-      font-size: 1.1rem;
-      font-weight: 700;
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 800;
       color: var(--primary);
+      letter-spacing: -0.3px;
     }
 
     .brand-subtitle {
       font-size: 0.7rem;
-      color: var(--text-muted);
-      font-weight: 500;
+      color: var(--slate-400);
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.8px;
     }
 
     .logout-header-btn {
-      background: none;
+      width: 40px;
+      height: 40px;
+      background-color: var(--slate-100);
       border: none;
-      font-size: 1.2rem;
+      border-radius: 50%;
+      font-size: 1.1rem;
       cursor: pointer;
-      color: var(--text-muted);
-      padding: 4px;
-    }
-
-    .main-layout {
-      max-width: 100%;
-      padding: 16px;
-    }
-
-    /* Sidebar - default hidden for mobile */
-    .sidebar {
-      display: none;
-    }
-
-    /* Bottom tab bar - default visible for mobile */
-    .bottom-tab-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: var(--card-bg);
-      border-top: 1px solid var(--border);
-      height: 72px;
       display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 0 12px;
-      box-shadow: 0 -4px 10px rgba(0,0,0,0.03);
-      z-index: 900;
-    }
-
-    .tab-item {
-      display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      color: var(--text-muted);
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      flex: 1;
-      height: 100%;
-      gap: 4px;
-      background: none;
-      border: none;
-    }
-
-    .tab-item svg {
-      width: 20px;
-      height: 20px;
-      stroke: var(--text-muted);
-      fill: none;
-      stroke-width: 2.2;
+      color: var(--slate-600);
       transition: var(--transition);
     }
 
-    .tab-item.active {
-      color: var(--accent);
+    .logout-header-btn:active {
+      background-color: var(--slate-200);
     }
 
-    .tab-item.active svg {
-      stroke: var(--accent);
+    /* --- CORE STRUCTURE --- */
+    .main-layout {
+      padding: 16px;
+      width: 100%;
     }
 
-    /* Panels wrapper */
     .tab-panel {
       display: none;
+      animation: fadeIn 0.25s ease-out;
     }
 
     .tab-panel.active {
       display: block;
     }
 
-    /* --- FEED / CARDS --- */
-    .section-title {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin: 20px 0 10px 4px;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .overview-hero {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border);
+    /* --- GREETING BANNER --- */
+    .welcome-card {
+      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+      color: white;
       border-radius: var(--radius-lg);
       padding: 24px 20px;
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 16px;
-      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-md);
       position: relative;
+      overflow: hidden;
     }
 
-    .hero-period-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
+    .welcome-card::after {
+      content: '';
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+      top: -30px;
+      right: -30px;
+      pointer-events: none;
+    }
+
+    .welcome-card h2 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
       margin-bottom: 4px;
     }
 
-    .hero-profit-value {
-      font-size: 2.25rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-      margin-bottom: 8px;
+    .welcome-card p {
+      font-size: 0.8rem;
+      color: var(--slate-300);
+      font-weight: 500;
     }
 
-    .hero-badge {
+    /* --- PREMIUM HERO SECTION --- */
+    .hero-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 20px;
+      position: relative;
+      text-align: center;
+    }
+
+    .hero-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--slate-500);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .hero-val {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hero-badge-pill {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 6px 12px;
+      gap: 6px;
+      padding: 6px 14px;
       border-radius: var(--radius-full);
       font-size: 0.8rem;
       font-weight: 700;
     }
 
-    .hero-badge.profit {
+    .hero-badge-pill.profit {
       background-color: var(--income-bg);
       color: var(--income);
+      border: 1px solid var(--income-border);
     }
 
-    .hero-badge.loss {
+    .hero-badge-pill.loss {
       background-color: var(--expense-bg);
       color: var(--expense);
+      border: 1px solid var(--expense-border);
     }
 
-    .period-toggle-row {
+    /* Period Toggle */
+    .toggle-bar {
       display: flex;
-      background-color: #EDF2F7;
+      background-color: var(--slate-100);
       border-radius: var(--radius-full);
       padding: 4px;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
-    .period-btn {
+    .toggle-btn {
       flex: 1;
       border: none;
       background: none;
-      padding: 8px;
+      padding: 10px;
+      font-family: var(--font-body);
       font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
+      font-weight: 700;
+      color: var(--slate-500);
       border-radius: var(--radius-full);
       cursor: pointer;
       transition: var(--transition);
     }
 
-    .period-btn.active {
+    .toggle-btn.active {
       background-color: var(--card-bg);
       color: var(--primary);
       box-shadow: var(--shadow-sm);
     }
 
-    /* Stacked Feed Cards (Mobile sequence: 1-7) */
-    .metric-card {
+    /* --- MOBILE LEDGER STACK (MOBILE-FIRST) --- */
+    .ledger-section-title {
+      font-family: var(--font-display);
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--slate-600);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 24px 0 12px 4px;
+    }
+
+    .feed-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .premium-card {
       background-color: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 18px 20px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
       box-shadow: var(--shadow-sm);
-      margin-bottom: 12px;
       position: relative;
       cursor: pointer;
       display: flex;
@@ -377,125 +424,146 @@
       transition: var(--transition);
     }
 
-    .metric-card:active {
-      transform: scale(0.99);
-      background-color: #F8FAFC;
+    .premium-card:active {
+      transform: scale(0.985);
+      background-color: var(--slate-50);
     }
 
-    .metric-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--text-muted);
-    }
-
-    .metric-value {
-      font-size: 1.65rem;
+    .card-meta {
+      font-size: 0.75rem;
       font-weight: 700;
+      color: var(--slate-400);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-val {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
       display: flex;
       align-items: baseline;
       justify-content: space-between;
+      font-variant-numeric: tabular-nums;
     }
 
-    .metric-value.text-success {
+    .card-val.income-text {
       color: var(--income);
     }
 
-    .metric-value.text-danger {
+    .card-val.expense-text {
       color: var(--expense);
     }
 
-    .metric-value.text-accent {
-      color: var(--accent);
+    .card-val.neutral-text {
+      color: var(--primary);
     }
 
-    .tap-hint {
+    .card-tap-hint {
       font-size: 0.65rem;
-      color: var(--text-muted);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      display: inline-block;
-      margin-top: 4px;
-      align-self: flex-start;
-    }
-
-    .trend-indicator {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 2px 6px;
-      border-radius: 4px;
-      display: inline-block;
-    }
-
-    .trend-indicator.up {
-      background-color: var(--income-bg);
-      color: var(--income);
-    }
-
-    .trend-indicator.down {
-      background-color: var(--expense-bg);
-      color: var(--expense);
-    }
-
-    .stock-card-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-
-    .chevron {
-      color: var(--text-muted);
-      font-size: 1rem;
-    }
-
-    .estimate-tag {
-      font-size: 0.65rem;
-      background-color: #EDF2F7;
-      color: var(--text-muted);
-      padding: 2px 8px;
-      border-radius: var(--radius-full);
+      color: var(--slate-400);
       font-weight: 600;
-      display: inline-block;
-      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
     }
 
-    .estimate-tag.verified {
-      background-color: var(--accent-bg);
-      color: var(--accent);
+    .card-tap-hint svg {
+      width: 12px;
+      height: 12px;
+      stroke: var(--slate-400);
     }
 
     /* --- CHART CARD --- */
-    .chart-card {
+    .chart-box {
       background-color: var(--card-bg);
-      border: 1px solid var(--border);
+      border: 1px solid var(--border-color);
       border-radius: var(--radius-lg);
-      padding: 20px;
+      padding: 24px 20px;
       box-shadow: var(--shadow-sm);
+      margin-top: 24px;
       margin-bottom: 24px;
     }
 
-    .chart-card-title {
-      font-size: 0.95rem;
+    .chart-title-label {
+      font-family: var(--font-display);
+      font-size: 1rem;
       font-weight: 700;
       color: var(--primary);
       margin-bottom: 16px;
     }
 
-    .svg-chart-container {
+    .svg-wrapper {
       width: 100%;
       height: 160px;
     }
 
-    /* --- FLOATING ADD BUTTON (FAB) --- */
-    .fab-btn {
+    /* --- FLOATING DUAL ACTION MENU FAB --- */
+    .fab-container {
       position: fixed;
-      bottom: 92px; /* Float above mobile bottom bar */
+      bottom: 96px;
       right: 20px;
+      z-index: 800;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .fab-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .fab-container.open .fab-menu {
+      transform: translateY(0);
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .fab-menu-item {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 18px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      font-weight: 700;
+      box-shadow: var(--shadow-lg);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .fab-menu-item.income-btn {
+      background-color: var(--income);
+    }
+
+    .fab-menu-item.expense-btn {
+      background-color: var(--primary);
+    }
+
+    .fab-menu-item:active {
+      transform: scale(0.95);
+    }
+
+    .main-fab {
       width: 56px;
       height: 56px;
       border-radius: 50%;
-      background-color: var(--primary);
+      background-color: var(--brand);
       color: white;
       display: flex;
       align-items: center;
@@ -503,19 +571,229 @@
       box-shadow: var(--shadow-lg);
       border: none;
       cursor: pointer;
-      z-index: 800;
       font-size: 24px;
       font-weight: bold;
       transition: var(--transition);
     }
 
-    .fab-btn:active {
-      transform: scale(0.9);
-      background-color: var(--primary-light);
+    .main-fab:active {
+      transform: scale(0.92);
     }
 
-    /* --- SLIDE OVER / MODAL SYSTEM --- */
-    .sheet-overlay {
+    .fab-container.open .main-fab {
+      transform: rotate(135deg);
+      background-color: var(--expense-light);
+    }
+
+    /* --- MOBILE BOTTOM NAVBAR --- */
+    .bottom-navbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--border-color);
+      height: 76px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 8px;
+      box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.03);
+      z-index: 900;
+    }
+
+    .nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--slate-500);
+      font-family: var(--font-body);
+      font-size: 0.65rem;
+      font-weight: 700;
+      cursor: pointer;
+      flex: 1;
+      height: 100%;
+      gap: 6px;
+      background: none;
+      border: none;
+      transition: var(--transition);
+    }
+
+    .nav-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--slate-500);
+      fill: none;
+      stroke-width: 2.2;
+      transition: var(--transition);
+    }
+
+    .nav-btn.active {
+      color: var(--brand);
+    }
+
+    .nav-btn.active svg {
+      stroke: var(--brand);
+    }
+
+    /* --- TRANSACTIONS LEDGER TAB --- */
+    .filter-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      margin-bottom: 16px;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 10px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .filter-input-style {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-family: inherit;
+      color: var(--primary);
+      background-color: var(--slate-100);
+      outline: none;
+    }
+
+    .ledger-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ledger-row {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+
+    .ledger-row:active {
+      background-color: var(--slate-50);
+    }
+
+    .ledger-row-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .ledger-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .ledger-avatar.inc { background-color: var(--income-bg); color: var(--income); }
+    .ledger-avatar.exp { background-color: var(--expense-bg); color: var(--expense); }
+
+    .ledger-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .ledger-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .ledger-meta {
+      font-size: 0.75rem;
+      color: var(--slate-400);
+      font-weight: 500;
+    }
+
+    .ledger-amount {
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .ledger-amount.inc { color: var(--income); }
+    .ledger-amount.exp { color: var(--expense); }
+
+    /* --- STOCK VALUATION TAB --- */
+    .stock-summary {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      margin-bottom: 20px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    .stock-summary h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-top: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stock-row-premium {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      margin-bottom: 10px;
+      transition: var(--transition);
+    }
+
+    .stock-row-premium:active {
+      transform: scale(0.985);
+      background-color: var(--slate-50);
+    }
+
+    .stock-tag-amber {
+      font-size: 0.65rem;
+      background-color: var(--expense-bg);
+      color: var(--expense);
+      border: 1px solid var(--expense-border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      margin-left: 6px;
+    }
+
+    .stock-val-box {
+      text-align: right;
+    }
+
+    .stock-val-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* --- SLIDE PANELS SHEET --- */
+    .sheet-dark-overlay {
       position: fixed;
       top: 0;
       bottom: 0;
@@ -525,469 +803,223 @@
       z-index: 1000;
       display: none;
       opacity: 0;
-      transition: opacity 0.2s ease-out;
+      transition: opacity 0.25s ease-out;
     }
 
-    .sheet-overlay.active {
+    .sheet-dark-overlay.active {
       display: block;
       opacity: 1;
     }
 
-    .sheet-panel {
+    .sheet-bottom-panel {
       position: fixed;
       left: 0;
       right: 0;
       bottom: 0;
       background-color: var(--card-bg);
       border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-      box-shadow: 0 -10px 25px -5px rgba(0,0,0,0.1), 0 -8px 10px -6px rgba(0,0,0,0.1);
+      box-shadow: 0 -12px 30px rgba(15, 23, 42, 0.1);
       z-index: 1001;
-      max-height: 92vh;
+      max-height: 94vh;
       display: flex;
       flex-direction: column;
       transform: translateY(100%);
-      transition: transform 0.25s cubic-bezier(0.1, 0.76, 0.55, 0.94);
+      transition: transform 0.28s cubic-bezier(0.1, 0.76, 0.55, 0.94);
     }
 
-    .sheet-panel.active {
+    .sheet-bottom-panel.active {
       transform: translateY(0);
     }
 
-    .sheet-header {
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--border);
+    .sheet-top-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--slate-100);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    .sheet-title {
-      font-size: 1.05rem;
-      font-weight: 700;
+    .sheet-top-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
       color: var(--primary);
     }
 
-    .sheet-close {
-      background: none;
+    .sheet-close-btn {
+      background-color: var(--slate-100);
       border: none;
-      font-size: 1.5rem;
+      font-size: 1.4rem;
       cursor: pointer;
-      color: var(--text-muted);
-      width: 32px;
-      height: 32px;
+      color: var(--slate-500);
+      width: 36px;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 50%;
+      transition: var(--transition);
     }
 
-    .sheet-close:active {
-      background-color: #F1F5F9;
+    .sheet-close-btn:active {
+      background-color: var(--slate-200);
     }
 
-    .sheet-body {
-      padding: 20px;
+    .sheet-scroll-body {
+      padding: 24px;
       overflow-y: auto;
       flex: 1;
     }
 
-    /* --- FORMS --- */
-    .form-actions {
+    /* Real-Time Preview Pill */
+    .live-calc-badge {
+      background-color: var(--brand-bg);
+      color: var(--brand);
+      border: 1px solid var(--brand-border);
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .live-calc-total {
+      font-size: 1rem;
+      font-weight: 800;
+    }
+
+    .drawer-actions-row {
       display: flex;
       gap: 12px;
       margin-top: 24px;
     }
 
-    .btn-secondary {
-      flex: 1;
-      padding: 12px;
-      border-radius: var(--radius-full);
-      font-size: 0.95rem;
-      font-weight: 600;
-      background-color: #EDF2F7;
-      color: var(--text-main);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: var(--transition);
-      text-align: center;
-    }
-
-    .btn-secondary:active {
-      background-color: #E2E8F0;
-    }
-
-    .btn-danger {
-      padding: 12px 20px;
-      border-radius: var(--radius-full);
-      font-size: 0.95rem;
-      font-weight: 600;
-      background-color: var(--expense-bg);
-      color: var(--expense);
-      border: 1px solid #FCA5A5;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .btn-danger:active {
-      background-color: #FEE2E2;
-    }
-
-    /* --- EXPENSE HISTORY TAB --- */
-    .history-filters {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 12px;
-      margin-bottom: 16px;
+    /* --- REVENUE DRILL DOWNS --- */
+    .mini-card-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-    }
-
-    .filter-select {
-      width: 100%;
-      padding: 8px 12px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      font-size: 0.85rem;
-      color: var(--text-main);
-      background-color: #F9FAFB;
-      outline: none;
-    }
-
-    .expenses-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .expense-row {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-
-    .expense-row:active {
-      background-color: #F8FAFC;
-    }
-
-    .expense-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .expense-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background-color: #F1F5F9;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-    }
-
-    /* Categorized colors for icons */
-    .cat-raw { background-color: #FFEEDD; color: #DD6B20; }
-    .cat-packaging { background-color: #EBF8FF; color: #3182CE; }
-    .cat-transport { background-color: #E6FFFA; color: #319795; }
-    .cat-wages { background-color: #F5E6FF; color: #805AD5; }
-    .cat-electricity { background-color: #FFFFF0; color: #D69E2E; }
-    .cat-marketing { background-color: #FFF5F5; color: #E53E3E; }
-    .cat-rent { background-color: #F0FFF4; color: #38A169; }
-    .cat-misc { background-color: #EDF2F7; color: #4A5568; }
-
-    .expense-details {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .expense-name {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--primary);
-    }
-
-    .expense-meta {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .expense-amount {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--expense);
-    }
-
-    .no-data {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-    }
-
-    /* --- REVENUE DRILL DOWN --- */
-    .revenue-summary-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 8px;
       margin-bottom: 20px;
     }
 
-    .rev-summary-card {
-      background-color: #F8FAFC;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 10px 8px;
-      text-align: center;
+    .mini-card-grid .mini-card-full {
+      grid-column: 1 / -1;
     }
 
-    .rev-summary-label {
+    .premium-mini-card {
+      background-color: var(--slate-100);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      text-align: left;
+    }
+
+    .mini-card-label {
       font-size: 0.65rem;
-      font-weight: 600;
-      color: var(--text-muted);
+      font-weight: 700;
+      color: var(--slate-500);
       text-transform: uppercase;
     }
 
-    .rev-summary-value {
-      font-size: 0.95rem;
-      font-weight: 700;
+    .mini-card-value {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 800;
       color: var(--income);
-    }
-
-    .orders-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .order-row {
-      background-color: #F8FAFC;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 12px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .order-id {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .order-cust {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .order-weight {
-      font-size: 0.7rem;
-      background-color: #EDF2F7;
-      color: var(--text-muted);
-      padding: 2px 6px;
-      border-radius: 4px;
-      display: inline-block;
-      margin-top: 4px;
-    }
-
-    .order-right {
-      text-align: right;
-    }
-
-    .order-amt {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--income);
-    }
-
-    .order-date {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    /* --- STOCK DETAILS DRILL DOWN --- */
-    .stock-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .stock-row {
-      background-color: #F8FAFC;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 14px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .stock-left {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .stock-name {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--primary);
-    }
-
-    .stock-qty-text {
-      font-size: 0.75rem;
-      color: var(--text-muted);
       margin-top: 2px;
+      font-variant-numeric: tabular-nums;
     }
 
-    .stock-badge-low {
-      font-size: 0.65rem;
-      background-color: var(--expense-bg);
-      color: var(--expense);
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-weight: 700;
-      display: inline-block;
-      margin-left: 6px;
-      border: 1px solid #FECACA;
-    }
-
-    .stock-right {
-      text-align: right;
-    }
-
-    .stock-valuation {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--primary);
-    }
-
-    .stock-unit-info {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-    }
-
-    /* --- TRENDS ANALYTICS TAB --- */
-    .trends-month-detail-card {
-      background-color: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 16px;
-      margin-top: 16px;
-      box-shadow: var(--shadow-sm);
+    /* --- ANALYTICS TAB TRENDS --- */
+    .trends-grid-details {
+      background-color: var(--slate-100);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-top: 20px;
       display: none;
+      animation: fadeIn 0.2s ease-out;
     }
 
-    .trends-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-top: 12px;
+    .trends-ledger-col {
+      padding: 12px;
+      border-radius: var(--radius-sm);
       text-align: center;
     }
 
-    .trend-detail-col {
-      padding: 8px;
-      border-radius: var(--radius-md);
-    }
+    .trends-ledger-col.inc { background-color: var(--income-bg); color: var(--income); }
+    .trends-ledger-col.exp { background-color: var(--expense-bg); color: var(--expense); }
+    .trends-ledger-col.net { background-color: var(--slate-200); color: var(--primary); }
+    .trends-ledger-col.net.plus { background-color: var(--income-bg); color: var(--income); }
+    .trends-ledger-col.net.minus { background-color: var(--expense-bg); color: var(--expense); }
 
-    .trend-detail-col.inc { background-color: var(--income-bg); color: var(--income); }
-    .trend-detail-col.exp { background-color: var(--expense-bg); color: var(--expense); }
-    .trend-detail-col.prof { background-color: #F8FAFC; color: var(--primary); }
-
-    .trend-detail-col.prof.profit {
-      background-color: var(--income-bg);
-      color: var(--income);
-    }
-
-    .trend-detail-col.prof.loss {
-      background-color: var(--expense-bg);
-      color: var(--expense);
-    }
-
-    .trend-detail-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      color: var(--text-muted);
-      text-transform: uppercase;
-    }
-
-    .trend-detail-val {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-top: 2px;
-    }
-
-    /* --- RESPONSIVE SIDEBAR (TABLET / DESKTOP) --- */
+    /* --- DESKTOP VIEWPORT SYNC (SIDEBAR LAYOUT) --- */
     @media (min-width: 768px) {
       body {
-        padding-bottom: 0; /* Remove mobile bottom spacing */
+        padding-bottom: 0;
         display: flex;
         min-height: 100vh;
       }
 
       .app-header {
-        display: none; /* Hide header, sidebar handles branding */
+        display: none;
       }
 
+      /* Desktop left sidebar navigation */
       .sidebar {
         display: flex;
         flex-direction: column;
-        width: 260px;
+        width: 280px;
         background-color: var(--primary);
         color: white;
-        border-right: 1px solid #1E293B;
+        border-right: 1px solid var(--primary-light);
         position: fixed;
         top: 0;
         bottom: 0;
         left: 0;
-        padding: 32px 24px;
+        padding: 40px 24px;
         z-index: 800;
       }
 
-      .sidebar-branding {
-        margin-bottom: 36px;
+      .sidebar-branding-card {
+        margin-bottom: 40px;
       }
 
-      .sidebar-title {
-        font-size: 1.25rem;
+      .sidebar-brand-name {
+        font-family: var(--font-display);
+        font-size: 1.5rem;
         font-weight: 800;
         color: white;
         letter-spacing: -0.5px;
       }
 
-      .sidebar-subtitle {
+      .sidebar-brand-subtitle {
         font-size: 0.75rem;
-        color: #94A3B8;
-        font-weight: 600;
+        color: var(--slate-400);
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 1px;
         margin-top: 4px;
       }
 
-      .sidebar-menu {
+      .sidebar-nav-list {
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 10px;
         flex: 1;
       }
 
-      .sidebar-item {
+      .sidebar-nav-btn {
         display: flex;
         align-items: center;
-        gap: 12px;
-        padding: 12px 16px;
+        gap: 14px;
+        padding: 14px 18px;
         border-radius: var(--radius-md);
-        color: #94A3B8;
-        font-weight: 600;
+        color: var(--slate-400);
+        font-family: var(--font-body);
+        font-weight: 700;
         font-size: 0.95rem;
         text-decoration: none;
         cursor: pointer;
@@ -998,81 +1030,81 @@
         width: 100%;
       }
 
-      .sidebar-item svg {
+      .sidebar-nav-btn svg {
         width: 20px;
         height: 20px;
-        stroke: #94A3B8;
+        stroke: var(--slate-400);
         fill: none;
         stroke-width: 2.2;
       }
 
-      .sidebar-item:hover, .sidebar-item.active {
+      .sidebar-nav-btn:hover, .sidebar-nav-btn.active {
         color: white;
-        background-color: #1E293B;
+        background-color: var(--primary-light);
       }
 
-      .sidebar-item.active svg {
-        stroke: var(--accent);
+      .sidebar-nav-btn.active svg {
+        stroke: var(--brand-light);
       }
 
-      .sidebar-footer {
-        border-top: 1px solid #1E293B;
-        padding-top: 20px;
+      .sidebar-bottom {
+        border-top: 1px solid var(--primary-light);
+        padding-top: 24px;
         margin-top: auto;
       }
 
-      .sidebar-logout {
+      .sidebar-logout-btn {
         display: flex;
         align-items: center;
         gap: 8px;
         background: none;
         border: none;
         color: #F87171;
-        font-weight: 600;
-        font-size: 0.9rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        font-size: 0.95rem;
         cursor: pointer;
         width: 100%;
-        padding: 8px;
+        padding: 10px;
         border-radius: var(--radius-sm);
         transition: var(--transition);
       }
 
-      .sidebar-logout:hover {
-        background-color: rgba(239, 68, 68, 0.1);
+      .sidebar-logout-btn:hover {
+        background-color: rgba(248, 113, 113, 0.1);
       }
 
       .main-content-area {
-        margin-left: 260px; /* Shift for sidebar */
+        margin-left: 280px;
         flex: 1;
-        background-color: var(--bg-app);
+        background-color: var(--slate-50);
         display: flex;
         justify-content: center;
       }
 
       .main-layout {
-        max-width: 960px;
+        max-width: 1000px;
         width: 100%;
-        padding: 40px;
+        padding: 48px;
       }
 
-      .bottom-tab-bar {
-        display: none; /* Hide mobile tabs */
+      .bottom-navbar {
+        display: none;
       }
 
-      /* Stacked layout switches to side-by-side grids on large screens */
+      /* Desktop layouts switch to grids */
       .feed-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 16px;
-        margin-bottom: 20px;
       }
 
-      .metric-card.full-width {
+      .premium-card.full-width {
         grid-column: 1 / -1;
       }
 
-      .overview-hero {
-        padding: 32px;
+      .hero-card {
+        padding: 40px;
         margin-bottom: 24px;
       }
     }
@@ -1080,183 +1112,195 @@
 </head>
 <body>
 
-  <!-- --- SECURE AUTHENTICATION SCREEN --- -->
+  <!-- --- AUTH SHIELD COVER --- -->
   <div id="auth-screen">
-    <div class="auth-card">
-      <div class="auth-logo">🪙</div>
-      <h2>Finance Authorization</h2>
-      <p>Secure owner access. Enter password to view financial intelligence.</p>
+    <div class="auth-glass-card">
+      <div class="auth-icon">💼</div>
+      <h2 class="auth-title">Financial Intelligence</h2>
+      <p class="auth-desc">Owner authentication required to access profit/loss accounts and inventory ledgers.</p>
       
-      <form id="auth-form" onsubmit="event.preventDefault(); handleAuthLogin();">
+      <form id="auth-form" onsubmit="event.preventDefault(); triggerAuth();">
         <div class="form-group">
-          <label for="auth-password">Enter Password</label>
+          <label for="auth-password">Dashboard Password</label>
           <input type="password" id="auth-password" class="form-control" placeholder="••••••••" required>
         </div>
-        <div class="auth-error" id="auth-error-msg">⚠️ Incorrect password. Try again.</div>
-        <button type="submit" class="btn-submit" style="margin-top: 8px;">Authorize & Enter</button>
+        <div class="auth-error" id="auth-error-msg">⚠️ Access denied. Password invalid.</div>
+        <button type="submit" class="btn-submit" style="margin-top: 8px;">Verify & Unlock</button>
       </form>
     </div>
   </div>
 
   <!-- --- DESKTOP SIDEBAR NAVIGATION --- -->
   <aside class="sidebar">
-    <div class="sidebar-branding">
-      <h1 class="sidebar-title">Dhanalakshmi</h1>
-      <p class="sidebar-subtitle">Finance Portal</p>
+    <div class="sidebar-branding-card">
+      <h1 class="sidebar-brand-name">Dhanalakshmi</h1>
+      <p class="sidebar-brand-subtitle">Finance Dashboard</p>
     </div>
 
-    <nav class="sidebar-menu">
-      <button class="sidebar-item active" onclick="switchTab('overview')">
+    <nav class="sidebar-nav-list">
+      <button class="sidebar-nav-btn active" onclick="switchTab('overview')">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
         Overview
       </button>
-      <button class="sidebar-item" onclick="openExpenseSheet()">
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-        Add Expense
+      <button class="sidebar-nav-btn" onclick="switchTab('ledger')">
+        <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        Transactions Ledger
       </button>
-      <button class="sidebar-item" onclick="switchTab('history')">
-        <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-        Expense History
+      <button class="sidebar-nav-btn" onclick="switchTab('stock')">
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        Stock & Inventory
       </button>
-      <button class="sidebar-item" onclick="switchTab('trends')">
+      <button class="sidebar-nav-btn" onclick="switchTab('trends')">
         <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-        Business Trends
+        Monthly Trends
       </button>
     </nav>
 
-    <div class="sidebar-footer">
-      <button class="sidebar-logout" onclick="handleLogout()">
-        Logout Securely
+    <div class="sidebar-bottom">
+      <button class="sidebar-logout-btn" onclick="handleLogout()">
+        🚪 Logout Portal
       </button>
     </div>
   </aside>
 
-  <!-- --- APP MAIN SPACE --- -->
-  <div class="main-content-area" style="width: 100%;">
+  <!-- --- CONTAINER WORKSPACE --- -->
+  <div class="main-content-area">
     <div style="width: 100%; display: flex; flex-direction: column;">
       
-      <!-- --- MOBILE ONLY APP HEADER --- -->
+      <!-- --- MOBILE ONLY BRAND HEADER --- -->
       <header class="app-header">
-        <div>
+        <div class="brand-group">
           <h1 class="brand-title">Dhanalakshmi Foods</h1>
-          <p class="brand-subtitle">Finance Dashboard</p>
+          <p class="brand-subtitle">Finance Portal</p>
         </div>
         <button class="logout-header-btn" onclick="handleLogout()" title="Logout">🚪</button>
       </header>
 
       <main class="main-layout">
         
-        <!-- ==================== TAB 1: OVERVIEW ==================== -->
+        <!-- ==================== VIEW 1: OVERVIEW ==================== -->
         <section id="panel-overview" class="tab-panel active">
           
-          <!-- Unified Main Hero display -->
-          <div class="overview-hero">
-            <div class="hero-period-label" id="hero-title">This Month's Net Profit</div>
-            <div class="hero-profit-value" id="hero-net-value">₹0</div>
-            <div class="hero-badge profit" id="hero-trend-badge">▲ Net Profit</div>
+          <!-- Welcoming Banner -->
+          <div class="welcome-card">
+            <h2 id="welcome-owner-name">Hello, Dhanalakshmi 👋</h2>
+            <p id="welcome-date-string">Friday, June 19, 2026</p>
           </div>
 
-          <!-- Quick Toggle for Numbers above -->
-          <div class="period-toggle-row">
-            <button class="period-btn active" onclick="setPeriodFilter('month', this)">This Month</button>
-            <button class="period-btn" onclick="setPeriodFilter('today', this)">Today</button>
-            <button class="period-btn" onclick="setPeriodFilter('year', this)">This Year</button>
+          <!-- Hero MTD Card -->
+          <div class="hero-card">
+            <div class="hero-label" id="hero-net-label">This Month's Profit / Loss</div>
+            <div class="hero-val" id="hero-net-value">₹0</div>
+            <div class="hero-badge-pill" id="hero-net-badge">▲ Profit</div>
           </div>
 
-          <!-- Stacking Feed Section (Today) -->
-          <h2 class="section-title">Today's Ledger</h2>
+          <!-- Quick Period Filter -->
+          <div class="toggle-bar">
+            <button class="toggle-btn active" onclick="setPeriodFilter('month', this)">This Month</button>
+            <button class="toggle-btn" onclick="setPeriodFilter('today', this)">Today</button>
+            <button class="toggle-btn" onclick="setPeriodFilter('year', this)">This Year</button>
+          </div>
+
+          <!-- Mobile sequence: Today's metrics (1-3) -->
+          <h2 class="ledger-section-title">Today's Performance</h2>
           <div class="feed-grid">
-            <div class="metric-card" onclick="openIncomeDetails('today')">
-              <span class="metric-label">Today's Income</span>
-              <div class="metric-value text-success" id="metric-today-income">₹0</div>
-              <span class="tap-hint">Tap to view completed orders</span>
+            <div class="premium-card" onclick="openRevenueDrillDown('today')">
+              <span class="card-meta">Today's Income</span>
+              <div class="card-val income-text" id="metric-today-income">₹0</div>
+              <span class="card-tap-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 12 12 9 12"></polyline></svg>
+                Tap to view completed sales
+              </span>
             </div>
             
-            <div class="metric-card" onclick="switchTab('history', 'Today')">
-              <span class="metric-label">Today's Expenses</span>
-              <div class="metric-value text-danger" id="metric-today-expenses">₹0</div>
-              <span class="tap-hint">Tap to view category list</span>
+            <div class="premium-card" onclick="switchTab('ledger', 'Today', 'Expenses')">
+              <span class="card-meta">Today's Expenses</span>
+              <div class="card-val expense-text" id="metric-today-expenses">₹0</div>
+              <span class="card-tap-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 12 12 9 12"></polyline></svg>
+                Tap to view category splits
+              </span>
             </div>
 
-            <div class="metric-card" style="cursor: default;">
-              <span class="metric-label">Today's Profit / Loss</span>
-              <div class="metric-value" id="metric-today-profit">₹0</div>
-              <span class="tap-hint" style="visibility:hidden;">Static</span>
+            <div class="premium-card" style="cursor: default;">
+              <span class="card-meta">Today's Net Profit / Loss</span>
+              <div class="card-val" id="metric-today-profit">₹0</div>
+              <span class="card-tap-hint" style="visibility:hidden;">Static</span>
             </div>
           </div>
 
-          <!-- Stacking Feed Section (This Month) -->
-          <h2 class="section-title">Month-To-Date Ledger</h2>
+          <!-- Mobile sequence: This Month's metrics (4-6) -->
+          <h2 class="ledger-section-title">Month-To-Date Performance</h2>
           <div class="feed-grid">
-            <div class="metric-card" onclick="openIncomeDetails('month')">
-              <span class="metric-label">This Month's Income</span>
-              <div class="metric-value text-success" id="metric-month-income">₹0</div>
-              <span class="tap-hint">Tap to view completed orders</span>
+            <div class="premium-card" onclick="openRevenueDrillDown('month')">
+              <span class="card-meta">This Month's Income</span>
+              <div class="card-val income-text" id="metric-month-income">₹0</div>
+              <span class="card-tap-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 12 12 9 12"></polyline></svg>
+                Tap to view completed sales
+              </span>
             </div>
             
-            <div class="metric-card" onclick="switchTab('history', 'This Month')">
-              <span class="metric-label">This Month's Expenses</span>
-              <div class="metric-value text-danger" id="metric-month-expenses">₹0</div>
-              <span class="tap-hint">Tap to view category list</span>
+            <div class="premium-card" onclick="switchTab('ledger', 'This Month', 'Expenses')">
+              <span class="card-meta">This Month's Expenses</span>
+              <div class="card-val expense-text" id="metric-month-expenses">₹0</div>
+              <span class="card-tap-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 12 12 9 12"></polyline></svg>
+                Tap to view category splits
+              </span>
             </div>
 
-            <div class="metric-card" style="cursor: default;">
-              <span class="metric-label">This Month's Profit / Loss</span>
-              <div class="metric-value" id="metric-month-profit">₹0</div>
-              <span class="tap-hint" style="visibility:hidden;">Static</span>
+            <div class="premium-card" style="cursor: default;">
+              <span class="card-meta">This Month's Net Profit / Loss</span>
+              <div class="card-val" id="metric-month-profit">₹0</div>
+              <span class="card-tap-hint" style="visibility:hidden;">Static</span>
             </div>
           </div>
 
-          <!-- Inventory value card -->
-          <h2 class="section-title">Inventory Valuation</h2>
+          <!-- Mobile sequence: Current stock value (7) -->
+          <h2 class="ledger-section-title">Stock Valuation</h2>
           <div class="feed-grid">
-            <div class="metric-card full-width" onclick="openStockDetails()">
-              <div class="stock-card-row">
+            <div class="premium-card full-width" onclick="switchTab('stock')">
+              <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
                 <div>
-                  <span class="metric-label">Current Stock Value</span>
-                  <div class="metric-value text-accent" id="metric-stock-value">₹0</div>
-                  <span class="estimate-tag" id="metric-stock-badge">Estimate</span>
+                  <span class="card-meta">Current Stock Value</span>
+                  <div class="card-val neutral-text" id="metric-stock-value">₹0</div>
+                  <span class="estimate-tag" id="metric-stock-badge">Cost Basis</span>
                 </div>
                 <div class="chevron">➔</div>
               </div>
-              <span class="tap-hint">Tap to view product stock counts & cost breakdown</span>
+              <span class="card-tap-hint">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 12 12 9 12"></polyline></svg>
+                Tap to edit stock levels & costs
+              </span>
             </div>
           </div>
 
-          <!-- Mini SVG Sparkline Chart -->
-          <div class="chart-card">
-            <h3 class="chart-card-title">6-Month Net Profit Trend</h3>
-            <div class="svg-chart-container" id="overview-sparkline">
-              <!-- Inline SVG generated dynamically -->
+          <!-- Mini SVG Curved Chart Card -->
+          <div class="chart-box">
+            <h3 class="chart-title-label">6-Month Profit Curve</h3>
+            <div class="svg-wrapper" id="overview-sparkline">
+              <!-- Rendered dynamically -->
             </div>
           </div>
         </section>
 
-        <!-- ==================== TAB 2: EXPENSE HISTORY ==================== -->
-        <section id="panel-history" class="tab-panel">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
-            <h2 class="brand-title">Expense History</h2>
-            <button class="btn-submit" onclick="openExpenseSheet()" style="width: auto; padding: 8px 16px; font-size: 0.8rem;">+ Add New</button>
-          </div>
+        <!-- ==================== VIEW 2: UNIFIED TRANSACTIONS LEDGER ==================== -->
+        <section id="panel-ledger" class="tab-panel">
+          <h2 class="brand-title" style="margin-bottom:16px;">Ledger Transactions</h2>
           
-          <div class="history-filters">
+          <div class="filter-card">
             <div>
-              <label class="form-group" style="margin-bottom:2px;"><span style="font-size:0.65rem;">Category</span></label>
-              <select id="filter-category" class="filter-select" onchange="loadExpensesList()">
-                <option value="All">All Categories</option>
-                <option value="Raw Materials">Raw Materials</option>
-                <option value="Packaging">Packaging</option>
-                <option value="Transport">Transport</option>
-                <option value="Worker Wages">Worker Wages</option>
-                <option value="Electricity">Electricity</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Rent">Rent</option>
-                <option value="Miscellaneous">Miscellaneous</option>
+              <label class="form-group" style="margin-bottom:2px;"><span style="font-size:0.65rem;">Ledger Type</span></label>
+              <select id="ledger-filter-type" class="filter-input-style" onchange="renderUnifiedLedger()">
+                <option value="All">All Transactions</option>
+                <option value="Income">Sales Only</option>
+                <option value="Expenses">Expenses Only</option>
               </select>
             </div>
             <div>
               <label class="form-group" style="margin-bottom:2px;"><span style="font-size:0.65rem;">Period</span></label>
-              <select id="filter-date" class="filter-select" onchange="loadExpensesList()">
+              <select id="ledger-filter-date" class="filter-input-style" onchange="renderUnifiedLedger()">
                 <option value="All">All Time</option>
                 <option value="Today">Today</option>
                 <option value="This Week">This Week</option>
@@ -1265,42 +1309,57 @@
             </div>
           </div>
 
-          <div class="expenses-list" id="history-rows-container">
+          <div class="ledger-list" id="ledger-rows-container">
             <!-- Loaded dynamically -->
           </div>
         </section>
 
-        <!-- ==================== TAB 3: BUSINESS TRENDS ==================== -->
-        <section id="panel-trends" class="tab-panel">
-          <h2 class="brand-title" style="margin-bottom: 16px;">Income vs Expenses</h2>
+        <!-- ==================== VIEW 3: IN-APP STOCK MANAGEMENT ==================== -->
+        <section id="panel-stock" class="tab-panel">
+          <div class="stock-summary">
+            <div class="mini-card-label" style="color: rgba(255,255,255,0.7);">Total Inventory Assets</div>
+            <h3 id="stock-val-hero">₹0</h3>
+            <span class="estimate-tag verified" id="stock-val-hero-badge" style="background-color:rgba(255,255,255,0.15); color:white; border:none; margin-top: 6px;">Cost Basis</span>
+          </div>
+
+          <h2 class="ledger-section-title" style="margin-left:0;">Tap product to adjust stock counts & costs</h2>
           
-          <div class="chart-card">
-            <h3 class="chart-card-title">12-Month Performance Matrix</h3>
-            <div id="trends-large-chart" style="width: 100%; height: 220px;">
+          <div id="stock-list-container">
+            <!-- Loaded dynamically -->
+          </div>
+        </section>
+
+        <!-- ==================== VIEW 4: ANALYTICS TRENDS ==================== -->
+        <section id="panel-trends" class="tab-panel">
+          <h2 class="brand-title" style="margin-bottom: 16px;">Monthly Analysis</h2>
+          
+          <div class="chart-box">
+            <h3 class="chart-title-label">12-Month Performance Overview</h3>
+            <div id="trends-large-chart-canvas" style="width:100%; height:220px;">
               <!-- Responsive SVG drawn dynamically -->
             </div>
             
-            <div style="display:flex; justify-content:center; gap: 16px; font-size: 0.75rem; margin-top: 10px; font-weight: 600;">
-              <span style="display:flex; align-items:center; gap: 4px;"><span style="width:12px; height:12px; background-color:#10B981; border-radius:3px; display:inline-block;"></span> Income</span>
-              <span style="display:flex; align-items:center; gap: 4px;"><span style="width:12px; height:12px; background-color:#EF4444; border-radius:3px; display:inline-block;"></span> Expenses</span>
-              <span style="display:flex; align-items:center; gap: 4px;"><span style="width:12px; height:4px; background-color:#3B82F6; display:inline-block;"></span> Net Profit</span>
+            <div style="display:flex; justify-content:center; gap:16px; font-size:0.75rem; margin-top:16px; font-weight:700;">
+              <span style="display:flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; background-color:#059669; border-radius:3px; display:inline-block;"></span> Income</span>
+              <span style="display:flex; align-items:center; gap:5px;"><span style="width:12px; height:12px; background-color:#DC2626; border-radius:3px; display:inline-block;"></span> Expenses</span>
+              <span style="display:flex; align-items:center; gap:5px;"><span style="width:12px; height:4px; background-color:#4F46E5; display:inline-block;"></span> Net Profit</span>
             </div>
           </div>
 
-          <div class="trends-month-detail-card" id="trend-tap-detail">
-            <h3 class="chart-card-title" id="trend-detail-month-label" style="margin-bottom:6px;">Month Details</h3>
-            <div class="trends-grid">
-              <div class="trend-detail-col inc">
-                <div class="trend-detail-label">Income</div>
-                <div class="trend-detail-val" id="trend-detail-inc">₹0</div>
+          <div class="trends-grid-details" id="analytics-month-card">
+            <h3 class="chart-title-label" id="analytics-month-title" style="margin-bottom:8px;">Month Details</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:10px;">
+              <div class="trends-ledger-col inc">
+                <div class="mini-card-label">Income</div>
+                <div style="font-weight:800; font-size: 0.95rem; margin-top:2px;" id="analytics-detail-inc">₹0</div>
               </div>
-              <div class="trend-detail-col exp">
-                <div class="trend-detail-label">Expenses</div>
-                <div class="trend-detail-val" id="trend-detail-exp">₹0</div>
+              <div class="trends-ledger-col exp">
+                <div class="mini-card-label">Expenses</div>
+                <div style="font-weight:800; font-size: 0.95rem; margin-top:2px;" id="analytics-detail-exp">₹0</div>
               </div>
-              <div class="trend-detail-col prof" id="trend-detail-prof-col">
-                <div class="trend-detail-label">Net Profit</div>
-                <div class="trend-detail-val" id="trend-detail-prof">₹0</div>
+              <div class="trends-ledger-col net" id="analytics-detail-net-col">
+                <div class="mini-card-label">Net Profit</div>
+                <div style="font-weight:800; font-size: 0.95rem; margin-top:2px;" id="analytics-detail-net">₹0</div>
               </div>
             </div>
           </div>
@@ -1310,50 +1369,113 @@
     </div>
   </div>
 
-  <!-- --- MOBILE BOTTOM NAV TAB BAR --- -->
-  <div class="bottom-tab-bar">
-    <button class="tab-item active" onclick="switchTab('overview')">
+  <!-- --- MOBILE NAV NAVBAR --- -->
+  <nav class="bottom-navbar">
+    <button class="nav-btn active" onclick="switchTab('overview')">
       <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
       <span>Overview</span>
     </button>
-    <button class="tab-item" onclick="openExpenseSheet()">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-      <span>Add Expense</span>
+    <button class="nav-btn" onclick="toggleFabMenu()">
+      <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      <span>Record</span>
     </button>
-    <button class="tab-item" onclick="switchTab('history')">
-      <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-      <span>History</span>
+    <button class="nav-btn" onclick="switchTab('ledger')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+      <span>Ledger</span>
     </button>
-    <button class="tab-item" onclick="switchTab('trends')">
-      <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
-      <span>Trends</span>
+    <button class="nav-btn" onclick="switchTab('stock')">
+      <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+      <span>Stock</span>
     </button>
+  </nav>
+
+  <!-- --- MOBILE DUAL ACTION FAB --- -->
+  <div class="fab-container" id="overview-fab-container">
+    <div class="fab-menu">
+      <button class="fab-menu-item income-btn" onclick="openSaleSheet()">💰 Record Sale</button>
+      <button class="fab-menu-item expense-btn" onclick="openExpenseSheet()">💸 Add Expense</button>
+    </div>
+    <button class="main-fab" onclick="toggleFabMenu()">+</button>
   </div>
 
-  <!-- --- FLOATING QUICK ADD BUTTON (FAB) --- -->
-  <button class="fab-btn" onclick="openExpenseSheet()" title="Add Expense">+</button>
+  <!-- ==================== SHEETS DRAWERS SYSTEM ==================== -->
 
-  <!-- ==================== DRAWER SHEETS SYSTEM ==================== -->
-
-  <!-- SHEET 1: ADD / EDIT EXPENSE MODAL -->
-  <div class="sheet-overlay" id="overlay-expense" onclick="closeExpenseSheet()"></div>
-  <div class="sheet-panel" id="sheet-expense">
-    <div class="sheet-header">
-      <h3 class="sheet-title" id="expense-sheet-title">Add Expense</h3>
-      <button class="sheet-close" onclick="closeExpenseSheet()">&times;</button>
+  <!-- SHEET 1: RECORD MANUAL SALE -->
+  <div class="sheet-dark-overlay" id="overlay-sale" onclick="closeSaleSheet()"></div>
+  <div class="sheet-bottom-panel" id="sheet-sale">
+    <div class="sheet-top-header">
+      <h3 class="sheet-top-title">Record Confirmed Sale</h3>
+      <button class="sheet-close-btn" onclick="closeSaleSheet()">&times;</button>
     </div>
-    <div class="sheet-body">
+    <div class="sheet-scroll-body">
+      <form id="sale-form" onsubmit="event.preventDefault(); handleSaveSale();">
+        
+        <div class="form-group">
+          <label for="sale-product-id">Select Product *</label>
+          <select id="sale-product-id" class="form-control" required onchange="calculateSaleSubtotal()">
+            <!-- Loaded dynamically from products -->
+          </select>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="form-group">
+            <label for="sale-weight">Pack Size *</label>
+            <select id="sale-weight" class="form-control" required onchange="calculateSaleSubtotal()">
+              <option value="500g">500g Pack</option>
+              <option value="1kg">1kg Pack</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="sale-qty">Quantity *</label>
+            <input type="number" id="sale-qty" class="form-control" min="1" value="1" required oninput="calculateSaleSubtotal()">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+          <div class="form-group">
+            <label for="sale-date">Order Date *</label>
+            <input type="date" id="sale-date" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="sale-customer">Customer Name (Optional)</label>
+          <input type="text" id="sale-customer" class="form-control" placeholder="e.g. Walk-in Customer">
+        </div>
+
+        <!-- Live Subtotal Indicator Pill -->
+        <div class="live-calc-badge" id="sale-live-calc-box">
+          <span>Price: ₹<span id="sale-price-unit">0</span></span>
+          <span class="live-calc-total">Total: ₹<span id="sale-subtotal-val">0</span></span>
+        </div>
+
+        <div class="drawer-actions-row">
+          <button type="button" class="btn-secondary" onclick="closeSaleSheet()">Cancel</button>
+          <button type="submit" class="btn-submit" style="flex:2;">Confirm & Save Sale</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SHEET 2: ADD / EDIT EXPENSE -->
+  <div class="sheet-dark-overlay" id="overlay-expense" onclick="closeExpenseSheet()"></div>
+  <div class="sheet-bottom-panel" id="sheet-expense">
+    <div class="sheet-top-header">
+      <h3 class="sheet-top-title" id="expense-sheet-title">Add Expense</h3>
+      <button class="sheet-close-btn" onclick="closeExpenseSheet()">&times;</button>
+    </div>
+    <div class="sheet-scroll-body">
       <form id="expense-form" onsubmit="event.preventDefault(); handleSaveExpense();">
         <input type="hidden" id="exp-id-edit" value="">
         
         <div class="form-group">
           <label for="exp-name">Expense Name / Vendor *</label>
-          <input type="text" id="exp-name" class="form-control" placeholder="e.g. Workers wage payment" required>
+          <input type="text" id="exp-name" class="form-control" placeholder="e.g. Workers wages payment" required>
         </div>
 
         <div class="form-group">
           <label for="exp-category">Category *</label>
-          <select id="exp-category" class="form-control" required style="appearance: none; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%2364748B%22 stroke-width=%222%22><polyline points=%226 9 12 15 18 9%22></polyline></svg>'); background-repeat: no-repeat; background-position: right 16px center; background-size: 12px;">
+          <select id="exp-category" class="form-control" required>
             <option value="Raw Materials">Raw Materials</option>
             <option value="Packaging">Packaging</option>
             <option value="Transport">Transport</option>
@@ -1368,7 +1490,6 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="form-group">
             <label for="exp-amount">Amount (INR) *</label>
-            <!-- inputmode=decimal and pattern=0-9 triggers mobile number keypad with point -->
             <input type="number" step="0.01" inputmode="decimal" pattern="[0-9]*" id="exp-amount" class="form-control" placeholder="0.00" required>
           </div>
           <div class="form-group">
@@ -1379,10 +1500,10 @@
 
         <div class="form-group">
           <label for="exp-notes">Notes (Optional)</label>
-          <textarea id="exp-notes" class="form-control" rows="3" placeholder="Additional details..." style="resize:none; font-family:inherit;"></textarea>
+          <textarea id="exp-notes" class="form-control" rows="3" placeholder="Notes..."></textarea>
         </div>
 
-        <div class="form-actions">
+        <div class="drawer-actions-row">
           <button type="button" class="btn-danger" id="btn-delete-expense" onclick="handleDeleteExpense()" style="display:none;">Delete</button>
           <button type="button" class="btn-secondary" onclick="closeExpenseSheet()">Cancel</button>
           <button type="submit" class="btn-submit" style="flex:2;" id="btn-save-expense-text">Save Expense</button>
@@ -1391,52 +1512,76 @@
     </div>
   </div>
 
-  <!-- SHEET 2: INCOME / REVENUE DRILL DOWN -->
-  <div class="sheet-overlay" id="overlay-income" onclick="closeIncomeDetails()"></div>
-  <div class="sheet-panel" id="sheet-income">
-    <div class="sheet-header">
-      <h3 class="sheet-title" id="income-sheet-title">Income Breakdown</h3>
-      <button class="sheet-close" onclick="closeIncomeDetails()">&times;</button>
+  <!-- SHEET 3: EDIT STOCK QUANTITIES & COSTS -->
+  <div class="sheet-dark-overlay" id="overlay-stock-edit" onclick="closeStockEditSheet()"></div>
+  <div class="sheet-bottom-panel" id="sheet-stock-edit">
+    <div class="sheet-top-header">
+      <h3 class="sheet-top-title" id="stock-edit-title">Adjust Inventory</h3>
+      <button class="sheet-close-btn" onclick="closeStockEditSheet()">&times;</button>
     </div>
-    <div class="sheet-body">
-      <div class="revenue-summary-row">
-        <div class="rev-summary-card">
-          <div class="rev-summary-label">Today</div>
-          <div class="rev-summary-value" id="drill-income-today">₹0</div>
+    <div class="sheet-scroll-body">
+      <form id="stock-edit-form" onsubmit="event.preventDefault(); handleSaveStockAdjustment();">
+        <input type="hidden" id="stock-prod-id" value="">
+        
+        <h4 style="font-size:0.9rem; font-weight:700; color:var(--brand); margin-bottom:18px;" id="stock-prod-name-header">Product</h4>
+        
+        <h5 style="font-size:0.75rem; font-weight:700; color:var(--slate-500); text-transform:uppercase; margin-bottom:8px; border-bottom:1px solid var(--slate-100); padding-bottom:4px;">500g Pack Details</h5>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom:18px;">
+          <div class="form-group">
+            <label for="stock-qty-500g">Pack Count In Stock</label>
+            <input type="number" id="stock-qty-500g" class="form-control" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="stock-cost-500g">Production Cost (₹)</label>
+            <input type="number" step="0.01" id="stock-cost-500g" class="form-control" min="0" required>
+          </div>
         </div>
-        <div class="rev-summary-card">
-          <div class="rev-summary-label">This Month</div>
-          <div class="rev-summary-value" id="drill-income-month">₹0</div>
+
+        <h5 style="font-size:0.75rem; font-weight:700; color:var(--slate-500); text-transform:uppercase; margin-bottom:8px; border-bottom:1px solid var(--slate-100); padding-bottom:4px;">1kg Pack Details</h5>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom:12px;">
+          <div class="form-group">
+            <label for="stock-qty-1kg">Pack Count In Stock</label>
+            <input type="number" id="stock-qty-1kg" class="form-control" min="0" required>
+          </div>
+          <div class="form-group">
+            <label for="stock-cost-1kg">Production Cost (₹)</label>
+            <input type="number" step="0.01" id="stock-cost-1kg" class="form-control" min="0" required>
+          </div>
         </div>
-        <div class="rev-summary-card">
-          <div class="rev-summary-label">This Year</div>
-          <div class="rev-summary-value" id="drill-income-year">₹0</div>
+
+        <div class="drawer-actions-row" style="margin-top:28px;">
+          <button type="button" class="btn-secondary" onclick="closeStockEditSheet()">Cancel</button>
+          <button type="submit" class="btn-submit" style="flex:2;">Save Quantities</button>
         </div>
-      </div>
-      
-      <h4 class="section-title" style="margin-left: 0;">Completed Orders contributing to sales</h4>
-      <div class="orders-list" id="drill-orders-list">
-        <!-- Loaded dynamically -->
-      </div>
+      </form>
     </div>
   </div>
 
-  <!-- SHEET 3: STOCK VALUE DRILL DOWN -->
-  <div class="sheet-overlay" id="overlay-stock" onclick="closeStockDetails()"></div>
-  <div class="sheet-panel" id="sheet-stock">
-    <div class="sheet-header">
-      <h3 class="sheet-title">Inventory Stock Valuation</h3>
-      <button class="sheet-close" onclick="closeStockDetails()">&times;</button>
+  <!-- SHEET 4: INCOME DRILL DOWN VIEW -->
+  <div class="sheet-dark-overlay" id="overlay-income-drill" onclick="closeIncomeDrillDown()"></div>
+  <div class="sheet-bottom-panel" id="sheet-income-drill">
+    <div class="sheet-top-header">
+      <h3 class="sheet-top-title" id="income-drill-title">Completed Sales</h3>
+      <button class="sheet-close-btn" onclick="closeIncomeDrillDown()">&times;</button>
     </div>
-    <div class="sheet-body">
-      <div class="overview-hero" style="padding: 16px; margin-bottom: 16px;">
-        <div class="hero-period-label">Total Inventory Worth</div>
-        <div class="hero-profit-value" style="font-size: 1.8rem;" id="drill-stock-total">₹0</div>
-        <span class="estimate-tag" id="drill-stock-estimate-badge">Cost Basis</span>
+    <div class="sheet-scroll-body">
+      <div class="mini-card-grid">
+        <div class="premium-mini-card">
+          <div class="mini-card-label">Today Sales</div>
+          <div class="mini-card-value" id="drill-income-today-val">₹0</div>
+        </div>
+        <div class="premium-mini-card">
+          <div class="mini-card-label">This Month Sales</div>
+          <div class="mini-card-value" id="drill-income-month-val">₹0</div>
+        </div>
+        <div class="premium-mini-card mini-card-full">
+          <div class="mini-card-label">This Year Total Sales</div>
+          <div class="mini-card-value" id="drill-income-year-val">₹0</div>
+        </div>
       </div>
 
-      <h4 class="section-title" style="margin-left:0; margin-top: 10px;">Product Inventory Breakdown</h4>
-      <div class="stock-list" id="drill-stock-list">
+      <h4 class="ledger-section-title" style="margin-left:0; margin-top: 10px;">Recent Confirmed Orders</h4>
+      <div class="orders-list" id="drill-orders-list-box">
         <!-- Loaded dynamically -->
       </div>
     </div>
@@ -1444,34 +1589,24 @@
 
   <script src="db.js"></script>
   <script>
-    const CATEGORY_ICONS = {
-      'Raw Materials': { icon: '🌾', class: 'cat-raw' },
-      'Packaging': { icon: '📦', class: 'cat-packaging' },
-      'Transport': { icon: '🚚', class: 'cat-transport' },
-      'Worker Wages': { icon: '👷', class: 'cat-wages' },
-      'Electricity': { icon: '⚡', class: 'cat-electricity' },
-      'Marketing': { icon: '📣', class: 'cat-marketing' },
-      'Rent': { icon: '🏠', class: 'cat-rent' },
-      'Miscellaneous': { icon: '💵', class: 'cat-misc' }
-    };
+    let globalSummaryData = null;
+    let periodFilter = 'month'; // 'today' | 'month' | 'year'
+    let productsList = [];
 
-    let globalFinanceData = null;
-    let selectedPeriodFilter = 'month'; // 'today' | 'month' | 'year'
-
-    // --- SECURE ROUTING & AUTH ---
+    // --- PORTAL AUTHENTICATION SHIELD ---
     function checkAuthentication() {
       const auth = sessionStorage.getItem('dfp_admin_auth');
       const authScreen = document.getElementById('auth-screen');
       if (auth === 'true') {
         authScreen.style.display = 'none';
-        initDashboard();
+        bootstrapPortal();
       } else {
         authScreen.style.display = 'flex';
         document.getElementById('auth-password').focus();
       }
     }
 
-    async function handleAuthLogin() {
+    async function triggerAuth() {
       const password = document.getElementById('auth-password').value;
       const errorMsg = document.getElementById('auth-error-msg');
       try {
@@ -1480,15 +1615,14 @@
           sessionStorage.setItem('dfp_admin_auth', 'true');
           errorMsg.style.display = 'none';
           document.getElementById('auth-screen').style.display = 'none';
-          initDashboard();
+          bootstrapPortal();
         } else {
-          errorMsg.textContent = res.error || "Incorrect admin credentials.";
           errorMsg.style.display = 'block';
           document.getElementById('auth-password').value = "";
           document.getElementById('auth-password').focus();
         }
       } catch (err) {
-        console.error("Auth login fail:", err);
+        console.error("Auth trigger fail:", err);
         errorMsg.textContent = "Error: Connection failed.";
         errorMsg.style.display = 'block';
       }
@@ -1500,70 +1634,174 @@
       location.reload();
     }
 
-    // --- TAB SWITCHER LOGIC ---
-    async function switchTab(tabId, filterPreset = null) {
-      // Manage mobile bottom tab highlight
-      document.querySelectorAll('.tab-item').forEach(item => {
-        const isTarget = item.getAttribute('onclick').includes(`'${tabId}'`);
-        item.classList.toggle('active', isTarget);
+    // --- TAB SWITCHER SPA ---
+    async function switchTab(tabId, filterDate = null, filterType = null) {
+      // Toggle nav item highlight (Mobile bottom navigation)
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        const onclickAttr = btn.getAttribute('onclick') || '';
+        btn.classList.toggle('active', onclickAttr.includes(`'${tabId}'`));
       });
 
-      // Manage desktop sidebar menu highlight
-      document.querySelectorAll('.sidebar-item').forEach(item => {
-        const isTarget = item.getAttribute('onclick').includes(`'${tabId}'`);
-        item.classList.toggle('active', isTarget);
+      // Toggle nav item highlight (Desktop left sidebar)
+      document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
+        const onclickAttr = btn.getAttribute('onclick') || '';
+        btn.classList.toggle('active', onclickAttr.includes(`'${tabId}'`));
       });
 
-      // Show/Hide Panels
+      // Manage active panels
       document.querySelectorAll('.tab-panel').forEach(panel => {
         panel.classList.toggle('active', panel.id === `panel-${tabId}`);
       });
 
       // Load specific tab datasets
       if (tabId === 'overview') {
-        await refreshDashboardSummary();
-      } else if (tabId === 'history') {
-        const filterDateSelect = document.getElementById('filter-date');
-        if (filterPreset) {
-          filterDateSelect.value = filterPreset;
-        } else {
-          filterDateSelect.value = 'All';
-        }
-        document.getElementById('filter-category').value = 'All';
-        await loadExpensesList();
+        await refreshOverviewData();
+      } else if (tabId === 'ledger') {
+        document.getElementById('ledger-filter-date').value = filterDate || 'All';
+        document.getElementById('ledger-filter-type').value = filterType || 'All';
+        await renderUnifiedLedger();
+      } else if (tabId === 'stock') {
+        await renderStockManager();
       } else if (tabId === 'trends') {
-        await loadTrendsChart();
+        await renderMonthlyAnalyticsChart();
       }
     }
 
-    // --- SHEET MODALS ---
+    // --- DUAL ACTION FAB POPUP ---
+    function toggleFabMenu() {
+      const container = document.getElementById('overview-fab-container');
+      container.classList.toggle('open');
+    }
+
+    function closeFabMenu() {
+      document.getElementById('overview-fab-container').classList.remove('open');
+    }
+
+    // --- MODAL SHEETS ---
+    
+    // 1. Sale sheet (Add order)
+    async function openSaleSheet() {
+      closeFabMenu();
+      const overlay = document.getElementById('overlay-sale');
+      const panel = document.getElementById('sheet-sale');
+      
+      overlay.classList.add('active');
+      panel.classList.add('active');
+
+      document.getElementById('sale-form').reset();
+      document.getElementById('sale-date').value = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+
+      // Populate products select
+      const select = document.getElementById('sale-product-id');
+      select.innerHTML = "";
+      
+      try {
+        productsList = await DB.getProducts();
+        productsList.forEach(p => {
+          const opt = document.createElement('option');
+          opt.value = p.id;
+          opt.textContent = p.name;
+          select.appendChild(opt);
+        });
+        calculateSaleSubtotal();
+      } catch (err) {
+        console.error("Error loading products for sale dropdown:", err);
+      }
+    }
+
+    function closeSaleSheet() {
+      document.getElementById('overlay-sale').classList.remove('active');
+      document.getElementById('sheet-sale').classList.remove('active');
+    }
+
+    function calculateSaleSubtotal() {
+      const prodId = document.getElementById('sale-product-id').value;
+      const weight = document.getElementById('sale-weight').value;
+      const qty = parseInt(document.getElementById('sale-qty').value) || 1;
+
+      const product = productsList.find(p => p.id === prodId);
+      if (product) {
+        const unitPrice = parseFloat(product.prices?.[weight] || product[`price_${weight}`] || 0);
+        const subtotal = unitPrice * qty;
+
+        document.getElementById('sale-price-unit').textContent = unitPrice;
+        document.getElementById('sale-subtotal-val').textContent = subtotal.toLocaleString('en-IN');
+      }
+    }
+
+    async function handleSaveSale() {
+      const prodId = document.getElementById('sale-product-id').value;
+      const weight = document.getElementById('sale-weight').value;
+      const qty = parseInt(document.getElementById('sale-qty').value) || 1;
+      const orderDate = document.getElementById('sale-date').value;
+      const custName = document.getElementById('sale-customer').value.trim() || "Walk-in Customer";
+
+      const product = productsList.find(p => p.id === prodId);
+      if (!product) return;
+
+      const unitPrice = parseFloat(product.prices?.[weight] || product[`price_${weight}`] || 0);
+      const totalAmount = unitPrice * qty;
+
+      // Construct Order payload in identical schema
+      const orderPayload = {
+        customer: {
+          name: custName,
+          phone: "N/A",
+          address: "Direct Counter",
+          state: "Andhra Pradesh",
+          pincode: "534216"
+        },
+        items: [{
+          productId: prodId,
+          name: product.name,
+          weight: weight,
+          price: unitPrice,
+          quantity: qty
+        }],
+        totalWeight: weight === '500g' ? (qty * 0.5) + "kg" : qty + "kg",
+        subtotal: totalAmount,
+        shipping: 0,
+        total: totalAmount,
+        status: "Delivered", // Immediately verified income
+        notes: "Manually recorded via Finance Dashboard",
+        timestamp: new Date(orderDate).toISOString()
+      };
+
+      try {
+        await DB.addOrder(orderPayload);
+        closeSaleSheet();
+        await refreshOverviewData();
+      } catch (err) {
+        alert("Error saving sale: " + err.message);
+      }
+    }
+
+    // 2. Expense sheet
     function openExpenseSheet(expenseId = null) {
+      closeFabMenu();
       const overlay = document.getElementById('overlay-expense');
       const panel = document.getElementById('sheet-expense');
       const deleteBtn = document.getElementById('btn-delete-expense');
       const title = document.getElementById('expense-sheet-title');
-      const submitBtnText = document.getElementById('btn-save-expense-text');
+      const submitText = document.getElementById('btn-save-expense-text');
 
       overlay.classList.add('active');
       panel.classList.add('active');
-      
+
       document.getElementById('expense-form').reset();
       document.getElementById('exp-date').value = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
 
       if (expenseId) {
-        // Edit flow pre-population
         title.textContent = "Edit Expense";
-        submitBtnText.textContent = "Update Expense";
+        submitText.textContent = "Update Expense";
         deleteBtn.style.display = 'block';
         loadExpenseToEdit(expenseId);
       } else {
-        // Create flow
         title.textContent = "Add Expense";
-        submitBtnText.textContent = "Save Expense";
+        submitText.textContent = "Save Expense";
         deleteBtn.style.display = 'none';
         document.getElementById('exp-id-edit').value = "";
         
-        // Auto-focus numeric keyboard for speed
         setTimeout(() => {
           document.getElementById('exp-amount').focus();
         }, 100);
@@ -1588,7 +1826,7 @@
           document.getElementById('exp-notes').value = exp.notes || '';
         }
       } catch (err) {
-        console.error("Error loading expense fields:", err);
+        console.error("Error fetching expense for editing:", err);
       }
     }
 
@@ -1600,8 +1838,8 @@
       const expense_date = document.getElementById('exp-date').value;
       const notes = document.getElementById('exp-notes').value.trim();
 
-      if (!expense_name || !category || isNaN(amount)) {
-        alert("Please fill all required inputs.");
+      if (!expense_name || isNaN(amount)) {
+        alert("Fields are invalid.");
         return;
       }
 
@@ -1615,80 +1853,122 @@
         }
         closeExpenseSheet();
         
-        // Refresh active panel view
-        const currentActivePanel = document.querySelector('.tab-panel.active').id;
-        if (currentActivePanel === 'panel-overview') {
-          await refreshDashboardSummary();
-        } else if (currentActivePanel === 'panel-history') {
-          await loadExpensesList();
-        }
+        const activePanelId = document.querySelector('.tab-panel.active').id;
+        if (activePanelId === 'panel-overview') await refreshOverviewData();
+        else if (activePanelId === 'panel-ledger') await renderUnifiedLedger();
       } catch (err) {
-        alert("Error saving expense: " + err.message);
+        alert("Failed to save expense: " + err.message);
       }
     }
 
     async function handleDeleteExpense() {
       const id = document.getElementById('exp-id-edit').value;
       if (!id) return;
-      if (confirm("Are you sure you want to delete this expense record?")) {
+      if (confirm("Confirm deletion of this expense record?")) {
         try {
           await DB.deleteExpense(id);
           closeExpenseSheet();
-          await loadExpensesList();
+          await renderUnifiedLedger();
         } catch (err) {
-          alert("Error deleting record: " + err.message);
+          alert("Error: " + err.message);
         }
       }
     }
 
-    // --- REVENUE DRILL DOWN MODAL ---
-    async function openIncomeDetails(period) {
-      const overlay = document.getElementById('overlay-income');
-      const panel = document.getElementById('sheet-income');
+    // 3. Stock editor bottom drawer
+    function openStockEditSheet(productId) {
+      const overlay = document.getElementById('overlay-stock-edit');
+      const panel = document.getElementById('sheet-stock-edit');
+      
       overlay.classList.add('active');
       panel.classList.add('active');
 
-      document.getElementById('income-sheet-title').textContent = `${period === 'today' ? "Today's" : "This Month's"} Income Details`;
+      const product = productsList.find(p => p.id === productId);
+      if (product) {
+        document.getElementById('stock-prod-id').value = product.id;
+        document.getElementById('stock-prod-name-header').textContent = product.name;
+        
+        document.getElementById('stock-qty-500g').value = product.stock_qty_500g !== undefined ? product.stock_qty_500g : 0;
+        document.getElementById('stock-cost-500g').value = product.cost_price_500g !== undefined ? product.cost_price_500g : 80;
+        
+        document.getElementById('stock-qty-1kg').value = product.stock_qty_1kg !== undefined ? product.stock_qty_1kg : 0;
+        document.getElementById('stock-cost-1kg').value = product.cost_price_1kg !== undefined ? product.cost_price_1kg : 160;
+      }
+    }
+
+    function closeStockEditSheet() {
+      document.getElementById('overlay-stock-edit').classList.remove('active');
+      document.getElementById('sheet-stock-edit').classList.remove('active');
+    }
+
+    async function handleSaveStockAdjustment() {
+      const id = document.getElementById('stock-prod-id').value;
+      const qty500 = parseInt(document.getElementById('stock-qty-500g').value) || 0;
+      const cost500 = parseFloat(document.getElementById('stock-cost-500g').value) || 0;
+      const qty1k = parseInt(document.getElementById('stock-qty-1kg').value) || 0;
+      const cost1k = parseFloat(document.getElementById('stock-cost-1kg').value) || 0;
+
+      const payload = {
+        stock_qty_500g: qty500,
+        cost_price_500g: cost500,
+        stock_qty_1kg: qty1k,
+        cost_price_1kg: cost1k
+      };
 
       try {
-        // Fetch completed orders contributing to revenue
+        await DB.updateProduct(id, payload);
+        closeStockEditSheet();
+        await renderStockManager();
+      } catch (err) {
+        alert("Failed to adjust inventory: " + err.message);
+      }
+    }
+
+    // 4. Revenue details drill-down modal
+    async function openRevenueDrillDown(period) {
+      const overlay = document.getElementById('overlay-income-drill');
+      const panel = document.getElementById('sheet-income-drill');
+      overlay.classList.add('active');
+      panel.classList.add('active');
+
+      document.getElementById('income-drill-title').textContent = `${period === 'today' ? "Today's" : "This Month's"} Sales`;
+
+      try {
         const orders = await DB.getOrders();
-        
-        // Filter paid orders (not Cancelled, not New)
         const paidOrders = orders.filter(o => o.status !== 'New Order' && o.status !== 'Cancelled');
         
         const todayIST = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
         const monthIST = todayIST.substring(0, 7);
 
-        // Filter list based on clicked card context
-        let targetOrders = [];
+        let filteredOrders = [];
         if (period === 'today') {
-          targetOrders = paidOrders.filter(o => {
-            const date = new Date(o.timestamp || o.created_at).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
-            return date === todayIST;
+          filteredOrders = paidOrders.filter(o => {
+            const d = new Date(o.timestamp || o.created_at).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+            return d === todayIST;
           });
         } else {
-          targetOrders = paidOrders.filter(o => {
-            const date = new Date(o.timestamp || o.created_at).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
-            return date.startsWith(monthIST);
+          filteredOrders = paidOrders.filter(o => {
+            const d = new Date(o.timestamp || o.created_at).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+            return d.startsWith(monthIST);
           });
         }
 
-        // Render summary headers
-        document.getElementById('drill-income-today').textContent = `₹${globalFinanceData?.today?.income?.toLocaleString('en-IN') || 0}`;
-        document.getElementById('drill-income-month').textContent = `₹${globalFinanceData?.thisMonth?.income?.toLocaleString('en-IN') || 0}`;
-        document.getElementById('drill-income-year').textContent = `₹${globalFinanceData?.thisYear?.income?.toLocaleString('en-IN') || 0}`;
+        // Summary values
+        document.getElementById('drill-income-today-val').textContent = `₹${globalSummaryData?.today?.income?.toLocaleString('en-IN') || 0}`;
+        document.getElementById('drill-income-month-val').textContent = `₹${globalSummaryData?.thisMonth?.income?.toLocaleString('en-IN') || 0}`;
+        document.getElementById('drill-income-year-val').textContent = `₹${globalSummaryData?.thisYear?.income?.toLocaleString('en-IN') || 0}`;
 
-        const listContainer = document.getElementById('drill-orders-list');
-        listContainer.innerHTML = "";
+        const box = document.getElementById('drill-orders-list-box');
+        box.innerHTML = "";
 
-        if (targetOrders.length === 0) {
-          listContainer.innerHTML = `<div class="no-data">No completed orders found for this period.</div>`;
+        if (filteredOrders.length === 0) {
+          box.innerHTML = `<div class="no-data">No completed orders recorded.</div>`;
           return;
         }
 
-        targetOrders.forEach(o => {
-          const formattedDate = new Date(o.timestamp || o.created_at).toLocaleDateString('en-IN', {
+        filteredOrders.forEach(o => {
+          const itemText = Array.isArray(o.items) ? o.items.map(it => `${it.name} (${it.weight} x${it.quantity})`).join(', ') : 'Products';
+          const dateStr = new Date(o.timestamp || o.created_at).toLocaleDateString('en-IN', {
             day: 'numeric',
             month: 'short',
             hour: '2-digit',
@@ -1700,343 +1980,386 @@
           row.innerHTML = `
             <div>
               <div class="order-id">#${o.id}</div>
-              <div class="order-cust">${o.customer.name} (${o.customer.state})</div>
-              <div class="order-weight">${o.totalWeight}</div>
+              <div class="order-cust">${o.customer?.name || 'Walk-in'} &nbsp;•&nbsp; <span style="font-size:0.7rem; color:var(--slate-500);">${itemText}</span></div>
+              <div class="order-weight">Weight: ${o.totalWeight}</div>
             </div>
             <div class="order-right">
               <div class="order-amt">₹${o.total}</div>
-              <div class="order-date">${formattedDate}</div>
+              <div class="order-date">${dateStr}</div>
             </div>
           `;
-          listContainer.appendChild(row);
+          box.appendChild(row);
         });
 
       } catch (err) {
-        console.error("Error loading income drill-down:", err);
+        console.error("Drilldown loading error:", err);
       }
     }
 
-    function closeIncomeDetails() {
-      document.getElementById('overlay-income').classList.remove('active');
-      document.getElementById('sheet-income').classList.remove('active');
+    function closeIncomeDrillDown() {
+      document.getElementById('overlay-income-drill').classList.remove('active');
+      document.getElementById('sheet-income-drill').classList.remove('active');
     }
 
-    // --- STOCK VALUE DRILL DOWN MODAL ---
-    async function openStockDetails() {
-      const overlay = document.getElementById('overlay-stock');
-      const panel = document.getElementById('sheet-stock');
-      overlay.classList.add('active');
-      panel.classList.add('active');
-
-      try {
-        const products = await DB.getProducts();
-        
-        // Summary
-        const stockVal = globalFinanceData?.stockValue?.value || 0;
-        const isEstimate = globalFinanceData?.stockValue?.isEstimate;
-
-        document.getElementById('drill-stock-total').textContent = `₹${stockVal.toLocaleString('en-IN')}`;
-        const badge = document.getElementById('drill-stock-estimate-badge');
-        badge.textContent = isEstimate ? "Estimated using Retail Price" : "Valued at Production Cost";
-        badge.className = isEstimate ? "estimate-tag" : "estimate-tag verified";
-
-        const listContainer = document.getElementById('drill-stock-list');
-        listContainer.innerHTML = "";
-
-        if (products.length === 0) {
-          listContainer.innerHTML = `<div class="no-data">No products loaded in database.</div>`;
-          return;
-        }
-
-        products.forEach(p => {
-          const qty500 = p.stock_qty_500g || 0;
-          const qty1k = p.stock_qty_1kg || 0;
-          
-          let cost500 = p.cost_price_500g || 0;
-          let cost1k = p.cost_price_1kg || 0;
-          let usingRetailText = "";
-
-          if (cost500 === 0 && cost1k === 0) {
-            cost500 = p.prices?.["500g"] || p.price_500g || 0;
-            cost1k = p.prices?.["1kg"] || p.price_1kg || 0;
-            usingRetailText = " (retail)";
-          }
-
-          const val = (qty500 * cost500) + (qty1k * cost1k);
-          const isLow = (qty500 + qty1k) < 10;
-          const lowBadge = isLow ? `<span class="stock-badge-low">Low Stock</span>` : "";
-
-          const row = document.createElement('div');
-          row.className = "stock-row";
-          row.innerHTML = `
-            <div class="stock-left">
-              <span class="stock-name">${p.name} ${lowBadge}</span>
-              <span class="stock-qty-text">500g size: <strong>${qty500}</strong> pkts | 1kg size: <strong>${qty1k}</strong> pkts</span>
-            </div>
-            <div class="stock-right">
-              <div class="stock-valuation">₹${val.toLocaleString('en-IN')}</div>
-              <div class="stock-unit-info">500g: ₹${cost500}${usingRetailText} | 1kg: ₹${cost1k}${usingRetailText}</div>
-            </div>
-          `;
-          listContainer.appendChild(row);
-        });
-
-      } catch (err) {
-        console.error("Error loading stock breakdown:", err);
-      }
-    }
-
-    function closeStockDetails() {
-      document.getElementById('overlay-stock').classList.remove('active');
-      document.getElementById('sheet-stock').classList.remove('active');
-    }
-
-    // --- OVERVIEW: SET PERIOD TOGGLE ---
-    function setPeriodFilter(period, btnElement) {
-      selectedPeriodFilter = period;
-      
-      // Update toggle buttons active class
-      document.querySelectorAll('.period-btn').forEach(btn => {
-        btn.classList.toggle('active', btn === btnElement);
+    // --- FILTER OVERVIEW LEDGERS ---
+    function setPeriodFilter(period, btn) {
+      periodFilter = period;
+      document.querySelectorAll('.toggle-btn').forEach(b => {
+        b.classList.toggle('active', b === btn);
       });
-
-      updateHeroSection();
+      updateHeroCardValues();
     }
 
-    function updateHeroSection() {
-      if (!globalFinanceData) return;
+    function updateHeroCardValues() {
+      if (!globalSummaryData) return;
 
-      const titleElement = document.getElementById('hero-title');
-      const valElement = document.getElementById('hero-net-value');
-      const badgeElement = document.getElementById('hero-trend-badge');
+      const label = document.getElementById('hero-net-label');
+      const val = document.getElementById('hero-net-value');
+      const badge = document.getElementById('hero-net-badge');
 
-      let periodLabel = "This Month";
-      let profitVal = 0;
+      let profit = 0;
+      let labelText = "This Month's Profit / Loss";
 
-      if (selectedPeriodFilter === 'today') {
-        periodLabel = "Today's Profit / Loss";
-        profitVal = globalFinanceData.today.profit;
-      } else if (selectedPeriodFilter === 'month') {
-        periodLabel = "This Month's Profit / Loss";
-        profitVal = globalFinanceData.thisMonth.profit;
-      } else if (selectedPeriodFilter === 'year') {
-        periodLabel = "This Year's Profit / Loss";
-        profitVal = globalFinanceData.thisYear.profit;
+      if (periodFilter === 'today') {
+        labelText = "Today's Profit / Loss";
+        profit = globalSummaryData.today.profit;
+      } else if (periodFilter === 'month') {
+        labelText = "This Month's Profit / Loss";
+        profit = globalSummaryData.thisMonth.profit;
+      } else if (periodFilter === 'year') {
+        labelText = "This Year's Profit / Loss";
+        profit = globalSummaryData.thisYear.profit;
       }
 
-      titleElement.textContent = periodLabel;
-      valElement.textContent = `₹${profitVal.toLocaleString('en-IN')}`;
+      label.textContent = labelText;
+      val.textContent = `₹${profit.toLocaleString('en-IN')}`;
 
-      // Manage colors
-      if (profitVal >= 0) {
-        valElement.className = "hero-profit-value text-success";
-        badgeElement.textContent = `▲ Profit`;
-        badgeElement.className = "hero-badge profit";
+      if (profit >= 0) {
+        val.className = "hero-val text-success";
+        badge.className = "hero-badge-pill profit";
+        badge.textContent = "▲ Profit";
       } else {
-        valElement.className = "hero-profit-value text-danger";
-        badgeElement.textContent = `▼ Loss`;
-        badgeElement.className = "hero-badge loss";
+        val.className = "hero-val text-danger";
+        badge.className = "hero-badge-pill loss";
+        badge.textContent = "▼ Loss";
       }
     }
 
-    // --- REFRESH IN-APP CORE SUMMARIES ---
-    async function refreshDashboardSummary() {
+    // --- REFRESH IN-APP VIEWS ---
+    async function refreshOverviewData() {
       try {
-        globalFinanceData = await DB.getFinanceSummary();
-        
-        // Update hero and period numbers
-        updateHeroSection();
+        globalSummaryData = await DB.getFinanceSummary();
+        updateHeroCardValues();
 
         // Update Today stats
-        document.getElementById('metric-today-income').textContent = `₹${globalFinanceData.today.income.toLocaleString('en-IN')}`;
-        document.getElementById('metric-today-expenses').textContent = `₹${globalFinanceData.today.expenses.toLocaleString('en-IN')}`;
+        document.getElementById('metric-today-income').textContent = `₹${globalSummaryData.today.income.toLocaleString('en-IN')}`;
+        document.getElementById('metric-today-expenses').textContent = `₹${globalSummaryData.today.expenses.toLocaleString('en-IN')}`;
         
-        const todayProfit = globalFinanceData.today.profit;
+        const todayProfit = globalSummaryData.today.profit;
         const todayProfEl = document.getElementById('metric-today-profit');
         todayProfEl.textContent = `₹${todayProfit.toLocaleString('en-IN')}`;
-        todayProfEl.className = todayProfit >= 0 ? "metric-value text-success" : "metric-value text-danger";
+        todayProfEl.className = todayProfit >= 0 ? "card-val income-text" : "card-val expense-text";
 
         // Update Month stats
-        document.getElementById('metric-month-income').textContent = `₹${globalFinanceData.thisMonth.income.toLocaleString('en-IN')}`;
-        document.getElementById('metric-month-expenses').textContent = `₹${globalFinanceData.thisMonth.expenses.toLocaleString('en-IN')}`;
+        document.getElementById('metric-month-income').textContent = `₹${globalSummaryData.thisMonth.income.toLocaleString('en-IN')}`;
+        document.getElementById('metric-month-expenses').textContent = `₹${globalSummaryData.thisMonth.expenses.toLocaleString('en-IN')}`;
         
-        const monthProfit = globalFinanceData.thisMonth.profit;
+        const monthProfit = globalSummaryData.thisMonth.profit;
         const monthProfEl = document.getElementById('metric-month-profit');
         monthProfEl.textContent = `₹${monthProfit.toLocaleString('en-IN')}`;
-        monthProfEl.className = monthProfit >= 0 ? "metric-value text-success" : "metric-value text-danger";
+        monthProfEl.className = monthProfit >= 0 ? "card-val income-text" : "card-val expense-text";
 
         // Update Stock Value
-        document.getElementById('metric-stock-value').textContent = `₹${globalFinanceData.stockValue.value.toLocaleString('en-IN')}`;
+        document.getElementById('metric-stock-value').textContent = `₹${globalSummaryData.stockValue.value.toLocaleString('en-IN')}`;
         const stockBadge = document.getElementById('metric-stock-badge');
-        stockBadge.textContent = globalFinanceData.stockValue.isEstimate ? "Estimated" : "Production Cost";
-        stockBadge.className = globalFinanceData.stockValue.isEstimate ? "estimate-tag" : "estimate-tag verified";
+        stockBadge.textContent = globalSummaryData.stockValue.isEstimate ? "Estimated" : "Cost Basis";
+        stockBadge.className = globalSummaryData.stockValue.isEstimate ? "estimate-tag" : "estimate-tag verified";
 
-        // Render 6-month small Sparkline Chart
-        renderSparklineChart();
-
+        // Draw curved bezier line sparkline chart
+        drawSparklineCurveChart();
       } catch (err) {
-        console.error("Error refreshing summary dashboard:", err);
+        console.error("Dashboard overview summary fail:", err);
       }
     }
 
-    // --- DRAW LIGHTWEIGHT SVG SPARKLINE ---
-    function renderSparklineChart() {
-      const container = document.getElementById('overview-sparkline');
-      container.innerHTML = "";
+    // --- RENDER HIGH-FIDELITY BEZIER CURVE SVG ---
+    function drawSparklineCurveChart() {
+      const box = document.getElementById('overview-sparkline');
+      box.innerHTML = "";
 
-      if (!globalFinanceData || !globalFinanceData.trends || globalFinanceData.trends.length === 0) {
-        container.innerHTML = `<div class="no-data" style="padding:15px 0;">No trend data available</div>`;
+      if (!globalSummaryData || !globalSummaryData.trends || globalSummaryData.trends.length === 0) {
+        box.innerHTML = `<div class="no-data">No history records to generate curve</div>`;
         return;
       }
 
-      const trends = globalFinanceData.trends.slice(-6); // last 6 months
-      const labels = trends.map(t => t.label);
+      const trends = globalSummaryData.trends.slice(-6); // last 6 months
       const values = trends.map(t => t.profit);
 
       const maxVal = Math.max(...values, 0);
       const minVal = Math.min(...values, 0);
       const range = maxVal - minVal || 1000;
 
-      // Draw SVG
       const width = 300;
       const height = 120;
       const padding = 20;
 
-      let pointsStr = "";
       const points = [];
-
-      trends.forEach((t, i) => {
-        const x = padding + (i * ((width - (padding * 2)) / (trends.length - 1 || 1)));
-        // Invert Y because SVG coordinates starts 0 at top
+      trends.forEach((t, idx) => {
+        const x = padding + (idx * ((width - (padding * 2)) / (trends.length - 1 || 1)));
         const y = height - padding - (((t.profit - minVal) / range) * (height - (padding * 2)));
-        points.push({ x, y, val: t.profit, label: t.label });
-        pointsStr += `${x},${y} `;
+        points.push({ x, y, label: t.label, val: t.profit });
       });
 
-      // Build bars or line sparkline
-      let svgContent = `<svg width="100%" height="100%" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+      // SVG Rebuild
+      let svg = `<svg width="100%" height="100%" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
       
-      // Grid baseline (zero line)
-      const zeroY = height - padding - (((0 - minVal) / range) * (height - (padding * 2)));
-      svgContent += `<line x1="${padding}" y1="${zeroY}" x2="${width - padding}" y2="${zeroY}" stroke="#E2E8F0" stroke-width="1.5" stroke-dasharray="4" />`;
-
-      // Sparkline Path
-      svgContent += `<polyline fill="none" stroke="#3B82F6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" points="${pointsStr.trim()}" />`;
-
-      // Sparkline Area (fade to bottom)
-      const areaPoints = `${points[0].x},${zeroY} ${pointsStr} ${points[points.length - 1].x},${zeroY}`;
-      svgContent += `
+      // Gradient shader
+      svg += `
         <defs>
-          <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.25"/>
-            <stop offset="100%" stop-color="#3B82F6" stop-opacity="0"/>
+          <linearGradient id="curveGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4F46E5" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="#4F46E5" stop-opacity="0"/>
           </linearGradient>
         </defs>
-        <polygon points="${areaPoints}" fill="url(#areaGrad)" />
       `;
 
-      // Dots and Text
+      // Zero baseline
+      const zeroY = height - padding - (((0 - minVal) / range) * (height - (padding * 2)));
+      svg += `<line x1="${padding}" y1="${zeroY}" x2="${width - padding}" y2="${zeroY}" stroke="#E2E8F0" stroke-width="1.5" stroke-dasharray="4" />`;
+
+      // Draw curved bezier line path
+      let pathD = `M ${points[0].x} ${points[0].y}`;
+      let areaD = `M ${points[0].x} ${zeroY} L ${points[0].x} ${points[0].y}`;
+
+      for (let i = 0; i < points.length - 1; i++) {
+        const p0 = points[i];
+        const p1 = points[i + 1];
+        // Control points
+        const cpX1 = p0.x + (p1.x - p0.x) / 2;
+        const cpY1 = p0.y;
+        const cpX2 = p0.x + (p1.x - p0.x) / 2;
+        const cpY2 = p1.y;
+
+        pathD += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${p1.x} ${p1.y}`;
+        areaD += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${p1.x} ${p1.y}`;
+      }
+
+      areaD += ` L ${points[points.length - 1].x} ${zeroY} Z`;
+
+      // Gradient Fill
+      svg += `<path d="${areaD}" fill="url(#curveGrad)" />`;
+      // Main Curve Line
+      svg += `<path d="${pathD}" fill="none" stroke="#4F46E5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />`;
+
+      // Highlights Dots
       points.forEach(p => {
-        const dotColor = p.val >= 0 ? '#10B981' : '#EF4444';
-        svgContent += `
+        const dotColor = p.val >= 0 ? '#059669' : '#DC2626';
+        svg += `
           <circle cx="${p.x}" cy="${p.y}" r="4" fill="white" stroke="${dotColor}" stroke-width="2" />
-          <text x="${p.x}" y="${height - 4}" font-size="8" font-weight="600" fill="#64748B" text-anchor="middle">${p.label}</text>
-          <text x="${p.x}" y="${p.y - 8}" font-size="8" font-weight="700" fill="#1E293B" text-anchor="middle">₹${p.val.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</text>
+          <text x="${p.x}" y="${height - 4}" font-size="8" font-weight="700" fill="#94A3B8" text-anchor="middle">${p.label}</text>
+          <text x="${p.x}" y="${p.y - 8}" font-size="8.5" font-weight="800" fill="#0F172A" text-anchor="middle">₹${p.val.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</text>
         `;
       });
 
-      svgContent += `</svg>`;
-      container.innerHTML = svgContent;
+      svg += `</svg>`;
+      box.innerHTML = svg;
     }
 
-    // --- EXPENSES HISTORY ROW LOADER ---
-    async function loadExpensesList() {
-      const container = document.getElementById('history-rows-container');
+    // --- VIEW 2: UNIFIED TRANSACTIONS LEDGER ---
+    async function renderUnifiedLedger() {
+      const container = document.getElementById('ledger-rows-container');
       container.innerHTML = "";
 
-      const categoryFilter = document.getElementById('filter-category').value;
-      const dateFilter = document.getElementById('filter-date').value;
+      const typeFilter = document.getElementById('ledger-filter-type').value;
+      const dateFilter = document.getElementById('ledger-filter-date').value;
 
       try {
+        const orders = await DB.getOrders();
         const expenses = await DB.getExpenses();
-        
         const todayIST = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
-        
-        // Filter
-        let filteredExpenses = expenses.filter(e => {
-          const matchCat = categoryFilter === 'All' || e.category === categoryFilter;
-          
-          let matchDate = true;
+
+        // Filter and map orders (Income)
+        const paidOrders = orders.filter(o => o.status !== 'New Order' && o.status !== 'Cancelled');
+        const ordersMapped = paidOrders.map(o => {
+          const date = new Date(o.timestamp || o.created_at).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+          const dateObj = new Date(o.timestamp || o.created_at);
+          return {
+            id: o.id,
+            type: 'Income',
+            title: Array.isArray(o.items) ? o.items.map(it => `${it.name} (x${it.quantity})`).join(', ') : 'Product Sale',
+            amount: parseFloat(o.total) || 0,
+            dateKey: date,
+            dateObj: dateObj,
+            category: 'Sales',
+            subtitle: `Customer: ${o.customer?.name || 'Walk-in'}`
+          };
+        });
+
+        // Filter and map expenses (Outcome)
+        const expensesMapped = expenses.map(e => {
+          const dateObj = new Date(e.expense_date);
+          return {
+            id: e.id,
+            type: 'Expenses',
+            title: e.expense_name,
+            amount: parseFloat(e.amount) || 0,
+            dateKey: e.expense_date,
+            dateObj: dateObj,
+            category: e.category,
+            subtitle: `Category: ${e.category}`
+          };
+        });
+
+        // Merge arrays
+        let ledger = [];
+        if (typeFilter === 'All') {
+          ledger = [...ordersMapped, ...expensesMapped];
+        } else if (typeFilter === 'Income') {
+          ledger = ordersMapped;
+        } else if (typeFilter === 'Expenses') {
+          ledger = expensesMapped;
+        }
+
+        // Apply date preset filtering
+        ledger = ledger.filter(item => {
           if (dateFilter === 'Today') {
-            matchDate = e.expense_date === todayIST;
+            return item.dateKey === todayIST;
           } else if (dateFilter === 'This Week') {
             const oneWeekAgo = new Date();
             oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
             const limit = oneWeekAgo.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
-            matchDate = e.expense_date >= limit;
+            return item.dateKey >= limit;
           } else if (dateFilter === 'This Month') {
-            matchDate = e.expense_date.startsWith(todayIST.substring(0, 7));
+            return item.dateKey.startsWith(todayIST.substring(0, 7));
           }
-
-          return matchCat && matchDate;
+          return true;
         });
 
-        if (filteredExpenses.length === 0) {
-          container.innerHTML = `<div class="no-data">No expense records found.</div>`;
+        // Sort chronologically (newest first)
+        ledger.sort((a, b) => b.dateObj - a.dateObj);
+
+        if (ledger.length === 0) {
+          container.innerHTML = `<div class="no-data">No transactions recorded.</div>`;
           return;
         }
 
-        filteredExpenses.forEach(e => {
-          const categoryObj = CATEGORY_ICONS[e.category] || { icon: '💰', class: 'cat-misc' };
-          const formattedDate = new Date(e.expense_date).toLocaleDateString('en-IN', {
+        ledger.forEach(item => {
+          const isInc = item.type === 'Income';
+          const avatarIcon = isInc ? '🛍️' : (CATEGORY_ICONS[item.category]?.icon || '💸');
+          const avatarClass = isInc ? 'inc' : 'exp';
+          const amountSign = isInc ? `+₹` : `-₹`;
+          const amountClass = isInc ? 'inc' : 'exp';
+
+          const formattedDate = item.dateObj.toLocaleDateString('en-IN', {
             day: 'numeric',
             month: 'short',
-            year: 'numeric'
+            hour: '2-digit',
+            minute: '2-digit'
           });
 
           const row = document.createElement('div');
-          row.className = "expense-row";
-          row.onclick = () => openExpenseSheet(e.id);
+          row.className = "ledger-row";
+          row.onclick = () => {
+            if (isInc) {
+              // Open order drilldown detail page
+              openRevenueDrillDown('month');
+            } else {
+              // Open expense edit modal sheet
+              openExpenseSheet(item.id);
+            }
+          };
           row.innerHTML = `
-            <div class="expense-left">
-              <div class="expense-icon ${categoryObj.class}">${categoryObj.icon}</div>
-              <div class="expense-details">
-                <span class="expense-name">${e.expense_name}</span>
-                <span class="expense-meta">${e.category} &nbsp;•&nbsp; ${formattedDate}</span>
+            <div class="ledger-row-left">
+              <div class="ledger-avatar ${avatarClass}">${avatarIcon}</div>
+              <div class="ledger-details">
+                <span class="ledger-title">${item.title}</span>
+                <span class="ledger-meta">${item.subtitle} &nbsp;•&nbsp; ${formattedDate}</span>
               </div>
             </div>
-            <div class="expense-amount">₹${parseFloat(e.amount).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</div>
+            <div class="ledger-amount ${amountClass}">${amountSign}${item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
           `;
           container.appendChild(row);
         });
 
       } catch (err) {
-        console.error("Error loading expenses:", err);
+        console.error("Unified Ledger load error:", err);
       }
     }
 
-    // --- DRAW 12-MONTH INCOME VS EXPENSE LARGE CHART ---
-    async function loadTrendsChart() {
-      const container = document.getElementById('trends-large-chart');
+    // --- VIEW 3: IN-APP STOCK MANAGEMENT ---
+    async function renderStockManager() {
+      const box = document.getElementById('stock-list-container');
+      box.innerHTML = "";
+
+      try {
+        productsList = await DB.getProducts();
+        const summary = await DB.getFinanceSummary();
+
+        document.getElementById('stock-val-hero').textContent = `₹${summary.stockValue.value.toLocaleString('en-IN')}`;
+        const badge = document.getElementById('stock-val-hero-badge');
+        badge.textContent = summary.stockValue.isEstimate ? "Estimated using Retail Price" : "Valued at Production Cost";
+
+        if (productsList.length === 0) {
+          box.innerHTML = `<div class="no-data">No product inventories found.</div>`;
+          return;
+        }
+
+        productsList.forEach(p => {
+          const qty500 = p.stock_qty_500g || 0;
+          const qty1k = p.stock_qty_1kg || 0;
+          
+          let cost500 = p.cost_price_500g || 0;
+          let cost1k = p.cost_price_1kg || 0;
+          let estimateLabel = "";
+
+          if (cost500 === 0 && cost1k === 0) {
+            cost500 = parseFloat(p.prices?.["500g"] || p.price_500g || 0);
+            cost1k = parseFloat(p.prices?.["1kg"] || p.price_1kg || 0);
+            estimateLabel = " (retail)";
+          }
+
+          const value = (qty500 * cost500) + (qty1k * cost1k);
+          const isLow = (qty500 + qty1k) < 10;
+          const warningBadge = isLow ? `<span class="stock-tag-amber">Low Stock</span>` : "";
+
+          const row = document.createElement('div');
+          row.className = "stock-row-premium";
+          row.onclick = () => openStockEditSheet(p.id);
+          row.innerHTML = `
+            <div>
+              <span class="ledger-title" style="display:flex; align-items:center;">${p.name} ${warningBadge}</span>
+              <span class="ledger-meta" style="margin-top:4px; display:inline-block;">500g size: <strong>${qty500}</strong> bags | 1kg size: <strong>${qty1k}</strong> bags</span>
+            </div>
+            <div class="stock-val-box">
+              <div class="stock-val-title">₹${value.toLocaleString('en-IN')}</div>
+              <span class="ledger-meta" style="font-size:0.65rem;">Costs: 500g: ₹${cost500}${estimateLabel} | 1kg: ₹${cost1k}${estimateLabel}</span>
+            </div>
+          `;
+          box.appendChild(row);
+        });
+
+      } catch (err) {
+        console.error("Stock manager render error:", err);
+      }
+    }
+
+    // --- VIEW 4: DRAW 12-MONTH BAR/LINE SVG TRENDS ---
+    async function renderMonthlyAnalyticsChart() {
+      const container = document.getElementById('trends-large-chart-canvas');
       container.innerHTML = "";
-      
-      // Hide detail card by default
-      document.getElementById('trend-tap-detail').style.display = "none";
+      document.getElementById('analytics-month-card').style.display = "none";
 
       try {
         const summary = await DB.getFinanceSummary();
         const trends = summary.trends || [];
 
         if (trends.length === 0) {
-          container.innerHTML = `<div class="no-data">No history records to generate trends.</div>`;
+          container.innerHTML = `<div class="no-data">No trend dataset available.</div>`;
           return;
         }
 
-        // Aggregate max value for scaling
         const maxVal = Math.max(...trends.map(t => Math.max(t.income, t.expenses)), 1000);
-        const minVal = Math.min(...trends.map(t => t.profit), 0);
-        const absMaxProfit = Math.max(Math.abs(maxVal), Math.abs(minVal));
-
+        
         const width = 500;
         const height = 200;
         const paddingLeft = 40;
@@ -2046,122 +2369,120 @@
 
         const chartWidth = width - paddingLeft - paddingRight;
         const chartHeight = height - paddingTop - paddingBottom;
-
         const colWidth = chartWidth / (trends.length || 1);
-        const barGroupWidth = colWidth * 0.75;
-        const singleBarWidth = barGroupWidth / 2;
+        const groupWidth = colWidth * 0.75;
+        const barWidth = groupWidth / 2;
 
-        let svgContent = `<svg width="100%" height="100%" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
+        let svg = `<svg width="100%" height="100%" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">`;
 
-        // Horizontal Gridlines
+        // Y-axis gridlines
         for (let i = 0; i <= 4; i++) {
           const y = paddingTop + (i * (chartHeight / 4));
-          const gridVal = maxVal - (i * (maxVal / 4));
-          svgContent += `
-            <line x1="${paddingLeft}" y1="${y}" x2="${width - paddingRight}" y2="${y}" stroke="#E2E8F0" stroke-width="1" />
-            <text x="${paddingLeft - 8}" y="${y + 3}" font-size="7.5" fill="#94A3B8" font-weight="600" text-anchor="end">₹${gridVal.toLocaleString('en-IN', { notation: 'compact', maximumFractionDigits: 0 })}</text>
+          const val = maxVal - (i * (maxVal / 4));
+          svg += `
+            <line x1="${paddingLeft}" y1="${y}" x2="${width - paddingRight}" y2="${y}" stroke="#F1F5F9" stroke-width="1.5" />
+            <text x="${paddingLeft - 8}" y="${y + 3}" font-size="8" font-family="${varToString('--font-body')}" fill="#94A3B8" font-weight="700" text-anchor="end">₹${val.toLocaleString('en-IN', { notation: 'compact', maximumFractionDigits: 0 })}</text>
           `;
         }
 
-        let profitLinePoints = "";
+        let profitPathPoints = "";
         const profitPoints = [];
 
         trends.forEach((t, idx) => {
-          const groupX = paddingLeft + (idx * colWidth) + ((colWidth - barGroupWidth) / 2);
+          const groupX = paddingLeft + (idx * colWidth) + ((colWidth - groupWidth) / 2);
           
-          // Scaling
-          const incHeight = (t.income / maxVal) * chartHeight;
-          const expHeight = (t.expenses / maxVal) * chartHeight;
+          const incH = (t.income / maxVal) * chartHeight;
+          const expH = (t.expenses / maxVal) * chartHeight;
 
-          const incY = height - paddingBottom - incHeight;
-          const expY = height - paddingBottom - expHeight;
+          const incY = height - paddingBottom - incH;
+          const expY = height - paddingBottom - expH;
 
-          // Drawing income & expense side-by-side bars
-          svgContent += `
-            <rect x="${groupX}" y="${incY}" width="${singleBarWidth - 2}" height="${incHeight}" fill="#10B981" rx="2" style="cursor:pointer;" onclick="showTrendDetail(${idx})" />
-            <rect x="${groupX + singleBarWidth}" y="${expY}" width="${singleBarWidth - 2}" height="${expHeight}" fill="#EF4444" rx="2" style="cursor:pointer;" onclick="showTrendDetail(${idx})" />
+          // Bars
+          svg += `
+            <rect x="${groupX}" y="${incY}" width="${barWidth - 2}" height="${incH}" fill="#059669" rx="2" style="cursor:pointer;" onclick="showMonthlyDetailOverlay(${idx})" />
+            <rect x="${groupX + barWidth}" y="${expY}" width="${barWidth - 2}" height="${expH}" fill="#DC2626" rx="2" style="cursor:pointer;" onclick="showMonthlyDetailOverlay(${idx})" />
             
-            <!-- X Axis month label -->
-            <text x="${groupX + (barGroupWidth / 2)}" y="${height - 8}" font-size="8" fill="#64748B" font-weight="600" text-anchor="middle">${t.label}</text>
+            <text x="${groupX + (groupWidth / 2)}" y="${height - 8}" font-size="8.5" fill="#94A3B8" font-weight="700" text-anchor="middle">${t.label}</text>
           `;
 
-          // Profit line coordinate mapping
-          const lineX = groupX + (barGroupWidth / 2);
-          const lineY = height - paddingBottom - ((t.profit / maxVal) * chartHeight);
-          profitLinePoints += `${lineX},${lineY} `;
-          profitPoints.push({ x: lineX, y: lineY, val: t.profit, idx: idx });
+          // Profit line dots mapping
+          const pX = groupX + (groupWidth / 2);
+          const pY = height - paddingBottom - ((t.profit / maxVal) * chartHeight);
+          profitPathPoints += `${pX},${pY} `;
+          profitPoints.push({ x: pX, y: pY, idx: idx });
         });
 
         // Overlay Profit line
-        svgContent += `<polyline fill="none" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="${profitLinePoints.trim()}" />`;
+        svg += `<polyline fill="none" stroke="#4F46E5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="${profitPathPoints.trim()}" />`;
 
         // Profit Dots
         profitPoints.forEach(p => {
-          svgContent += `
-            <circle cx="${p.x}" cy="${p.y}" r="4" fill="white" stroke="#3B82F6" stroke-width="2" style="cursor:pointer;" onclick="showTrendDetail(${p.idx})" />
+          svg += `
+            <circle cx="${p.x}" cy="${p.y}" r="4" fill="white" stroke="#4F46E5" stroke-width="2.5" style="cursor:pointer;" onclick="showMonthlyDetailOverlay(${p.idx})" />
           `;
         });
 
-        // Bottom baseline
-        svgContent += `<line x1="${paddingLeft}" y1="${height - paddingBottom}" x2="${width - paddingRight}" y2="${height - paddingBottom}" stroke="#64748B" stroke-width="1.5" />`;
+        // Baseline
+        svg += `<line x1="${paddingLeft}" y1="${height - paddingBottom}" x2="${width - paddingRight}" y2="${height - paddingBottom}" stroke="#CBD5E1" stroke-width="1.5" />`;
 
-        svgContent += `</svg>`;
-        container.innerHTML = svgContent;
+        svg += `</svg>`;
+        container.innerHTML = svg;
 
-        // Keep a copy on window object to fetch detailing
-        window.activeTrendsList = trends;
+        window.trendsLocalDataset = trends;
 
       } catch (err) {
-        console.error("Error loading trends:", err);
+        console.error("Trends rendering error:", err);
       }
     }
 
-    // --- INTERACTIVE TAP VALUE SHOWING ---
-    window.showTrendDetail = function(idx) {
-      const detailCard = document.getElementById('trend-tap-detail');
-      const label = document.getElementById('trend-detail-month-label');
-      const inc = document.getElementById('trend-detail-inc');
-      const exp = document.getElementById('trend-detail-exp');
-      const prof = document.getElementById('trend-detail-prof');
-      const profCol = document.getElementById('trend-detail-prof-col');
+    function varToString(varName) {
+      return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    }
 
-      const data = window.activeTrendsList?.[idx];
+    window.showMonthlyDetailOverlay = function(idx) {
+      const data = window.trendsLocalDataset?.[idx];
       if (!data) return;
 
-      detailCard.style.display = "block";
-      label.textContent = `${data.label} (Detailed Ledger)`;
-      inc.textContent = `₹${data.income.toLocaleString('en-IN')}`;
-      exp.textContent = `₹${data.expenses.toLocaleString('en-IN')}`;
-      prof.textContent = `₹${data.profit.toLocaleString('en-IN')}`;
+      const card = document.getElementById('analytics-month-card');
+      card.style.display = "block";
 
+      document.getElementById('analytics-month-title').textContent = `${data.label} Ledger Performance`;
+      document.getElementById('analytics-detail-inc').textContent = `₹${data.income.toLocaleString('en-IN')}`;
+      document.getElementById('analytics-detail-exp').textContent = `₹${data.expenses.toLocaleString('en-IN')}`;
+      document.getElementById('analytics-detail-net').textContent = `₹${data.profit.toLocaleString('en-IN')}`;
+
+      const netCol = document.getElementById('analytics-detail-net-col');
       if (data.profit >= 0) {
-        profCol.className = "trend-detail-col prof profit";
+        netCol.className = "trends-ledger-col net plus";
       } else {
-        profCol.className = "trend-detail-col prof loss";
+        netCol.className = "trends-ledger-col net minus";
       }
 
-      // Smooth scroll to see detailing on mobile
-      detailCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
-    // --- BOOTSTRAP DASHBOARD ---
-    async function initDashboard() {
-      // Set default inputs
-      document.getElementById('exp-date').value = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
-      await refreshDashboardSummary();
+    // --- PORTAL BOOTSTRAP INITIALIZER ---
+    async function bootstrapPortal() {
+      // Set current date string
+      const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Kolkata' };
+      document.getElementById('welcome-date-string').textContent = new Date().toLocaleDateString('en-US', dateOptions);
+      
+      // Auto-set Date inputs to Today in India Time
+      const today = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+      document.getElementById('exp-date').value = today;
+      document.getElementById('sale-date').value = today;
+
+      await refreshOverviewData();
     }
 
-    // Global listener for offline fallback synchronization
+    // Listen to fallbacks synchronizations
     window.addEventListener('storage', async () => {
       if (sessionStorage.getItem('dfp_admin_auth') !== 'true') return;
-      const currentActivePanel = document.querySelector('.tab-panel.active').id;
-      if (currentActivePanel === 'panel-overview') {
-        await refreshDashboardSummary();
-      } else if (currentActivePanel === 'panel-history') {
-        await loadExpensesList();
-      } else if (currentActivePanel === 'panel-trends') {
-        await loadTrendsChart();
-      }
+      const activePanelId = document.querySelector('.tab-panel.active').id;
+      if (activePanelId === 'panel-overview') await refreshOverviewData();
+      else if (activePanelId === 'panel-ledger') await renderUnifiedLedger();
+      else if (activePanelId === 'panel-stock') await renderStockManager();
+      else if (activePanelId === 'panel-trends') await renderMonthlyAnalyticsChart();
     });
 
     window.addEventListener('DOMContentLoaded', checkAuthentication);

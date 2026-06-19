@@ -56,6 +56,39 @@ async function handler(req, res) {
 
       if (itemsError) throw itemsError;
 
+      // 3. Decrement product stock levels
+      try {
+        for (const item of items) {
+          if (item.productId && !item.productId.startsWith('prod_')) {
+            const { data: prod } = await supabase
+              .from('products')
+              .select('stock_qty_500g, stock_qty_1kg')
+              .eq('id', item.productId)
+              .maybeSingle();
+              
+            if (prod) {
+              const qty = parseInt(item.quantity) || 0;
+              const updateFields = {};
+              if (item.weight === '500g') {
+                updateFields.stock_qty_500g = Math.max(0, (parseInt(prod.stock_qty_500g) || 0) - qty);
+              } else if (item.weight === '1kg') {
+                updateFields.stock_qty_1kg = Math.max(0, (parseInt(prod.stock_qty_1kg) || 0) - qty);
+              }
+              
+              if (Object.keys(updateFields).length > 0) {
+                await supabase
+                  .from('products')
+                  .update(updateFields)
+                  .eq('id', item.productId);
+              }
+            }
+          }
+        }
+      } catch (stockErr) {
+        console.error("Error decrementing stock:", stockErr.message);
+        // Do not crash the checkout flow if stock update fails
+      }
+
       // Map back to frontend expected structure
       const responseObj = {
         id: orderId,

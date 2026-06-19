@@ -74,7 +74,7 @@ async function handler(req, res) {
 
   if (method === 'PUT') {
     try {
-      let { id, name, category, description, image, price_500g, price_1kg, inStock, isBestSeller, prices } = req.body;
+      let { id, name, category, description, image, price_500g, price_1kg, inStock, isBestSeller, prices, cost_price_500g, cost_price_1kg, stock_qty_500g, stock_qty_1kg } = req.body;
       
       if (prices) {
         if (prices['500g'] !== undefined) price_500g = prices['500g'];
@@ -91,6 +91,10 @@ async function handler(req, res) {
       if (price_1kg !== undefined) updateFields.price_1kg = parseFloat(price_1kg);
       if (inStock !== undefined) updateFields.in_stock = inStock;
       if (isBestSeller !== undefined) updateFields.is_bestseller = isBestSeller;
+      if (cost_price_500g !== undefined) updateFields.cost_price_500g = parseFloat(cost_price_500g);
+      if (cost_price_1kg !== undefined) updateFields.cost_price_1kg = parseFloat(cost_price_1kg);
+      if (stock_qty_500g !== undefined) updateFields.stock_qty_500g = parseInt(stock_qty_500g);
+      if (stock_qty_1kg !== undefined) updateFields.stock_qty_1kg = parseInt(stock_qty_1kg);
 
       const { data, error } = await supabase
         .from('products')

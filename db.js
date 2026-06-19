@@ -478,10 +478,30 @@ class UnifiedDatabase {
     const orders = JSON.parse(localStorage.getItem("dfp_orders")) || [];
     order.id = "DFP-" + Math.floor(100000 + Math.random() * 900000);
     order.timestamp = new Date().toISOString();
-    order.status = "New Order";
+    order.status = order.status || "New Order";
     order.paymentRef = order.paymentRef || `WA-${order.id}`;
     orders.unshift(order);
     localStorage.setItem("dfp_orders", JSON.stringify(orders));
+
+    // Decrement stock locally if order is Confirmed or Delivered
+    if (order.status === 'Confirmed' || order.status === 'Delivered') {
+      const localProducts = JSON.parse(localStorage.getItem("dfp_products")) || [];
+      if (Array.isArray(order.items)) {
+        order.items.forEach(item => {
+          const prodIdx = localProducts.findIndex(p => p.id === item.productId);
+          if (prodIdx !== -1) {
+            const qty = parseInt(item.quantity) || 0;
+            if (item.weight === '500g') {
+              localProducts[prodIdx].stock_qty_500g = Math.max(0, (parseInt(localProducts[prodIdx].stock_qty_500g) || 0) - qty);
+            } else if (item.weight === '1kg') {
+              localProducts[prodIdx].stock_qty_1kg = Math.max(0, (parseInt(localProducts[prodIdx].stock_qty_1kg) || 0) - qty);
+            }
+          }
+        });
+        localStorage.setItem("dfp_products", JSON.stringify(localProducts));
+      }
+    }
+
     window.dispatchEvent(new Event("storage"));
     return order;
   }
