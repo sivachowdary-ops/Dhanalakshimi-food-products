@@ -465,6 +465,11 @@
             <span class="slider"></span>
           </label>
         </div>
+        
+        <div style="display: flex; gap: 12px; margin-top: 24px;">
+          <button type="submit" class="btn-primary" style="flex: 1; border-radius: var(--radius-full); padding: 12px 20px; font-weight: 600; background-color: var(--primary-maroon); border-color: var(--primary-maroon); color: var(--accent-gold);">💾 Save Product</button>
+          <button type="button" id="btn-cancel-edit" class="btn-secondary" style="flex: 1; border-radius: var(--radius-full); padding: 12px 20px; font-weight: 600; background: var(--bg-cream); border: 1px solid var(--border-color); color: var(--text-dark);">Cancel</button>
+        </div>
       </form>
     </div>
     </div>
@@ -526,43 +531,79 @@
 
   <script src="db.js"></script>
   <script>
+    // Shadow sessionStorage to safely handle browser privacy restrictions (e.g., Private Browsing Mode)
+    const sessionStorage = (() => {
+      const mockStorage = {};
+      return {
+        getItem(key) {
+          try {
+            return window.sessionStorage.getItem(key);
+          } catch (e) {
+            console.warn(`sessionStorage.getItem failed for key: ${key}. Using in-memory fallback.`, e);
+            return mockStorage[key] || null;
+          }
+        },
+        setItem(key, value) {
+          try {
+            window.sessionStorage.setItem(key, value);
+          } catch (e) {
+            console.warn(`sessionStorage.setItem failed for key: ${key}. Using in-memory fallback.`, e);
+            mockStorage[key] = String(value);
+          }
+        },
+        removeItem(key) {
+          try {
+            window.sessionStorage.removeItem(key);
+          } catch (e) {
+            console.warn(`sessionStorage.removeItem failed for key: ${key}. Using in-memory fallback.`, e);
+            delete mockStorage[key];
+          }
+        }
+      };
+    })();
+
     // UI Tab Navigation
     const tabs = document.querySelectorAll('.admin-tab');
     const panels = document.querySelectorAll('.admin-tab-panel');
 
+    async function switchTab(activeTab) {
+      // Sync desktop tabs active states
+      document.querySelectorAll('.admin-tab').forEach(t => {
+        t.classList.toggle('active', t.getAttribute('data-tab') === activeTab);
+      });
+
+      // Sync mobile tabs active states
+      document.querySelectorAll('.mobile-tab').forEach(mt => {
+        mt.classList.toggle('active', mt.getAttribute('data-tab') === activeTab);
+      });
+
+      // Sync panels active states
+      document.querySelectorAll('.admin-tab-panel').forEach(p => {
+        p.classList.toggle('active', p.id === `panel-${activeTab}`);
+      });
+
+      // Refresh specific view
+      try {
+        if (activeTab === 'dashboard') await loadDashboard();
+        else if (activeTab === 'products') await loadProducts();
+        else if (activeTab === 'orders') {
+          const searchInput = document.getElementById('order-search-input');
+          const filterSelect = document.getElementById('order-status-filter');
+          if (searchInput) searchInput.value = "";
+          if (filterSelect) filterSelect.value = "All";
+          await loadOrders();
+        }
+        else if (activeTab === 'shipping') await loadShipping();
+        else if (activeTab === 'settings') await loadSettings();
+      } catch (err) {
+        console.error("Error refreshing view:", err);
+      }
+    }
+
     tabs.forEach(tab => {
       tab.addEventListener('click', async () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        panels.forEach(p => p.classList.remove('active'));
-
-        // Sync mobile tabs
         const activeTab = tab.getAttribute('data-tab');
-        const mobileTabs = document.querySelectorAll('.mobile-tab');
-        mobileTabs.forEach(mt => {
-          if (mt.getAttribute('data-tab') === activeTab) {
-            mt.classList.add('active');
-          } else {
-            mt.classList.remove('active');
-          }
-        });
-
-        tab.classList.add('active');
-        document.getElementById(`panel-${activeTab}`).classList.add('active');
-        
-        // Refresh specific view
-        try {
-          if (activeTab === 'dashboard') await loadDashboard();
-          else if (activeTab === 'products') await loadProducts();
-          else if (activeTab === 'orders') {
-            document.getElementById('order-search-input').value = "";
-            document.getElementById('order-status-filter').value = "All";
-            await loadOrders();
-          }
-          else if (activeTab === 'shipping') await loadShipping();
-          else if (activeTab === 'settings') await loadSettings();
-        } catch (err) {
-          console.error("Error refreshing view:", err);
-        }
+        await switchTab(activeTab);
       });
     });
 
@@ -573,13 +614,13 @@
     const btnCloseMobileDrawer = document.getElementById('btn-close-mobile-drawer');
 
     function openMobileDrawer() {
-      mobileDrawer.classList.add('active');
-      mobileDrawerOverlay.classList.add('active');
+      if (mobileDrawer) mobileDrawer.classList.add('active');
+      if (mobileDrawerOverlay) mobileDrawerOverlay.classList.add('active');
     }
 
     function closeMobileDrawer() {
-      mobileDrawer.classList.remove('active');
-      mobileDrawerOverlay.classList.remove('active');
+      if (mobileDrawer) mobileDrawer.classList.remove('active');
+      if (mobileDrawerOverlay) mobileDrawerOverlay.classList.remove('active');
     }
 
     if (mobileMenuToggle) mobileMenuToggle.addEventListener('click', openMobileDrawer);
@@ -591,28 +632,7 @@
     mobileTabs.forEach(mobileTab => {
       mobileTab.addEventListener('click', async () => {
         const activeTab = mobileTab.getAttribute('data-tab');
-        const correspondingDesktopTab = document.querySelector(`.admin-tab[data-tab="${activeTab}"]`);
-        if (correspondingDesktopTab) {
-          correspondingDesktopTab.click();
-        } else {
-          // Fallback if desktop tabs not in DOM for some reason
-          tabs.forEach(t => t.classList.remove('active'));
-          mobileTabs.forEach(t => t.classList.remove('active'));
-          panels.forEach(p => p.classList.remove('active'));
-
-          mobileTab.classList.add('active');
-          document.getElementById(`panel-${activeTab}`).classList.add('active');
-          
-          try {
-            if (activeTab === 'dashboard') await loadDashboard();
-            else if (activeTab === 'products') await loadProducts();
-            else if (activeTab === 'orders') await loadOrders();
-            else if (activeTab === 'shipping') await loadShipping();
-            else if (activeTab === 'settings') await loadSettings();
-          } catch (err) {
-            console.error("Error refreshing view:", err);
-          }
-        }
+        await switchTab(activeTab);
         closeMobileDrawer();
       });
     });
@@ -762,8 +782,7 @@
 
           row.querySelector('.btn-view-order').addEventListener('click', async () => {
             // Trigger tab jump to Orders Panel with Search prefilled
-            const ordersTab = document.querySelector('.admin-tab[data-tab="orders"]');
-            ordersTab.click();
+            await switchTab('orders');
             document.getElementById('order-search-input').value = o.id;
             await loadOrders(o.id);
           });
@@ -1056,10 +1075,20 @@
             row.style.backgroundColor = "#FEF3C7"; // highlight matching search order
           }
 
-          const dateFormatted = new Date(o.timestamp).toLocaleString('en-IN', {
-            dateStyle: 'short',
-            timeStyle: 'short'
-          });
+          let dateFormatted = "";
+          try {
+            dateFormatted = new Date(o.timestamp).toLocaleString('en-IN', {
+              dateStyle: 'short',
+              timeStyle: 'short'
+            });
+          } catch (e) {
+            try {
+              const d = new Date(o.timestamp);
+              dateFormatted = `${d.getDate()}/${d.getMonth()+1}/${d.getFullYear()} ${d.getHours()}:${String(d.getMinutes()).padStart(2, '0')}`;
+            } catch (e2) {
+              dateFormatted = o.timestamp || "";
+            }
+          }
 
           // Map items to readable string
           const itemsStr = o.items.map(item => `${item.name} (${item.weight} x${item.quantity})`).join('<br>');

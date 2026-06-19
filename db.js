@@ -187,6 +187,46 @@ const DEFAULT_SETTINGS = {
   contactAddress: "Door No. 18/87, Nimmathota, Undrajavaram, West Godavari District, Andhra Pradesh - 534216"
 };
 
+// Shadow localStorage at the file level to safely handle browser privacy restrictions (e.g. Private Browsing Mode)
+const localStorage = (() => {
+  const mockStorage = {};
+  return {
+    getItem(key) {
+      try {
+        return window.localStorage.getItem(key);
+      } catch (e) {
+        console.warn(`localStorage.getItem failed for key: ${key}. Using in-memory fallback.`, e);
+        return mockStorage[key] || null;
+      }
+    },
+    setItem(key, value) {
+      try {
+        window.localStorage.setItem(key, value);
+      } catch (e) {
+        console.warn(`localStorage.setItem failed for key: ${key}. Using in-memory fallback.`, e);
+        mockStorage[key] = String(value);
+      }
+    },
+    removeItem(key) {
+      try {
+        window.localStorage.removeItem(key);
+      } catch (e) {
+        console.warn(`localStorage.removeItem failed for key: ${key}. Using in-memory fallback.`, e);
+        delete mockStorage[key];
+      }
+    },
+    clear() {
+      try {
+        window.localStorage.clear();
+      } catch (e) {
+        for (const k in mockStorage) {
+          delete mockStorage[k];
+        }
+      }
+    }
+  };
+})();
+
 class UnifiedDatabase {
   constructor() {
     this.apiUrl = window.location.origin;
