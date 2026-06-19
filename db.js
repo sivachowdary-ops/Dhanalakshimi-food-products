@@ -427,7 +427,8 @@ class UnifiedDatabase {
     const orders = JSON.parse(localStorage.getItem("dfp_orders")) || [];
     order.id = "DFP-" + Math.floor(100000 + Math.random() * 900000);
     order.timestamp = new Date().toISOString();
-    order.status = "Pending";
+    order.status = "New Order";
+    order.paymentRef = order.paymentRef || `WA-${order.id}`;
     orders.unshift(order);
     localStorage.setItem("dfp_orders", JSON.stringify(orders));
     window.dispatchEvent(new Event("storage"));

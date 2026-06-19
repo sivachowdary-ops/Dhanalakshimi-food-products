@@ -8,12 +8,13 @@ async function handler(req, res) {
     try {
       const { customer, items, totalWeight, subtotal, shipping, total, paymentRef, notes } = req.body;
       
-      if (!customer || !items || !paymentRef) {
+      if (!customer || !items) {
         return res.status(400).json({ error: 'Missing required checkout details.' });
       }
 
       // Generate order ID e.g. DFP-123456
       const orderId = "DFP-" + Math.floor(100000 + Math.random() * 900000);
+      const computedPaymentRef = paymentRef || `WA-${orderId}`;
 
       // 1. Insert order record
       const { data: orderData, error: orderError } = await supabase
@@ -29,9 +30,9 @@ async function handler(req, res) {
           subtotal: parseFloat(subtotal),
           shipping_charge: parseFloat(shipping),
           total_amount: parseFloat(total),
-          payment_ref: paymentRef,
+          payment_ref: computedPaymentRef,
           notes: notes,
-          status: 'Pending'
+          status: 'New Order'
         }])
         .select()
         .single();

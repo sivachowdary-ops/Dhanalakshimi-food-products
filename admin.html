@@ -110,31 +110,45 @@
       <div class="admin-tab-panel active" id="panel-dashboard">
         <div class="metrics-grid">
           <div class="metric-card">
-            <div class="metric-icon">💰</div>
-            <div class="metric-info">
-              <h5>Total Revenue</h5>
-              <p id="metric-revenue">₹0</p>
-            </div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-icon">🛍</div>
+            <div class="metric-icon">📦</div>
             <div class="metric-info">
               <h5>Total Orders</h5>
-              <p id="metric-orders">0</p>
+              <p id="metric-total-orders">0</p>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon">📈</div>
+            <div class="metric-icon">🆕</div>
             <div class="metric-info">
-              <h5>Avg Order Value</h5>
-              <p id="metric-aov">₹0</p>
+              <h5>New Orders</h5>
+              <p id="metric-new-orders" style="color: var(--primary-red);">0</p>
             </div>
           </div>
           <div class="metric-card">
-            <div class="metric-icon">⏳</div>
+            <div class="metric-icon">🥣</div>
             <div class="metric-info">
-              <h5>Pending Orders</h5>
-              <p id="metric-pending" style="color: var(--primary-red);">0</p>
+              <h5>Preparing</h5>
+              <p id="metric-preparing-orders" style="color: var(--accent-gold);">0</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">🚚</div>
+            <div class="metric-info">
+              <h5>Shipped</h5>
+              <p id="metric-shipped-orders" style="color: #4F46E5;">0</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">✅</div>
+            <div class="metric-info">
+              <h5>Delivered</h5>
+              <p id="metric-delivered-orders" style="color: #059669;">0</p>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon">❌</div>
+            <div class="metric-info">
+              <h5>Cancelled</h5>
+              <p id="metric-cancelled-orders" style="color: #DC2626;">0</p>
             </div>
           </div>
         </div>
@@ -201,9 +215,9 @@
             <div class="form-group filter-select" style="width: auto; min-width: 180px; margin: 0; display: flex; flex-direction: row; align-items: center;">
               <select id="order-status-filter" class="admin-search-input" style="padding-left: 16px; padding-right: 32px; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236C554E%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22></polyline></svg>'); background-repeat: no-repeat; background-position: right 14px center; background-size: 12px; appearance: none; cursor: pointer; color: var(--text-muted);">
                 <option value="All">All Statuses</option>
-                <option value="Pending">Pending Verification</option>
-                <option value="Payment Pending">Payment Pending</option>
-                <option value="Processing">Processing / Preparing</option>
+                <option value="New Order">New Order</option>
+                <option value="Confirmed">Confirmed</option>
+                <option value="Preparing">Preparing</option>
                 <option value="Shipped">Shipped</option>
                 <option value="Delivered">Delivered</option>
                 <option value="Cancelled">Cancelled</option>
@@ -624,7 +638,7 @@
           document.getElementById('lock-error-msg').style.display = 'none';
           document.getElementById('admin-lock-screen').style.display = 'none';
           await loadDashboard();
-          await updatePendingOrdersCount();
+          await updateNewOrdersCount();
         } else {
           const errorMsg = document.getElementById('lock-error-msg');
           errorMsg.textContent = res.error || "Incorrect admin password.";
@@ -652,7 +666,7 @@
       if (sessionStorage.getItem('dfp_admin_auth') === 'true') {
         try {
           await loadDashboard();
-          await updatePendingOrdersCount();
+          await updateNewOrdersCount();
         } catch (err) {
           console.error("Initialization error:", err);
         }
@@ -669,32 +683,32 @@
         else if (activeTab === 'orders') await loadOrders();
         else if (activeTab === 'shipping') await loadShipping();
         else if (activeTab === 'settings') await loadSettings();
-        await updatePendingOrdersCount();
+        await updateNewOrdersCount();
       } catch (err) {
         console.error("Storage sync error:", err);
       }
     });
 
-    async function updatePendingOrdersCount() {
+    async function updateNewOrdersCount() {
       try {
         const orders = await DB.getOrders();
-        const pendingCount = orders.filter(o => o.status === 'Pending').length;
+        const newCount = orders.filter(o => o.status === 'New Order').length;
         
         // Desktop badge
         const badge = document.getElementById('orders-badge');
         if (badge) {
-          badge.textContent = pendingCount;
-          badge.style.display = pendingCount > 0 ? "inline-block" : "none";
+          badge.textContent = newCount;
+          badge.style.display = newCount > 0 ? "inline-block" : "none";
         }
         
         // Mobile badge
         const badgeMobile = document.getElementById('orders-badge-mobile');
         if (badgeMobile) {
-          badgeMobile.textContent = pendingCount;
-          badgeMobile.style.display = pendingCount > 0 ? "inline-block" : "none";
+          badgeMobile.textContent = newCount;
+          badgeMobile.style.display = newCount > 0 ? "inline-block" : "none";
         }
       } catch (err) {
-        console.error("Error updating pending orders count:", err);
+        console.error("Error updating new orders count:", err);
       }
     }
 
@@ -704,17 +718,20 @@
         const orders = await DB.getOrders();
         
         // Calculations
-        const completedOrders = orders.filter(o => o.status !== 'Cancelled');
-        const totalRevenue = completedOrders.reduce((sum, o) => sum + o.total, 0);
         const totalOrdersCount = orders.length;
-        const averageOrderVal = totalOrdersCount > 0 ? Math.round(totalRevenue / totalOrdersCount) : 0;
-        const pendingOrdersCount = orders.filter(o => o.status === 'Pending').length;
+        const newOrdersCount = orders.filter(o => o.status === 'New Order').length;
+        const preparingOrdersCount = orders.filter(o => o.status === 'Preparing').length;
+        const shippedOrdersCount = orders.filter(o => o.status === 'Shipped').length;
+        const deliveredOrdersCount = orders.filter(o => o.status === 'Delivered').length;
+        const cancelledOrdersCount = orders.filter(o => o.status === 'Cancelled').length;
 
         // Update Cards
-        document.getElementById('metric-revenue').textContent = `₹${totalRevenue}`;
-        document.getElementById('metric-orders').textContent = totalOrdersCount;
-        document.getElementById('metric-aov').textContent = `₹${averageOrderVal}`;
-        document.getElementById('metric-pending').textContent = pendingOrdersCount;
+        document.getElementById('metric-total-orders').textContent = totalOrdersCount;
+        document.getElementById('metric-new-orders').textContent = newOrdersCount;
+        document.getElementById('metric-preparing-orders').textContent = preparingOrdersCount;
+        document.getElementById('metric-shipped-orders').textContent = shippedOrdersCount;
+        document.getElementById('metric-delivered-orders').textContent = deliveredOrdersCount;
+        document.getElementById('metric-cancelled-orders').textContent = cancelledOrdersCount;
 
         // Load Recent Orders Table
         const recentTableBody = document.querySelector('#recent-orders-table tbody');
@@ -1064,9 +1081,9 @@
             <td><span class="badge-status ${o.status.toLowerCase().replace(/\s+/g, '-')}">${o.status}</span></td>
             <td>
               <select class="order-status-update" style="font-size:0.75rem; padding:4px; border:1px solid var(--border-color); border-radius:4px; background:var(--white);">
-                <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending Verification</option>
-                <option value="Payment Pending" ${o.status === 'Payment Pending' ? 'selected' : ''}>Payment Pending</option>
-                <option value="Processing" ${o.status === 'Processing' ? 'selected' : ''}>Processing</option>
+                <option value="New Order" ${o.status === 'New Order' ? 'selected' : ''}>New Order</option>
+                <option value="Confirmed" ${o.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+                <option value="Preparing" ${o.status === 'Preparing' ? 'selected' : ''}>Preparing</option>
                 <option value="Shipped" ${o.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
                 <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
                 <option value="Cancelled" ${o.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
@@ -1078,7 +1095,7 @@
             const newStatus = e.target.value;
             try {
               await DB.updateOrderStatus(o.id, newStatus);
-              await updatePendingOrdersCount();
+              await updateNewOrdersCount();
               await loadOrders(o.id);
             } catch (err) {
               alert("Error updating order status: " + err.message);
@@ -1313,7 +1330,7 @@
           else if (activeTab === 'shipping') await loadShipping();
           else if (activeTab === 'settings') await loadSettings();
           
-          await updatePendingOrdersCount();
+          await updateNewOrdersCount();
         } catch (err) {
           alert("Error resetting database: " + err.message);
         }

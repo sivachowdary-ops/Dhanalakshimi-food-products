@@ -2254,10 +2254,17 @@ footer {
   margin-bottom: 24px;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .metrics-grid {
-    grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .metrics-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
   }
 }
 
@@ -2368,6 +2375,21 @@ tr:hover td {
 .badge-status.pending {
   background-color: #FEF3C7;
   color: #D97706;
+}
+
+.badge-status.new-order {
+  background-color: #FFEDD5;
+  color: #EA580C;
+}
+
+.badge-status.confirmed {
+  background-color: #F5F3FF;
+  color: #6D28D9;
+}
+
+.badge-status.preparing {
+  background-color: #FEF3C7;
+  color: #B45309;
 }
 
 .badge-status.processing {

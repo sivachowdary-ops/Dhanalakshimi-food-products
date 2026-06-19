@@ -255,13 +255,13 @@
         </div>
         <div class="timeline-step">
           <div class="timeline-dot"></div>
-          <span class="timeline-title">Step 4: Complete UPI Payment</span>
-          <span class="timeline-desc">Scan the dynamic QR code or use the payment app link.</span>
+          <span class="timeline-title">Step 4: Redirect to WhatsApp</span>
+          <span class="timeline-desc">Review your order details and confirm via WhatsApp to receive payment instructions.</span>
         </div>
         <div class="timeline-step">
           <div class="timeline-dot"></div>
           <span class="timeline-title">Step 5: Receive Delivery</span>
-          <span class="timeline-desc">Your fresh batch will be dispatched via courier right to your door!</span>
+          <span class="timeline-desc">Your fresh batch will be prepared and shipped directly to your door!</span>
         </div>
       </div>
     </div>
@@ -571,53 +571,8 @@
             </div>
           </div>
 
-          <button type="submit" class="cart-checkout-btn" style="margin-top: 0;">Proceed to Payment</button>
+          <button type="submit" class="cart-checkout-btn" style="margin-top: 0;">Proceed Order</button>
         </form>
-      </div>
-
-      <!-- Step 2: UPI Payment -->
-      <div class="modal-body" id="checkout-step-payment" style="display: none;">
-        <p style="font-size: 0.8rem; text-align: center; color: var(--text-muted);">
-          Scan this QR code using any UPI app (GPay, PhonePe, Paytm, BHIM) to make the payment.
-        </p>
-        
-        <div class="upi-payment-box">
-          <div class="upi-amount-display" id="upi-payable-amount">₹0.00</div>
-          
-          <div class="qr-code-placeholder">
-            <img id="upi-qr-image" class="qr-code-img" src="" alt="Scan to Pay">
-          </div>
-          
-          <p style="font-size: 0.75rem; font-weight: 700; color: var(--primary-maroon);">
-            UPI ID: <span id="upi-target-id">dhanalakshmi@okaxis</span>
-          </p>
-          
-          <!-- Mobile Intent Direct Payment Link -->
-          <a href="#" class="upi-intent-link" id="upi-mobile-link">
-            📱 Open UPI App to Pay
-          </a>
-        </div>
-
-        <!-- Helper text box alerting about payment app warning -->
-        <div style="margin-top: 12px; padding: 12px; background-color: #FEF3C7; border: 1px solid #FCD34D; border-radius: var(--radius-md); text-align: left; display: flex; gap: 8px; align-items: flex-start; line-height: 1.35;">
-          <span style="font-size: 1.1rem; line-height: 1;">💡</span>
-          <div style="font-size: 0.72rem; color: #78350F;">
-            <strong>Important Tip for Mobile Users:</strong> If your UPI app (like GPay) shows a limit warning (e.g., <em>"You can pay up to ₹2,000 with QR codes via gallery"</em>), please note that this is a <strong>standard security policy of the UPI app itself</strong> on screenshot uploads, not a website limit. To avoid this warning entirely, click the <strong>"Open UPI App to Pay"</strong> button above for direct, secure payment.
-          </div>
-        </div>
-
-        <div style="margin-top: 12px;">
-          <div class="form-group">
-            <label for="upi-ref-no">Payment Transaction ID / UTR *</label>
-            <input type="text" id="upi-ref-no" required placeholder="Enter 12-digit transaction ID">
-            <span style="font-size: 0.65rem; color: var(--text-muted);">Enter the UPI transaction number to verify payment.</span>
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 10px; margin-top: 12px;">
-          <button class="btn-secondary" id="back-to-details-btn" style="color: var(--primary-maroon); border-color: var(--primary-maroon); flex:1;">Back</button>
-          <button class="btn-primary" id="confirm-payment-btn" style="flex:2;">Place Order</button>
-        </div>
       </div>
 
       <!-- Step 3: Success Screen -->
@@ -625,15 +580,15 @@
         <div style="font-size: 3.5rem; color: #059669; margin-bottom: 12px;">🎉</div>
         <h3 style="color: #059669; font-size: 1.4rem; margin-bottom: 8px;">Order Placed Successfully!</h3>
         <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px;">
-          Your order ID is <strong id="success-order-id" style="color: var(--primary-maroon);">#DFP-XXXXXX</strong>. We have received your payment reference and will prepare your fresh batch shortly!
+          Your order ID is <strong id="success-order-id" style="color: var(--primary-maroon);">#DFP-XXXXXX</strong>. We are redirecting you to WhatsApp to confirm your order and receive payment details!
         </p>
         
         <div class="upi-payment-box" style="background-color: var(--bg-cream); border: 1px solid var(--border-color); text-align: left; align-items: flex-start; gap: 6px; width: 100%;">
           <div style="font-size: 0.8rem; font-weight: bold; border-bottom: 1px solid var(--border-color); width:100%; padding-bottom:4px; margin-bottom:4px; color: var(--primary-maroon);">Order Details</div>
           <div style="font-size: 0.75rem;"><strong>Name:</strong> <span id="success-name">Customer</span></div>
           <div style="font-size: 0.75rem;"><strong>Phone:</strong> <span id="success-phone">9999999999</span></div>
-          <div style="font-size: 0.75rem;"><strong>Amount Paid:</strong> <span id="success-total">₹0</span></div>
-          <div style="font-size: 0.75rem;"><strong>Payment Ref:</strong> <span id="success-ref">XYZ</span></div>
+          <div style="font-size: 0.75rem;"><strong>Amount Payable:</strong> <span id="success-total">₹0</span></div>
+          <div style="font-size: 0.75rem;"><strong>Payment Method:</strong> <span id="success-ref">WhatsApp (Offline)</span></div>
           <div style="font-size: 0.75rem;"><strong>Address:</strong> <span id="success-address">Address</span></div>
         </div>
         
@@ -893,7 +848,7 @@
         updateCheckoutSummaries();
       });
 
-      // Checkout Form Submit -> Go to Payment or WhatsApp Order
+      // Checkout Form Submit -> Direct WhatsApp Order
       checkoutForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const submitBtn = checkoutForm.querySelector('button[type="submit"]');
@@ -918,33 +873,13 @@
           const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
           const grandTotal = subtotal + shippingCharge;
 
-          if (grandTotal <= 2000) {
-            await showPaymentScreen();
-          } else {
-            await placeWhatsAppOrder(grandTotal, subtotal, shippingCharge, totalWeightGrams, orderItems);
-          }
+          await placeWhatsAppOrder(grandTotal, subtotal, shippingCharge, totalWeightGrams, orderItems);
         } catch (err) {
           alert("Error creating order: " + err.message);
         } finally {
           submitBtn.disabled = false;
           submitBtn.textContent = originalText;
         }
-      });
-
-      // Go back to form details
-      backToDetailsBtn.addEventListener('click', () => {
-        checkoutStepPayment.style.display = 'none';
-        checkoutStepDetails.style.display = 'block';
-      });
-
-      // Confirm Payment -> Place Order
-      confirmPaymentBtn.addEventListener('click', async () => {
-        const refNo = upiRefNoInput.value.trim();
-        if (!refNo || refNo.length < 6) {
-          alert("Please enter a valid UPI transaction/reference number.");
-          return;
-        }
-        await placeFinalOrder(refNo);
       });
 
       // Success screen back to shop
@@ -1342,101 +1277,6 @@
         subtotal += item.price * item.quantity;
         const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
         totalWeightGrams += weightInt * item.quantity;
-        return {
-          productId: item.product.id,
-          name: item.product.name,
-          weight: item.weight,
-          price: item.price,
-          quantity: item.quantity
-        };
-      });
-      const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
-      const grandTotal = subtotal + shippingCharge;
-      
-      // Pre-save order in DB as "Payment Pending"
-      const orderData = {
-        customer: {
-          name: name,
-          phone: phone,
-          address: address,
-          state: selectedStateName,
-          pincode: pin
-        },
-        items: orderItems,
-        totalWeight: formatWeight(totalWeightGrams),
-        subtotal: subtotal,
-        shipping: shippingCharge,
-        total: grandTotal,
-        paymentRef: `PENDING_${Date.now()}`,
-        status: 'Payment Pending',
-        notes: `Customer is performing UPI payment checkout for ₹${grandTotal}`
-      };
-
-      const placedOrder = await DB.addOrder(orderData);
-      currentPreOrderId = placedOrder.id;
-
-      checkoutStepDetails.style.display = 'none';
-      checkoutStepPayment.style.display = 'block';
-      
-      // Initiate payment through the PaymentHandler wrapper
-      await PaymentHandler.initiatePayment({
-        id: currentPreOrderId,
-        total: grandTotal
-      }, settings);
-    }
-
-    // PLACE FINAL ORDER
-    async function placeFinalOrder(refNo) {
-      let subtotal = 0;
-      let totalWeightGrams = 0;
-      cart.forEach(item => {
-        subtotal += item.price * item.quantity;
-        const weightInt = item.weight.includes('kg') ? parseFloat(item.weight) * 1000 : parseFloat(item.weight);
-        totalWeightGrams += weightInt * item.quantity;
-      });
-
-      const shippingCharge = calculateShippingFee(totalWeightGrams, selectedShippingRate);
-      const grandTotal = subtotal + shippingCharge;
-
-      // Confirm payment through the PaymentHandler wrapper
-      const placedOrder = await PaymentHandler.confirmPayment(currentPreOrderId, refNo, grandTotal);
-
-      // Reset success screen changes for standard checkout
-      const successDescription = document.querySelector('#checkout-step-success p');
-      if (successDescription) {
-        successDescription.innerHTML = `Your order ID is <strong id="success-order-id" style="color: var(--primary-maroon);">#${currentPreOrderId}</strong>. We have received your payment reference and will prepare your fresh batch shortly!`;
-      }
-      
-      const successRefElement = document.getElementById('success-ref');
-      if (successRefElement) {
-        successRefElement.textContent = refNo;
-        const parent = successRefElement.parentElement;
-        const strongTag = parent.querySelector('strong');
-        if (strongTag) {
-          strongTag.textContent = "Payment Ref:";
-        }
-      }
-      
-      trackWhatsappBtn.innerHTML = `💬 Track Order via WhatsApp`;
-
-      checkoutStepPayment.style.display = 'none';
-      checkoutStepSuccess.style.display = 'block';
-      
-      successOrderId.textContent = `#${currentPreOrderId}`;
-      successName.textContent = document.getElementById('cust-name').value.trim();
-      successPhone.textContent = document.getElementById('cust-phone').value.trim();
-      successTotal.textContent = `₹${grandTotal}`;
-      successAddress.textContent = `${document.getElementById('cust-address').value.trim()}, ${selectedStateName} - ${document.getElementById('cust-pin').value.trim()}`;
-      
-      const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
-      const waMsg = `Hello Dhanalakshmi Food Products, I have placed order #${currentPreOrderId}. Total Amount: ₹${grandTotal}. Payment reference ID: ${refNo}. Please confirm receipt.`;
-      trackWhatsappBtn.href = `https://wa.me/${cleanWa.replace('+', '')}?text=${encodeURIComponent(waMsg)}`;
-      
-      cart = [];
-      saveCartToSession();
-      renderStorefront();
-    }
-
     // PLACE WHATSAPP ORDER
     async function placeWhatsAppOrder(grandTotal, subtotal, shippingCharge, totalWeightGrams, orderItems) {
       const name = document.getElementById('cust-name').value.trim();
@@ -1458,8 +1298,8 @@
         shipping: shippingCharge,
         total: grandTotal,
         paymentRef: 'WhatsApp Order',
-        status: 'Pending',
-        notes: `High-value order exceeding ₹2000. Redirected to WhatsApp for offline payment.`
+        status: 'New Order',
+        notes: 'WhatsApp Order'
       };
 
       const placedOrder = await DB.addOrder(orderData);
@@ -1467,12 +1307,12 @@
       // Update success screen text for WhatsApp checkout
       const successDescription = document.querySelector('#checkout-step-success p');
       if (successDescription) {
-        successDescription.innerHTML = `Your order ID is <strong id="success-order-id" style="color: var(--primary-maroon);">#${placedOrder.id}</strong>. Since your order exceeds ₹2,000, please send the order summary to us on WhatsApp to receive payment details and complete your order.`;
+        successDescription.innerHTML = `Your order ID is <strong id="success-order-id" style="color: var(--primary-maroon);">#${placedOrder.id}</strong>. We are redirecting you to WhatsApp to confirm your order and receive payment details.`;
       }
       
       const successRefElement = document.getElementById('success-ref');
       if (successRefElement) {
-        successRefElement.textContent = "WhatsApp Order";
+        successRefElement.textContent = "WhatsApp (Offline)";
         const parent = successRefElement.parentElement;
         const strongTag = parent.querySelector('strong');
         if (strongTag) {
@@ -1480,7 +1320,7 @@
         }
       }
       
-      trackWhatsappBtn.innerHTML = `💬 Complete Order via WhatsApp`;
+      trackWhatsappBtn.innerHTML = `💬 Send WhatsApp Message`;
 
       checkoutStepDetails.style.display = 'none';
       checkoutStepSuccess.style.display = 'block';
@@ -1491,11 +1331,30 @@
       successTotal.textContent = `₹${grandTotal}`;
       successAddress.textContent = `${address}, ${selectedStateName} - ${pin}`;
 
+      // Construct WhatsApp message content
+      let productsText = orderItems.map(item => `* ${item.name} (${item.weight}) x ${item.quantity}`).join('\n');
+      let waMsg = `Hello Dhanalakshmi Foods,\n\n` +
+                  `I would like to place an order.\n\n` +
+                  `Order ID: ${placedOrder.id}\n\n` +
+                  `Customer Name: ${name}\n` +
+                  `Phone: ${phone}\n` +
+                  `Delivery Address: ${address}, ${selectedStateName} - ${pin}\n\n` +
+                  `Products:\n${productsText}\n\n` +
+                  `Total Weight: ${formatWeight(totalWeightGrams)}\n` +
+                  `Shipping: ₹${shippingCharge}\n` +
+                  `Total Amount: ₹${grandTotal}\n\n` +
+                  `Please confirm my order.\n\n` +
+                  `Thank you.`;
+
       const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
-      const waMsg = `Hello Dhanalakshmi Food Products, I have placed order #${placedOrder.id} from the website.\n` +
-                    `Total Amount: ₹${grandTotal}.\n` +
-                    `Since the order is above ₹2000, please share your payment details (UPI/Bank Transfer) so I can transfer the money.`;
-      trackWhatsappBtn.href = `https://wa.me/${cleanWa.replace('+', '')}?text=${encodeURIComponent(waMsg)}`;
+      const waUrl = `https://wa.me/${cleanWa.replace('+', '')}?text=${encodeURIComponent(waMsg)}`;
+      
+      trackWhatsappBtn.href = waUrl;
+      
+      // Auto redirect to WhatsApp
+      setTimeout(() => {
+        window.location.href = waUrl;
+      }, 1200);
       
       cart = [];
       saveCartToSession();
