@@ -202,6 +202,7 @@
               <select id="order-status-filter" class="admin-search-input" style="padding-left: 16px; padding-right: 32px; background-image: url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 24 24%22 fill=%22none%22 stroke=%22%236C554E%22 stroke-width=%222%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22><polyline points=%226 9 12 15 18 9%22></polyline></svg>'); background-repeat: no-repeat; background-position: right 14px center; background-size: 12px; appearance: none; cursor: pointer; color: var(--text-muted);">
                 <option value="All">All Statuses</option>
                 <option value="Pending">Pending Verification</option>
+                <option value="Payment Pending">Payment Pending</option>
                 <option value="Processing">Processing / Preparing</option>
                 <option value="Shipped">Shipped</option>
                 <option value="Delivered">Delivered</option>
@@ -538,7 +539,11 @@
         try {
           if (activeTab === 'dashboard') await loadDashboard();
           else if (activeTab === 'products') await loadProducts();
-          else if (activeTab === 'orders') await loadOrders();
+          else if (activeTab === 'orders') {
+            document.getElementById('order-search-input').value = "";
+            document.getElementById('order-status-filter').value = "All";
+            await loadOrders();
+          }
           else if (activeTab === 'shipping') await loadShipping();
           else if (activeTab === 'settings') await loadSettings();
         } catch (err) {
@@ -1092,24 +1097,24 @@
     const shippingForm = document.getElementById('shipping-form');
     const shipStateSelect = document.getElementById('ship-state');
     const shipRateInput = document.getElementById('ship-rate');
+    let loadedShippingRates = [];
 
     async function loadShipping() {
       try {
         const rates = await DB.getShippingRates();
+        loadedShippingRates = Array.isArray(rates) ? rates : [];
         const shippingTableBody = document.querySelector('#shipping-table tbody');
         shippingTableBody.innerHTML = "";
 
         // Populate form state dropdown
         shipStateSelect.innerHTML = "";
         
-        if (Array.isArray(rates)) {
-          rates.forEach(r => {
-            const option = document.createElement('option');
-            option.value = r.state;
-            option.textContent = r.state;
-            shipStateSelect.appendChild(option);
-          });
-        }
+        loadedShippingRates.forEach(r => {
+          const option = document.createElement('option');
+          option.value = r.state;
+          option.textContent = r.state;
+          shipStateSelect.appendChild(option);
+        });
         
         // Add option for new state
         const newOption = document.createElement('option');
@@ -1123,34 +1128,32 @@
         document.getElementById('ship-state-new').required = false;
 
         // Show first state price by default in input
-        if (Array.isArray(rates) && rates.length > 0) {
-          shipRateInput.value = rates[0].rate;
+        if (loadedShippingRates.length > 0) {
+          shipRateInput.value = loadedShippingRates[0].rate;
         } else {
           shipRateInput.value = "";
         }
 
-        if (Array.isArray(rates)) {
-          rates.forEach(r => {
-            const row = document.createElement('tr');
-            
-            let extraCharge = 80;
-            if (r.rate <= 60) extraCharge = 40;
-            else if (r.rate <= 80) extraCharge = 50;
+        loadedShippingRates.forEach(r => {
+          const row = document.createElement('tr');
+          
+          let extraCharge = 80;
+          if (r.rate <= 60) extraCharge = 40;
+          else if (r.rate <= 80) extraCharge = 50;
 
-            row.innerHTML = `
-              <td><strong>${r.state}</strong></td>
-              <td style="font-weight:700; color: var(--primary-maroon);">₹${r.rate}</td>
-              <td>+₹${extraCharge} per extra kg after first 1kg</td>
-            `;
-            shippingTableBody.appendChild(row);
-          });
-        }
+          row.innerHTML = `
+            <td><strong>${r.state}</strong></td>
+            <td style="font-weight:700; color: var(--primary-maroon);">₹${r.rate}</td>
+            <td>+₹${extraCharge} per extra kg after first 1kg</td>
+          `;
+          shippingTableBody.appendChild(row);
+        });
       } catch (err) {
         console.error("Error loading shipping rates:", err);
       }
     }
 
-    shipStateSelect.addEventListener('change', async (e) => {
+    shipStateSelect.addEventListener('change', (e) => {
       const isNew = e.target.value === '__NEW__';
       document.getElementById('new-state-container').style.display = isNew ? 'flex' : 'none';
       const newStateInput = document.getElementById('ship-state-new');
@@ -1162,16 +1165,9 @@
       } else {
         newStateInput.required = false;
         newStateInput.value = "";
-        try {
-          const rates = await DB.getShippingRates();
-          if (Array.isArray(rates)) {
-            const selected = rates.find(r => r.state === e.target.value);
-            if (selected) {
-              shipRateInput.value = selected.rate;
-            }
-          }
-        } catch (err) {
-          console.error("Error fetching shipping rates:", err);
+        const selected = loadedShippingRates.find(r => r.state === e.target.value);
+        if (selected) {
+          shipRateInput.value = selected.rate;
         }
       }
     });
@@ -1219,6 +1215,24 @@
         document.getElementById('set-current-password').value = "";
         document.getElementById('set-new-password').value = "";
         document.getElementById('set-confirm-password').value = "";
+
+        // Check if online mode and disable password form if true
+        const isOnline = await DB.checkConnection();
+        const pwdForm = document.getElementById('change-password-form');
+        const pwdHelpText = pwdForm.querySelector('p');
+        if (isOnline) {
+          pwdForm.style.opacity = '0.6';
+          pwdForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
+          if (pwdHelpText) {
+            pwdHelpText.innerHTML = `<span style="color: var(--primary-red); font-weight: bold;">Note:</span> Since the store is connected to Supabase Cloud, the admin password is securely managed via server-side environment variables on Vercel. Password updates through the dashboard are disabled in cloud mode.`;
+          }
+        } else {
+          pwdForm.style.opacity = '1';
+          pwdForm.querySelectorAll('input, button').forEach(el => el.disabled = false);
+          if (pwdHelpText) {
+            pwdHelpText.innerHTML = `To update the access password, fill in the fields below. Verification requires matching your current password.`;
+          }
+        }
       } catch (err) {
         console.error("Error loading store settings:", err);
       }
