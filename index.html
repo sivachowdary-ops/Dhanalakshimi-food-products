@@ -604,6 +604,7 @@
   <!-- Javascript Logic -->
   <script src="db.js"></script>
   <script>
+    (() => {
     // Shadow localStorage and sessionStorage to safely handle browser privacy restrictions (e.g. Private Browsing Mode)
     const localStorage = (() => {
       const mockStorage = {};
@@ -1430,6 +1431,7 @@
       saveCartToSession();
       renderStorefront();
     }
+    })();
   </script>
 
   <!-- Floating WhatsApp Widget -->

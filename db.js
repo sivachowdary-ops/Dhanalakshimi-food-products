@@ -1,4 +1,5 @@
 // db.js - Unified Cloud & LocalStorage Database Client Layer for Dhanalakshmi Food Products
+(() => {
 
 const DEFAULT_PRODUCTS = [
   {
@@ -650,4 +651,5 @@ const PaymentHandler = {
 };
 
 window.PaymentHandler = PaymentHandler;
+})();
 

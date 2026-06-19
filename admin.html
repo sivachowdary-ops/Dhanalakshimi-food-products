@@ -531,6 +531,7 @@
 
   <script src="db.js"></script>
   <script>
+    (() => {
     // Shadow sessionStorage to safely handle browser privacy restrictions (e.g., Private Browsing Mode)
     const sessionStorage = (() => {
       const mockStorage = {};
@@ -674,7 +675,7 @@
       }
     }
 
-    function adminLogout() {
+    window.adminLogout = function() {
       DB.logout();
       sessionStorage.removeItem('dfp_admin_auth');
       location.reload();
@@ -1365,7 +1366,7 @@
         }
       }
     });
-
+    })();
   </script>
 </body>
 </html>

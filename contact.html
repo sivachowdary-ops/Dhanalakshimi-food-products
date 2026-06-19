@@ -62,14 +62,14 @@
           <div class="nav-dropdown">
             <a href="index.html#products-section" class="nav-link dropdown-toggle">Snack Types ▾</a>
             <div class="dropdown-menu">
-              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'All');" style="border-bottom: 1px solid var(--border-color); font-weight: 700; color: var(--primary-maroon);">All Snacks</a>
-              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Mixtures');">Mixtures</a>
-              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Chekodilu');">Chekodilu</a>
-              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Karapusa');">Karapusa</a>
-              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Traditional Snacks');">Traditional Snacks</a>
-              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Gavvalu');">Gavvalu</a>
-              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Appadalu');">Appadalu</a>
-              <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Others');">Others</a>
+              <a href="index.html#products-section" onclick="setFilterCategory('All');" style="border-bottom: 1px solid var(--border-color); font-weight: 700; color: var(--primary-maroon);">All Snacks</a>
+              <a href="index.html#products-section" onclick="setFilterCategory('Mixtures');">Mixtures</a>
+              <a href="index.html#products-section" onclick="setFilterCategory('Chekodilu');">Chekodilu</a>
+              <a href="index.html#products-section" onclick="setFilterCategory('Karapusa');">Karapusa</a>
+              <a href="index.html#products-section" onclick="setFilterCategory('Traditional Snacks');">Traditional Snacks</a>
+              <a href="index.html#products-section" onclick="setFilterCategory('Gavvalu');">Gavvalu</a>
+              <a href="index.html#products-section" onclick="setFilterCategory('Appadalu');">Appadalu</a>
+              <a href="index.html#products-section" onclick="setFilterCategory('Others');">Others</a>
             </div>
           </div>
           <a href="index.html#how-to-order-section" class="nav-link">How to Order</a>
@@ -113,14 +113,14 @@
         <a href="contact.html" class="active">📞 Contact Us</a>
         <div style="border-top: 1px solid var(--border-color); margin-top: 8px; padding-top: 8px;">
           <strong style="font-size: 0.75rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px; display: block; padding: 4px 24px;">Snack Types Available</strong>
-          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'All'); toggleMobileMenu(false);" style="font-weight: 700; color: var(--primary-maroon);">• All Snacks</a>
-          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Mixtures'); toggleMobileMenu(false);">• Mixtures</a>
-          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Chekodilu'); toggleMobileMenu(false);">• Chekodilu</a>
-          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Karapusa'); toggleMobileMenu(false);">• Karapusa</a>
-          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Traditional Snacks'); toggleMobileMenu(false);">• Traditional Snacks</a>
-          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Gavvalu'); toggleMobileMenu(false);">• Gavvalu</a>
-          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Appadalu'); toggleMobileMenu(false);">• Appadalu</a>
-          <a href="index.html#products-section" onclick="sessionStorage.setItem('filter_cat', 'Others'); toggleMobileMenu(false);">• Others</a>
+          <a href="index.html#products-section" onclick="setFilterCategory('All'); toggleMobileMenu(false);" style="font-weight: 700; color: var(--primary-maroon);">• All Snacks</a>
+          <a href="index.html#products-section" onclick="setFilterCategory('Mixtures'); toggleMobileMenu(false);">• Mixtures</a>
+          <a href="index.html#products-section" onclick="setFilterCategory('Chekodilu'); toggleMobileMenu(false);">• Chekodilu</a>
+          <a href="index.html#products-section" onclick="setFilterCategory('Karapusa'); toggleMobileMenu(false);">• Karapusa</a>
+          <a href="index.html#products-section" onclick="setFilterCategory('Traditional Snacks'); toggleMobileMenu(false);">• Traditional Snacks</a>
+          <a href="index.html#products-section" onclick="setFilterCategory('Gavvalu'); toggleMobileMenu(false);">• Gavvalu</a>
+          <a href="index.html#products-section" onclick="setFilterCategory('Appadalu'); toggleMobileMenu(false);">• Appadalu</a>
+          <a href="index.html#products-section" onclick="setFilterCategory('Others'); toggleMobileMenu(false);">• Others</a>
         </div>
       </div>
     </div>
@@ -456,6 +456,7 @@
   <!-- Shared DB and Settings logic -->
   <script src="db.js"></script>
   <script>
+    (() => {
     // Shadow localStorage and sessionStorage to safely handle browser privacy restrictions (e.g. Private Browsing Mode)
     const localStorage = (() => {
       const mockStorage = {};
@@ -1052,7 +1053,15 @@
       }, 1200);
     }
 
-    function sendWhatsappInquiry() {
+    window.setFilterCategory = function(cat) {
+      try {
+        sessionStorage.setItem('filter_cat', cat);
+      } catch (e) {
+        console.warn("setFilterCategory failed to write to sessionStorage", e);
+      }
+    };
+
+    window.sendWhatsappInquiry = function() {
       const cleanWa = settings.whatsappNumber.replace(/[^0-9+]/g, '');
       
       const name = document.getElementById('form-name').value.trim();
@@ -1064,6 +1073,7 @@
       
       window.open(waUrl, '_blank');
     }
+    })();
   </script>
 
   <!-- Floating WhatsApp Widget -->
