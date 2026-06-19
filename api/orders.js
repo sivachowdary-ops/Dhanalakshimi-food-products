@@ -1,5 +1,6 @@
 const { allowCors } = require('./_cors');
 const { supabase } = require('./_supabase');
+const { verifyAdminShield } = require('./_auth_shield');
 
 async function handler(req, res) {
   const method = req.method;
@@ -83,15 +84,9 @@ async function handler(req, res) {
   }
 
   // ADMIN OPERATIONS SHIELD
-  const targetPassword = process.env.ADMIN_PASSWORD;
-  if (!targetPassword) {
-    console.error("Configuration Error: ADMIN_PASSWORD environment variable is not configured on the server.");
-    return res.status(500).json({ error: "Server Configuration Error: Admin operations are disabled." });
-  }
-
-  const adminPasswordHeader = req.headers['x-admin-password'];
-  if (!adminPasswordHeader || adminPasswordHeader !== targetPassword) {
-    return res.status(401).json({ error: 'Unauthorized: Admin credentials invalid.' });
+  const auth = await verifyAdminShield(req);
+  if (!auth.success) {
+    return res.status(auth.status).json({ error: auth.error });
   }
 
   if (method === 'GET') {

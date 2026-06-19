@@ -324,15 +324,6 @@
                 </div>
                 
                 <div class="form-group" style="margin-bottom: 12px;">
-                  <label for="set-upi-id">UPI ID for Payment (Direct QR & Intent Link) *</label>
-                  <input type="text" id="set-upi-id" required placeholder="e.g. account@upi">
-                  <span style="font-size: 0.65rem; color: var(--text-muted); display: block; margin-bottom: 6px;">All storefront UPI payment deep-links and QR codes will point directly to this account.</span>
-                  <div style="background-color: #FEF3C7; border: 1px solid #F59E0B; border-radius: 8px; padding: 8px 12px; font-size: 0.72rem; color: #B45309; line-height: 1.4;">
-                    💡 <strong>UPI ₹2,000 limit tip:</strong> To bypass GPay/PhonePe's default safety limit for phone-number VPAs, enter your bank account VPA format: <code>AccountNo@IFSC.ifsc.npci</code> (e.g. <code>501001234567@HDFC0000123.ifsc.npci</code>). This routes payments directly to your bank account as a merchant transfer.
-                  </div>
-                </div>
-
-                <div class="form-group" style="margin-bottom: 12px;">
                   <label for="set-tagline">Tagline / Brand Promise *</label>
                   <input type="text" id="set-tagline" required>
                 </div>
@@ -1252,7 +1243,6 @@
         const settings = await DB.getSettings();
         
         document.getElementById('set-biz-name').value = settings.businessName;
-        document.getElementById('set-upi-id').value = settings.upiId;
         document.getElementById('set-tagline').value = settings.tagline;
         document.getElementById('set-desc').value = settings.description;
         document.getElementById('set-phone').value = settings.whatsappNumber;
@@ -1265,22 +1255,12 @@
         document.getElementById('set-new-password').value = "";
         document.getElementById('set-confirm-password').value = "";
 
-        // Check if online mode and disable password form if true
-        const isOnline = await DB.checkConnection();
         const pwdForm = document.getElementById('change-password-form');
+        pwdForm.style.opacity = '1';
+        pwdForm.querySelectorAll('input, button').forEach(el => el.disabled = false);
         const pwdHelpText = pwdForm.querySelector('p');
-        if (isOnline) {
-          pwdForm.style.opacity = '0.6';
-          pwdForm.querySelectorAll('input, button').forEach(el => el.disabled = true);
-          if (pwdHelpText) {
-            pwdHelpText.innerHTML = `<span style="color: var(--primary-red); font-weight: bold;">Note:</span> Since the store is connected to Supabase Cloud, the admin password is securely managed via server-side environment variables on Vercel. Password updates through the dashboard are disabled in cloud mode.`;
-          }
-        } else {
-          pwdForm.style.opacity = '1';
-          pwdForm.querySelectorAll('input, button').forEach(el => el.disabled = false);
-          if (pwdHelpText) {
-            pwdHelpText.innerHTML = `To update the access password, fill in the fields below. Verification requires matching your current password.`;
-          }
+        if (pwdHelpText) {
+          pwdHelpText.innerHTML = `To update the access password, fill in the fields below. Verification requires matching your current password.`;
         }
       } catch (err) {
         console.error("Error loading store settings:", err);
@@ -1295,14 +1275,12 @@
         
         const updatedSettings = {
           businessName: document.getElementById('set-biz-name').value.trim(),
-          upiId: document.getElementById('set-upi-id').value.trim(),
           tagline: document.getElementById('set-tagline').value.trim(),
           description: document.getElementById('set-desc').value.trim(),
           whatsappNumber: document.getElementById('set-phone').value.trim(),
           emailAddress: document.getElementById('set-email').value.trim(),
           contactAddress: document.getElementById('set-address').value.trim(),
-          instagramUrl: document.getElementById('set-insta').value.trim(),
-          adminPassword: settings.adminPassword || "admin"
+          instagramUrl: document.getElementById('set-insta').value.trim()
         };
 
         await DB.saveSettings(updatedSettings);
@@ -1316,35 +1294,67 @@
     changePasswordForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
+      const currentInput = document.getElementById('set-current-password').value;
+      const newInput = document.getElementById('set-new-password').value;
+      const confirmInput = document.getElementById('set-confirm-password').value;
+
+      if (newInput.length < 4) {
+        alert("Error: New password must be at least 4 characters long!");
+        return;
+      }
+      if (newInput !== confirmInput) {
+        alert("Error: New password and Confirm new password do not match!");
+        return;
+      }
+
       try {
-        const settings = await DB.getSettings();
-        const currentInput = document.getElementById('set-current-password').value;
-        const newInput = document.getElementById('set-new-password').value;
-        const confirmInput = document.getElementById('set-confirm-password').value;
-
-        const storedPassword = settings.adminPassword || "admin";
-
-        if (currentInput !== storedPassword) {
-          alert("Error: Current password is incorrect!");
-          return;
-        }
-        if (newInput.length < 4) {
-          alert("Error: New password must be at least 4 characters long!");
-          return;
-        }
-        if (newInput !== confirmInput) {
-          alert("Error: New password and Confirm new password do not match!");
-          return;
-        }
-
-        // Save updated password
-        settings.adminPassword = newInput;
-        await DB.saveSettings(settings);
+        const submitBtn = changePasswordForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Updating Password...";
         
-        alert("Password updated successfully!");
+        const isOnline = await DB.checkConnection();
+        if (isOnline) {
+          const res = await fetch(`${DB.apiUrl}/api/auth`, {
+            method: 'PUT',
+            headers: DB.getHeaders(),
+            body: JSON.stringify({ currentPassword: currentInput, newPassword: newInput })
+          });
+          const data = await res.json();
+          if (data.success) {
+            DB.adminToken = data.token;
+            localStorage.setItem('dfp_admin_token', data.token);
+            alert("Password updated successfully!");
+          } else {
+            alert("Error: " + (data.error || "Failed to update password."));
+          }
+        } else {
+          // Local/offline fallback password update
+          const settings = JSON.parse(localStorage.getItem("dfp_settings")) || {};
+          const storedPassword = settings.adminPassword || "admin";
+          if (currentInput !== storedPassword) {
+            alert("Error: Current password is incorrect!");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "🔑 Update Password";
+            return;
+          }
+          settings.adminPassword = newInput;
+          localStorage.setItem("dfp_settings", JSON.stringify(settings));
+          DB.adminToken = newInput;
+          localStorage.setItem('dfp_admin_token', newInput);
+          alert("Local password updated successfully!");
+        }
+        
+        document.getElementById('set-current-password').value = "";
+        document.getElementById('set-new-password').value = "";
+        document.getElementById('set-confirm-password').value = "";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "🔑 Update Password";
         await loadSettings();
       } catch (err) {
         alert("Error changing password: " + err.message);
+        const submitBtn = changePasswordForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = false;
+        submitBtn.textContent = "🔑 Update Password";
       }
     });
 
