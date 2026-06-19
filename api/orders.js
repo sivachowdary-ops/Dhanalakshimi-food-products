@@ -7,7 +7,7 @@ async function handler(req, res) {
 
   if (method === 'POST') {
     try {
-      const { customer, items, totalWeight, subtotal, shipping, total, paymentRef, notes } = req.body;
+      const { customer, items, totalWeight, subtotal, shipping, total, paymentRef, notes, status, timestamp } = req.body;
       
       if (!customer || !items) {
         return res.status(400).json({ error: 'Missing required checkout details.' });
@@ -33,7 +33,8 @@ async function handler(req, res) {
           total_amount: parseFloat(total),
           payment_ref: computedPaymentRef,
           notes: notes,
-          status: 'New Order'
+          status: status || 'New Order',
+          created_at: timestamp || new Date().toISOString()
         }])
         .select()
         .single();
@@ -200,7 +201,26 @@ async function handler(req, res) {
     }
   }
 
-  res.setHeader('Allow', ['GET', 'POST', 'PUT']);
+  if (method === 'DELETE') {
+    try {
+      const { id } = req.body;
+      if (!id) {
+        return res.status(400).json({ error: 'Missing order ID.' });
+      }
+
+      const { error } = await supabase
+        .from('orders')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      return res.status(200).json({ success: true });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  }
+
+  res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE']);
   return res.status(405).json({ error: `Method ${method} Not Allowed` });
 }
 

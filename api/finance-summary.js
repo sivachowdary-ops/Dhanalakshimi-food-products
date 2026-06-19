@@ -222,22 +222,27 @@ async function handler(req, res) {
       console.error("Error calculating stock valuation:", e);
     }
 
+    // Update trends profit with stock value
+    monthlyTrends.forEach(t => {
+      t.profit = t.income + stockValue - t.expenses;
+    });
+
     // 3. Assemble and return response
     return res.status(200).json({
       today: {
         income: todayIncome,
         expenses: todayExpenses,
-        profit: todayIncome - todayExpenses
+        profit: todayIncome + stockValue - todayExpenses
       },
       thisMonth: {
         income: monthIncome,
         expenses: monthExpenses,
-        profit: monthIncome - monthExpenses
+        profit: monthIncome + stockValue - monthExpenses
       },
       thisYear: {
         income: yearIncome,
         expenses: yearExpenses,
-        profit: yearIncome - yearExpenses
+        profit: yearIncome + stockValue - yearExpenses
       },
       stockValue: {
         value: stockValue,

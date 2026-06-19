@@ -2,6 +2,26 @@ const { allowCors } = require('./_cors');
 const { supabase } = require('./_supabase');
 const { verifyAdminShield } = require('./_auth_shield');
 
+function getISTDate() {
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+  return formatter.format(new Date());
+}
+
+function formatISTDate(date) {
+  const formatter = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  });
+  return formatter.format(date);
+}
+
 async function handler(req, res) {
   const method = req.method;
 
@@ -21,18 +41,18 @@ async function handler(req, res) {
       // Apply simple date preset filtering on server-side if provided
       if (req.query.dateRange) {
         const dateRange = req.query.dateRange;
-        const today = new Date().toISOString().split('T')[0];
+        const today = getISTDate();
         
         if (dateRange === 'Today') {
           query = query.eq('expense_date', today);
         } else if (dateRange === 'This Week') {
           const oneWeekAgo = new Date();
           oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-          query = query.gte('expense_date', oneWeekAgo.toISOString().split('T')[0]);
+          query = query.gte('expense_date', formatISTDate(oneWeekAgo));
         } else if (dateRange === 'This Month') {
           const firstDayOfMonth = new Date();
           firstDayOfMonth.setDate(1);
-          query = query.gte('expense_date', firstDayOfMonth.toISOString().split('T')[0]);
+          query = query.gte('expense_date', formatISTDate(firstDayOfMonth));
         }
       }
 
@@ -64,7 +84,7 @@ async function handler(req, res) {
           expense_name,
           category,
           amount: parseFloat(amount),
-          expense_date: expense_date || new Date().toISOString().split('T')[0],
+          expense_date: expense_date || getISTDate(),
           notes: notes || ''
         }])
         .select()

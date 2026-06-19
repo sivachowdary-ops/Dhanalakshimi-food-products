@@ -757,6 +757,31 @@
     .ledger-amount.inc { color: var(--income); }
     .ledger-amount.exp { color: var(--expense); }
 
+    .ledger-right-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ledger-delete-btn {
+      background: none;
+      border: none;
+      color: var(--slate-400);
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 6px;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ledger-delete-btn:hover {
+      background-color: var(--expense-bg);
+      color: var(--expense);
+    }
+
     /* --- STOCK VALUATION TAB --- */
     .stock-summary {
       background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
@@ -1645,9 +1670,11 @@
     }
 
     function handleLogout() {
-      DB.logout();
-      sessionStorage.removeItem('dfp_admin_auth');
-      location.reload();
+      if (confirm("Are you sure you want to log out from the Finance Portal?")) {
+        DB.logout();
+        sessionStorage.removeItem('dfp_admin_auth');
+        location.reload();
+      }
     }
 
     // --- TAB SWITCHER SPA ---
@@ -1787,7 +1814,7 @@
       try {
         await DB.addOrder(orderPayload);
         closeSaleSheet();
-        await refreshOverviewData();
+        await refreshCurrentView();
       } catch (err) {
         alert("Error saving sale: " + err.message);
       }
@@ -1869,10 +1896,7 @@
           await DB.addExpense(payload);
         }
         closeExpenseSheet();
-        
-        const activePanelId = document.querySelector('.tab-panel.active').id;
-        if (activePanelId === 'panel-overview') await refreshOverviewData();
-        else if (activePanelId === 'panel-ledger') await renderUnifiedLedger();
+        await refreshCurrentView();
       } catch (err) {
         alert("Failed to save expense: " + err.message);
       }
@@ -1885,9 +1909,26 @@
         try {
           await DB.deleteExpense(id);
           closeExpenseSheet();
-          await renderUnifiedLedger();
+          await refreshCurrentView();
         } catch (err) {
           alert("Error: " + err.message);
+        }
+      }
+    }
+
+    async function handleDeleteLedgerItem(event, id, type) {
+      event.stopPropagation();
+      const itemText = type === 'Income' ? 'sale transaction' : 'expense record';
+      if (confirm(`Are you sure you want to delete this ${itemText}? This action cannot be undone.`)) {
+        try {
+          if (type === 'Income') {
+            await DB.deleteOrder(id);
+          } else {
+            await DB.deleteExpense(id);
+          }
+          await refreshCurrentView();
+        } catch (err) {
+          alert("Failed to delete transaction: " + err.message);
         }
       }
     }
@@ -1927,7 +1968,7 @@
       try {
         await DB.updateProduct(id, payload);
         closeStockEditSheet();
-        await renderStockManager();
+        await refreshCurrentView();
       } catch (err) {
         alert("Failed to adjust inventory: " + err.message);
       }
@@ -2147,6 +2188,18 @@
       }
     }
 
+    async function refreshCurrentView() {
+      await refreshOverviewData();
+      const activePanel = document.querySelector('.tab-panel.active');
+      if (activePanel) {
+        if (activePanel.id === 'panel-ledger') {
+          await renderUnifiedLedger();
+        } else if (activePanel.id === 'panel-stock') {
+          await renderStockManager();
+        }
+      }
+    }
+
     // --- RENDER HIGH-FIDELITY BEZIER CURVE SVG ---
     function drawSparklineCurveChart() {
       const box = document.getElementById('overview-sparkline');
@@ -2271,7 +2324,7 @@
 
         // Filter and map expenses (Outcome)
         const expensesMapped = expenses.map(e => {
-          const dateObj = new Date(e.expense_date);
+          const dateObj = new Date(e.expense_date + "T00:00:00+05:30");
           return {
             id: e.id,
             type: 'Expenses',
@@ -2326,12 +2379,12 @@
           const amountSign = isInc ? `+₹` : `-₹`;
           const amountClass = isInc ? 'inc' : 'exp';
 
-          const formattedDate = item.dateObj.toLocaleDateString('en-IN', {
-            day: 'numeric',
-            month: 'short',
-            hour: '2-digit',
-            minute: '2-digit'
-          });
+          const dateOptions = { day: 'numeric', month: 'short' };
+          if (isInc) {
+            dateOptions.hour = '2-digit';
+            dateOptions.minute = '2-digit';
+          }
+          const formattedDate = item.dateObj.toLocaleDateString('en-IN', dateOptions);
 
           const row = document.createElement('div');
           row.className = "ledger-row";
@@ -2352,7 +2405,10 @@
                 <span class="ledger-meta">${item.subtitle} &nbsp;•&nbsp; ${formattedDate}</span>
               </div>
             </div>
-            <div class="ledger-amount ${amountClass}">${amountSign}${item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
+            <div class="ledger-right-content">
+              <div class="ledger-amount ${amountClass}">${amountSign}${item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
+              <button class="ledger-delete-btn" onclick="handleDeleteLedgerItem(event, '${item.id}', '${item.type}')" title="Delete Transaction">🗑️</button>
+            </div>
           `;
           container.appendChild(row);
         });

@@ -550,6 +550,25 @@ class UnifiedDatabase {
     return null;
   }
 
+  async deleteOrder(id) {
+    if (await this.checkConnection()) {
+      const res = await fetch(`${this.apiUrl}/api/orders`, {
+        method: 'DELETE',
+        headers: this.getHeaders(),
+        body: JSON.stringify({ id })
+      });
+      if (!res.ok) throw new Error(await res.text());
+      return await res.json();
+    }
+    
+    // Fallback
+    let orders = JSON.parse(localStorage.getItem("dfp_orders")) || [];
+    orders = orders.filter(o => o.id !== id);
+    localStorage.setItem("dfp_orders", JSON.stringify(orders));
+    window.dispatchEvent(new Event("storage"));
+    return { success: true };
+  }
+
   // --- SETTINGS ---
   async getSettings() {
     if (await this.checkConnection()) {
@@ -640,7 +659,7 @@ class UnifiedDatabase {
     const expenses = JSON.parse(localStorage.getItem("dfp_expenses")) || [];
     expense.id = "exp_" + Date.now();
     expense.created_at = new Date().toISOString();
-    expense.expense_date = expense.expense_date || new Date().toISOString().split('T')[0];
+    expense.expense_date = expense.expense_date || new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
     expenses.unshift(expense);
     localStorage.setItem("dfp_expenses", JSON.stringify(expenses));
     window.dispatchEvent(new Event("storage"));
@@ -782,14 +801,14 @@ class UnifiedDatabase {
         label: label,
         income: inc,
         expenses: exp,
-        profit: inc - exp
+        profit: inc + stockVal - exp
       };
     });
 
     return {
-      today: { income: todayIncome, expenses: todayExpenses, profit: todayIncome - todayExpenses },
-      thisMonth: { income: monthIncome, expenses: monthExpenses, profit: monthIncome - monthExpenses },
-      thisYear: { income: yearIncome, expenses: yearExpenses, profit: yearIncome - yearExpenses },
+      today: { income: todayIncome, expenses: todayExpenses, profit: todayIncome + stockVal - todayExpenses },
+      thisMonth: { income: monthIncome, expenses: monthExpenses, profit: monthIncome + stockVal - monthExpenses },
+      thisYear: { income: yearIncome, expenses: yearExpenses, profit: yearIncome + stockVal - yearExpenses },
       stockValue: { value: stockVal, isEstimate: !anyCostPrice },
       trends: trends
     };
