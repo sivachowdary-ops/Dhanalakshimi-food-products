@@ -675,6 +675,8 @@
       }
     }
 
+    window.verifyAdminPassword = verifyAdminPassword;
+
     window.adminLogout = function() {
       DB.logout();
       sessionStorage.removeItem('dfp_admin_auth');
