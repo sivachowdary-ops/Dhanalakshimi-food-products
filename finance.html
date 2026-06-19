@@ -945,6 +945,17 @@
       display: flex;
       gap: 12px;
       margin-top: 24px;
+      width: 100%;
+    }
+
+    .drawer-actions-row .btn-secondary {
+      flex: 1;
+      width: auto;
+    }
+
+    .drawer-actions-row .btn-submit {
+      flex: 2;
+      width: auto;
     }
 
     /* --- REVENUE DRILL DOWNS --- */
@@ -1634,6 +1645,17 @@
     let periodFilter = 'today'; // 'today' | 'month' | 'year'
     let productsList = [];
 
+    const CATEGORY_ICONS = {
+      "Raw Materials": { icon: "🌾" },
+      "Packaging": { icon: "📦" },
+      "Transport": { icon: "🚚" },
+      "Worker Wages": { icon: "👥" },
+      "Electricity": { icon: "⚡" },
+      "Marketing": { icon: "📢" },
+      "Rent": { icon: "🏢" },
+      "Miscellaneous": { icon: "💸" }
+    };
+
     // --- PORTAL AUTHENTICATION SHIELD ---
     function checkAuthentication() {
       const auth = sessionStorage.getItem('dfp_admin_auth');
@@ -2026,7 +2048,6 @@
         document.getElementById('drill-income-month-val').textContent = `₹${globalSummaryData?.thisMonth?.income?.toLocaleString('en-IN') || 0}`;
         document.getElementById('drill-income-year-val').textContent = `₹${globalSummaryData?.thisYear?.income?.toLocaleString('en-IN') || 0}`;
 
-        const box = document.getElementById('drill-orders-list-box');
         box.innerHTML = "";
 
         if (filteredOrders.length === 0) {
@@ -2407,7 +2428,9 @@
             </div>
             <div class="ledger-right-content">
               <div class="ledger-amount ${amountClass}">${amountSign}${item.amount.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
-              <button class="ledger-delete-btn" onclick="handleDeleteLedgerItem(event, '${item.id}', '${item.type}')" title="Delete Transaction">🗑️</button>
+              <button class="ledger-delete-btn" onclick="handleDeleteLedgerItem(event, '${item.id}', '${item.type}')" title="Delete Transaction">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events: none; display: block;"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+              </button>
             </div>
           `;
           container.appendChild(row);
