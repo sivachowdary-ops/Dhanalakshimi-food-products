@@ -195,6 +195,31 @@
       transform: scale(0.98);
     }
 
+    .btn-secondary {
+      width: 100%;
+      padding: 16px;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: var(--radius-full);
+      background-color: var(--slate-100);
+      color: var(--slate-600);
+      border: 1px solid var(--slate-200);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      text-align: center;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--slate-200);
+      color: var(--primary);
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.98);
+    }
+
     .auth-error {
       color: var(--expense-light);
       font-size: 0.8rem;
@@ -955,6 +980,10 @@
     .trends-ledger-col.net.plus { background-color: var(--income-bg); color: var(--income); }
     .trends-ledger-col.net.minus { background-color: var(--expense-bg); color: var(--expense); }
 
+    .sidebar {
+      display: none;
+    }
+
     /* --- DESKTOP VIEWPORT SYNC (SIDEBAR LAYOUT) --- */
     @media (min-width: 768px) {
       body {
@@ -1108,6 +1137,33 @@
         margin-bottom: 24px;
       }
     }
+
+    /* --- SKELETON LOADER --- */
+    .skeleton-loader-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      padding: 4px 0;
+    }
+
+    .skeleton-row {
+      height: 72px;
+      background: linear-gradient(90deg, var(--slate-100) 25%, var(--slate-200) 50%, var(--slate-100) 75%);
+      background-size: 200% 100%;
+      animation: loading-skeleton 1.5s infinite;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--slate-100);
+    }
+
+    @keyframes loading-skeleton {
+      0% {
+        background-position: 200% 0;
+      }
+      100% {
+        background-position: -200% 0;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1183,7 +1239,7 @@
           
           <!-- Welcoming Banner -->
           <div class="welcome-card">
-            <h2 id="welcome-owner-name">Hello, Dhanalakshmi 👋</h2>
+            <h2 id="welcome-owner-name">Hello, Amarnath 👋</h2>
             <p id="welcome-date-string">Friday, June 19, 2026</p>
           </div>
 
@@ -1913,6 +1969,15 @@
 
       document.getElementById('income-drill-title').textContent = `${period === 'today' ? "Today's" : "This Month's"} Sales`;
 
+      const box = document.getElementById('drill-orders-list-box');
+      box.innerHTML = `
+        <div class="skeleton-loader-container">
+          <div class="skeleton-row" style="height: 54px; margin-bottom: 8px;"></div>
+          <div class="skeleton-row" style="height: 54px; margin-bottom: 8px;"></div>
+          <div class="skeleton-row" style="height: 54px;"></div>
+        </div>
+      `;
+
       try {
         const orders = await DB.getOrders();
         const paidOrders = orders.filter(o => o.status !== 'New Order' && o.status !== 'Cancelled' && o.paymentRef && o.paymentRef.startsWith('MANUAL-'));
@@ -2148,14 +2213,19 @@
     // --- VIEW 2: UNIFIED TRANSACTIONS LEDGER ---
     async function renderUnifiedLedger() {
       const container = document.getElementById('ledger-rows-container');
-      container.innerHTML = "";
+      container.innerHTML = `
+        <div class="skeleton-loader-container">
+          <div class="skeleton-row" style="height: 60px; margin-bottom: 8px;"></div>
+          <div class="skeleton-row" style="height: 60px; margin-bottom: 8px;"></div>
+          <div class="skeleton-row" style="height: 60px;"></div>
+        </div>
+      `;
 
       const typeFilter = document.getElementById('ledger-filter-type').value;
       const dateFilter = document.getElementById('ledger-filter-date').value;
 
       try {
-        const orders = await DB.getOrders();
-        const expenses = await DB.getExpenses();
+        const [orders, expenses] = await Promise.all([DB.getOrders(), DB.getExpenses()]);
         const todayIST = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
 
         // Filter and map orders (Income) - only manual sales
@@ -2269,11 +2339,17 @@
     // --- VIEW 3: IN-APP STOCK MANAGEMENT ---
     async function renderStockManager() {
       const box = document.getElementById('stock-list-container');
-      box.innerHTML = "";
+      box.innerHTML = `
+        <div class="skeleton-loader-container">
+          <div class="skeleton-row" style="height: 64px; margin-bottom: 8px;"></div>
+          <div class="skeleton-row" style="height: 64px; margin-bottom: 8px;"></div>
+          <div class="skeleton-row" style="height: 64px;"></div>
+        </div>
+      `;
 
       try {
-        productsList = await DB.getProducts();
-        const summary = await DB.getFinanceSummary();
+        const [prods, summary] = await Promise.all([DB.getProducts(), DB.getFinanceSummary()]);
+        productsList = prods;
 
         document.getElementById('stock-val-hero').textContent = `₹${summary.stockValue.value.toLocaleString('en-IN')}`;
         const badge = document.getElementById('stock-val-hero-badge');
