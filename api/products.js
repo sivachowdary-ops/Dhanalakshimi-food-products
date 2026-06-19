@@ -26,7 +26,9 @@ async function handler(req, res) {
           "1kg": parseFloat(p.price_1kg)
         },
         inStock: p.in_stock,
-        isBestSeller: p.is_bestseller
+        isBestSeller: p.is_bestseller,
+        stock_kg: p.stock_kg !== undefined ? parseFloat(p.stock_kg) : 0,
+        cost_price_per_kg: p.cost_price_per_kg !== undefined ? parseFloat(p.cost_price_per_kg) : 0
       }));
       
       return res.status(200).json(formattedProducts);
@@ -74,7 +76,7 @@ async function handler(req, res) {
 
   if (method === 'PUT') {
     try {
-      let { id, name, category, description, image, price_500g, price_1kg, inStock, isBestSeller, prices, cost_price_500g, cost_price_1kg, stock_qty_500g, stock_qty_1kg } = req.body;
+      let { id, name, category, description, image, price_500g, price_1kg, inStock, isBestSeller, prices, stock_kg, cost_price_per_kg } = req.body;
       
       if (prices) {
         if (prices['500g'] !== undefined) price_500g = prices['500g'];
@@ -91,10 +93,8 @@ async function handler(req, res) {
       if (price_1kg !== undefined) updateFields.price_1kg = parseFloat(price_1kg);
       if (inStock !== undefined) updateFields.in_stock = inStock;
       if (isBestSeller !== undefined) updateFields.is_bestseller = isBestSeller;
-      if (cost_price_500g !== undefined) updateFields.cost_price_500g = parseFloat(cost_price_500g);
-      if (cost_price_1kg !== undefined) updateFields.cost_price_1kg = parseFloat(cost_price_1kg);
-      if (stock_qty_500g !== undefined) updateFields.stock_qty_500g = parseInt(stock_qty_500g);
-      if (stock_qty_1kg !== undefined) updateFields.stock_qty_1kg = parseInt(stock_qty_1kg);
+      if (stock_kg !== undefined) updateFields.stock_kg = parseFloat(stock_kg);
+      if (cost_price_per_kg !== undefined) updateFields.cost_price_per_kg = parseFloat(cost_price_per_kg);
 
       const { data, error } = await supabase
         .from('products')

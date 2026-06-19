@@ -307,10 +307,8 @@ class UnifiedDatabase {
     if (!localStorage.getItem("dfp_products")) {
       const seeded = DEFAULT_PRODUCTS.map(p => ({
         ...p,
-        cost_price_500g: 80.00,
-        cost_price_1kg: 160.00,
-        stock_qty_500g: Math.floor(Math.random() * 50) + 10,
-        stock_qty_1kg: Math.floor(Math.random() * 30) + 5
+        stock_kg: Math.floor(Math.random() * 50) + 10,
+        cost_price_per_kg: 160.00
       }));
       localStorage.setItem("dfp_products", JSON.stringify(seeded));
     }
@@ -491,11 +489,9 @@ class UnifiedDatabase {
           const prodIdx = localProducts.findIndex(p => p.id === item.productId);
           if (prodIdx !== -1) {
             const qty = parseInt(item.quantity) || 0;
-            if (item.weight === '500g') {
-              localProducts[prodIdx].stock_qty_500g = Math.max(0, (parseInt(localProducts[prodIdx].stock_qty_500g) || 0) - qty);
-            } else if (item.weight === '1kg') {
-              localProducts[prodIdx].stock_qty_1kg = Math.max(0, (parseInt(localProducts[prodIdx].stock_qty_1kg) || 0) - qty);
-            }
+            const itemWeightKg = item.weight === '500g' ? 0.5 : 1.0;
+            const currentStock = parseFloat(localProducts[prodIdx].stock_kg) || 0;
+            localProducts[prodIdx].stock_kg = Math.max(0, currentStock - (qty * itemWeightKg));
           }
         });
         localStorage.setItem("dfp_products", JSON.stringify(localProducts));
@@ -712,8 +708,8 @@ class UnifiedDatabase {
     const currentMonthIST = todayIST.substring(0, 7); // YYYY-MM
     const currentYearIST = todayIST.substring(0, 4); // YYYY
 
-    // Count paid orders (as confirmed payment or not Cancelled/New)
-    const paidOrders = orders.filter(o => o.status !== 'New Order' && o.status !== 'Cancelled');
+    // Count paid orders (as confirmed payment or not Cancelled/New) and starting with MANUAL-
+    const paidOrders = orders.filter(o => o.status !== 'New Order' && o.status !== 'Cancelled' && o.paymentRef && o.paymentRef.startsWith('MANUAL-'));
 
     let todayIncome = 0;
     let monthIncome = 0;
@@ -745,19 +741,16 @@ class UnifiedDatabase {
     let anyCostPrice = false;
 
     products.forEach(p => {
-      const qty500 = parseInt(p.stock_qty_500g) || 0;
-      const qty1k = parseInt(p.stock_qty_1kg) || 0;
-      let cost500 = parseFloat(p.cost_price_500g) || 0;
-      let cost1k = parseFloat(p.cost_price_1kg) || 0;
+      const stockKg = parseFloat(p.stock_kg) || 0;
+      let costPerKg = parseFloat(p.cost_price_per_kg) || 0;
 
-      if (cost500 > 0 || cost1k > 0) {
+      if (costPerKg > 0) {
         anyCostPrice = true;
       } else {
-        cost500 = parseFloat(p.prices?.["500g"] || p.price_500g || 0);
-        cost1k = parseFloat(p.prices?.["1kg"] || p.price_1kg || 0);
+        costPerKg = parseFloat(p.prices?.["1kg"] || p.price_1kg || 0);
       }
 
-      stockVal += (qty500 * cost500) + (qty1k * cost1k);
+      stockVal += stockKg * costPerKg;
     });
 
     // Monthly trends mapping (last 12 months)
@@ -811,10 +804,8 @@ class UnifiedDatabase {
   async resetToDefaults() {
     const seeded = DEFAULT_PRODUCTS.map(p => ({
       ...p,
-      cost_price_500g: 80.00,
-      cost_price_1kg: 160.00,
-      stock_qty_500g: Math.floor(Math.random() * 50) + 10,
-      stock_qty_1kg: Math.floor(Math.random() * 30) + 5
+      stock_kg: Math.floor(Math.random() * 50) + 10,
+      cost_price_per_kg: 160.00
     }));
     localStorage.setItem("dfp_products", JSON.stringify(seeded));
     localStorage.setItem("dfp_shipping_rates", JSON.stringify(DEFAULT_SHIPPING_RATES));

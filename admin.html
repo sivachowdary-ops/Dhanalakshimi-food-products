@@ -443,23 +443,12 @@
 
         <div style="display: flex; gap: 12px; margin-bottom: 16px;">
           <div class="form-group" style="flex:1;">
-            <label for="prod-cost-500g" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Cost Price (500g) *</label>
-            <input type="number" id="prod-cost-500g" required min="0" value="80" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+            <label for="prod-stock-kg" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Stock (kg) *</label>
+            <input type="number" step="0.01" id="prod-stock-kg" required min="0" value="0" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
           </div>
           <div class="form-group" style="flex:1;">
-            <label for="prod-cost-1kg" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Cost Price (1kg) *</label>
-            <input type="number" id="prod-cost-1kg" required min="0" value="160" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 12px; margin-bottom: 16px;">
-          <div class="form-group" style="flex:1;">
-            <label for="prod-stock-500g" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Stock Qty (500g) *</label>
-            <input type="number" id="prod-stock-500g" required min="0" value="0" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
-          </div>
-          <div class="form-group" style="flex:1;">
-            <label for="prod-stock-1kg" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Stock Qty (1kg) *</label>
-            <input type="number" id="prod-stock-1kg" required min="0" value="0" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
+            <label for="prod-cost-per-kg" style="font-weight: 600; font-size: 0.85rem; margin-bottom: 6px; display: block; color: var(--text-dark);">Cost per kg (₹) *</label>
+            <input type="number" step="0.01" id="prod-cost-per-kg" required min="0" value="160" style="border: 1px solid var(--border-color); padding: 10px 14px; border-radius: var(--radius-sm); font-size: 0.95rem; width: 100%; outline: none; background:var(--white); color:var(--text-dark);">
           </div>
         </div>
 
@@ -912,8 +901,8 @@
               <span class="${p.inStock ? 'success-text' : 'danger-text'}" style="font-weight: 600; margin-bottom: 2px;">
                 ${p.inStock ? '● In Stock' : '○ Out of Stock'}
               </span>
-              <span>Stock 500g: <strong>${p.stock_qty_500g !== undefined ? p.stock_qty_500g : 0}</strong> pcs (Cost: ₹${p.cost_price_500g !== undefined ? p.cost_price_500g : 0})</span>
-              <span>Stock 1kg: <strong>${p.stock_qty_1kg !== undefined ? p.stock_qty_1kg : 0}</strong> pcs (Cost: ₹${p.cost_price_1kg !== undefined ? p.cost_price_1kg : 0})</span>
+              <span>Stock: <strong>${p.stock_kg !== undefined ? p.stock_kg : 0} kg</strong></span>
+              <span>Cost per kg: <strong>₹${p.cost_price_per_kg !== undefined ? p.cost_price_per_kg : 0}</strong></span>
             </div>
             <div class="card-footer">
               <div style="display: flex; flex-direction: column; gap: 4px;">
@@ -962,10 +951,8 @@
             document.getElementById('prod-image').value = p.image || "";
             document.getElementById('prod-price-500g').value = p.prices["500g"];
             document.getElementById('prod-price-1kg').value = p.prices["1kg"];
-            document.getElementById('prod-cost-500g').value = p.cost_price_500g !== undefined ? p.cost_price_500g : "80";
-            document.getElementById('prod-cost-1kg').value = p.cost_price_1kg !== undefined ? p.cost_price_1kg : "160";
-            document.getElementById('prod-stock-500g').value = p.stock_qty_500g !== undefined ? p.stock_qty_500g : "0";
-            document.getElementById('prod-stock-1kg').value = p.stock_qty_1kg !== undefined ? p.stock_qty_1kg : "0";
+            document.getElementById('prod-stock-kg').value = p.stock_kg !== undefined ? p.stock_kg : "0";
+            document.getElementById('prod-cost-per-kg').value = p.cost_price_per_kg !== undefined ? p.cost_price_per_kg : "160";
             document.getElementById('prod-instock').checked = p.inStock;
             document.getElementById('prod-bestseller').checked = p.isBestSeller || false;
 
@@ -1012,10 +999,8 @@
       const imageVal = document.getElementById('prod-image').value.trim() || "assets/hero_lifestyle.png";
       const p500 = parseFloat(document.getElementById('prod-price-500g').value);
       const p1k = parseFloat(document.getElementById('prod-price-1kg').value);
-      const cost500 = parseFloat(document.getElementById('prod-cost-500g').value) || 0;
-      const cost1k = parseFloat(document.getElementById('prod-cost-1kg').value) || 0;
-      const stock500 = parseInt(document.getElementById('prod-stock-500g').value) || 0;
-      const stock1k = parseInt(document.getElementById('prod-stock-1kg').value) || 0;
+      const stockKg = parseFloat(document.getElementById('prod-stock-kg').value) || 0;
+      const costPerKg = parseFloat(document.getElementById('prod-cost-per-kg').value) || 0;
       const inStock = document.getElementById('prod-instock').checked;
       const isBestSeller = document.getElementById('prod-bestseller').checked;
 
@@ -1030,10 +1015,8 @@
         },
         inStock,
         isBestSeller,
-        cost_price_500g: cost500,
-        cost_price_1kg: cost1k,
-        stock_qty_500g: stock500,
-        stock_qty_1kg: stock1k
+        stock_kg: stockKg,
+        cost_price_per_kg: costPerKg
       };
 
       try {
@@ -1060,10 +1043,8 @@
       document.getElementById('product-form-title').textContent = "Add New Product";
       document.getElementById('prod-price-500g').value = "125";
       document.getElementById('prod-price-1kg').value = "250";
-      document.getElementById('prod-cost-500g').value = "80";
-      document.getElementById('prod-cost-1kg').value = "160";
-      document.getElementById('prod-stock-500g').value = "0";
-      document.getElementById('prod-stock-1kg').value = "0";
+      document.getElementById('prod-stock-kg').value = "0";
+      document.getElementById('prod-cost-per-kg').value = "160";
     }
 
     // --- PANEL 3: ORDERS ---

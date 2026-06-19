@@ -1525,27 +1525,14 @@
         
         <h4 style="font-size:0.9rem; font-weight:700; color:var(--brand); margin-bottom:18px;" id="stock-prod-name-header">Product</h4>
         
-        <h5 style="font-size:0.75rem; font-weight:700; color:var(--slate-500); text-transform:uppercase; margin-bottom:8px; border-bottom:1px solid var(--slate-100); padding-bottom:4px;">500g Pack Details</h5>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom:18px;">
-          <div class="form-group">
-            <label for="stock-qty-500g">Pack Count In Stock</label>
-            <input type="number" id="stock-qty-500g" class="form-control" min="0" required>
-          </div>
-          <div class="form-group">
-            <label for="stock-cost-500g">Production Cost (₹)</label>
-            <input type="number" step="0.01" id="stock-cost-500g" class="form-control" min="0" required>
-          </div>
-        </div>
-
-        <h5 style="font-size:0.75rem; font-weight:700; color:var(--slate-500); text-transform:uppercase; margin-bottom:8px; border-bottom:1px solid var(--slate-100); padding-bottom:4px;">1kg Pack Details</h5>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom:12px;">
           <div class="form-group">
-            <label for="stock-qty-1kg">Pack Count In Stock</label>
-            <input type="number" id="stock-qty-1kg" class="form-control" min="0" required>
+            <label for="stock-qty-kg">Stock (kg)</label>
+            <input type="number" step="0.01" id="stock-qty-kg" class="form-control" min="0" required>
           </div>
           <div class="form-group">
-            <label for="stock-cost-1kg">Production Cost (₹)</label>
-            <input type="number" step="0.01" id="stock-cost-1kg" class="form-control" min="0" required>
+            <label for="stock-cost-per-kg">Cost per kg (₹)</label>
+            <input type="number" step="0.01" id="stock-cost-per-kg" class="form-control" min="0" required>
           </div>
         </div>
 
@@ -1763,6 +1750,7 @@
         shipping: 0,
         total: totalAmount,
         status: "Delivered", // Immediately verified income
+        paymentRef: "MANUAL-" + Date.now(),
         notes: "Manually recorded via Finance Dashboard",
         timestamp: new Date(orderDate).toISOString()
       };
@@ -1888,11 +1876,8 @@
         document.getElementById('stock-prod-id').value = product.id;
         document.getElementById('stock-prod-name-header').textContent = product.name;
         
-        document.getElementById('stock-qty-500g').value = product.stock_qty_500g !== undefined ? product.stock_qty_500g : 0;
-        document.getElementById('stock-cost-500g').value = product.cost_price_500g !== undefined ? product.cost_price_500g : 80;
-        
-        document.getElementById('stock-qty-1kg').value = product.stock_qty_1kg !== undefined ? product.stock_qty_1kg : 0;
-        document.getElementById('stock-cost-1kg').value = product.cost_price_1kg !== undefined ? product.cost_price_1kg : 160;
+        document.getElementById('stock-qty-kg').value = product.stock_kg !== undefined ? product.stock_kg : 0;
+        document.getElementById('stock-cost-per-kg').value = product.cost_price_per_kg !== undefined ? product.cost_price_per_kg : 160;
       }
     }
 
@@ -1903,16 +1888,11 @@
 
     async function handleSaveStockAdjustment() {
       const id = document.getElementById('stock-prod-id').value;
-      const qty500 = parseInt(document.getElementById('stock-qty-500g').value) || 0;
-      const cost500 = parseFloat(document.getElementById('stock-cost-500g').value) || 0;
-      const qty1k = parseInt(document.getElementById('stock-qty-1kg').value) || 0;
-      const cost1k = parseFloat(document.getElementById('stock-cost-1kg').value) || 0;
-
+      const stockKg = parseFloat(document.getElementById('stock-qty-kg').value) || 0;
+      const costPerKg = parseFloat(document.getElementById('stock-cost-per-kg').value) || 0;
       const payload = {
-        stock_qty_500g: qty500,
-        cost_price_500g: cost500,
-        stock_qty_1kg: qty1k,
-        cost_price_1kg: cost1k
+        stock_kg: stockKg,
+        cost_price_per_kg: costPerKg
       };
 
       try {
@@ -1935,7 +1915,7 @@
 
       try {
         const orders = await DB.getOrders();
-        const paidOrders = orders.filter(o => o.status !== 'New Order' && o.status !== 'Cancelled');
+        const paidOrders = orders.filter(o => o.status !== 'New Order' && o.status !== 'Cancelled' && o.paymentRef && o.paymentRef.startsWith('MANUAL-'));
         
         const todayIST = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
         const monthIST = todayIST.substring(0, 7);
@@ -2178,8 +2158,8 @@
         const expenses = await DB.getExpenses();
         const todayIST = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
 
-        // Filter and map orders (Income)
-        const paidOrders = orders.filter(o => o.status !== 'New Order' && o.status !== 'Cancelled');
+        // Filter and map orders (Income) - only manual sales
+        const paidOrders = orders.filter(o => o.status !== 'New Order' && o.status !== 'Cancelled' && o.paymentRef && o.paymentRef.startsWith('MANUAL-'));
         const ordersMapped = paidOrders.map(o => {
           const date = new Date(o.timestamp || o.created_at).toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
           const dateObj = new Date(o.timestamp || o.created_at);
@@ -2305,21 +2285,17 @@
         }
 
         productsList.forEach(p => {
-          const qty500 = p.stock_qty_500g || 0;
-          const qty1k = p.stock_qty_1kg || 0;
-          
-          let cost500 = p.cost_price_500g || 0;
-          let cost1k = p.cost_price_1kg || 0;
+          const stockKg = p.stock_kg !== undefined ? parseFloat(p.stock_kg) : 0;
+          let costPerKg = p.cost_price_per_kg !== undefined ? parseFloat(p.cost_price_per_kg) : 0;
           let estimateLabel = "";
 
-          if (cost500 === 0 && cost1k === 0) {
-            cost500 = parseFloat(p.prices?.["500g"] || p.price_500g || 0);
-            cost1k = parseFloat(p.prices?.["1kg"] || p.price_1kg || 0);
+          if (costPerKg === 0) {
+            costPerKg = parseFloat(p.prices?.["1kg"] || p.price_1kg || 0);
             estimateLabel = " (retail)";
           }
 
-          const value = (qty500 * cost500) + (qty1k * cost1k);
-          const isLow = (qty500 + qty1k) < 10;
+          const value = stockKg * costPerKg;
+          const isLow = stockKg < 10;
           const warningBadge = isLow ? `<span class="stock-tag-amber">Low Stock</span>` : "";
 
           const row = document.createElement('div');
@@ -2328,11 +2304,11 @@
           row.innerHTML = `
             <div>
               <span class="ledger-title" style="display:flex; align-items:center;">${p.name} ${warningBadge}</span>
-              <span class="ledger-meta" style="margin-top:4px; display:inline-block;">500g size: <strong>${qty500}</strong> bags | 1kg size: <strong>${qty1k}</strong> bags</span>
+              <span class="ledger-meta" style="margin-top:4px; display:inline-block;">Stock Level: <strong>${stockKg} kg</strong></span>
             </div>
             <div class="stock-val-box">
               <div class="stock-val-title">₹${value.toLocaleString('en-IN')}</div>
-              <span class="ledger-meta" style="font-size:0.65rem;">Costs: 500g: ₹${cost500}${estimateLabel} | 1kg: ₹${cost1k}${estimateLabel}</span>
+              <span class="ledger-meta" style="font-size:0.65rem;">Cost per kg: ₹${costPerKg}${estimateLabel}</span>
             </div>
           `;
           box.appendChild(row);
@@ -2381,7 +2357,7 @@
           const val = maxVal - (i * (maxVal / 4));
           svg += `
             <line x1="${paddingLeft}" y1="${y}" x2="${width - paddingRight}" y2="${y}" stroke="#F1F5F9" stroke-width="1.5" />
-            <text x="${paddingLeft - 8}" y="${y + 3}" font-size="8" font-family="${varToString('--font-body')}" fill="#94A3B8" font-weight="700" text-anchor="end">₹${val.toLocaleString('en-IN', { notation: 'compact', maximumFractionDigits: 0 })}</text>
+            <text x="${paddingLeft - 8}" y="${y + 3}" font-size="8" font-family="inherit" fill="#94A3B8" font-weight="700" text-anchor="end">₹${val.toLocaleString('en-IN', { notation: 'compact', maximumFractionDigits: 0 })}</text>
           `;
         }
 

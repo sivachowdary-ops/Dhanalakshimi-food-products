@@ -108,6 +108,7 @@ async function handler(req, res) {
         .from('orders')
         .select('total_amount')
         .in('status', ['Confirmed', 'Preparing', 'Shipped', 'Delivered'])
+        .like('payment_ref', 'MANUAL-%')
         .gte('created_at', startOfDay)
         .lte('created_at', endOfDay);
 
@@ -132,6 +133,7 @@ async function handler(req, res) {
         .from('orders')
         .select('total_amount')
         .in('status', ['Confirmed', 'Preparing', 'Shipped', 'Delivered'])
+        .like('payment_ref', 'MANUAL-%')
         .gte('created_at', startOfMonth)
         .lte('created_at', endOfMonth);
 
@@ -157,6 +159,7 @@ async function handler(req, res) {
         .from('orders')
         .select('total_amount')
         .in('status', ['Confirmed', 'Preparing', 'Shipped', 'Delivered'])
+        .like('payment_ref', 'MANUAL-%')
         .gte('created_at', startOfYear)
         .lte('created_at', endOfYear);
 
@@ -188,29 +191,25 @@ async function handler(req, res) {
     try {
       const { data: products, error: prodErr } = await supabase
         .from('products')
-        .select('price_500g, price_1kg, cost_price_500g, cost_price_1kg, stock_qty_500g, stock_qty_1kg');
+        .select('price_1kg, cost_price_per_kg, stock_kg');
 
       if (!prodErr && products) {
         let computedStockValue = 0;
         let anyCostPriceAvailable = false;
 
         products.forEach(p => {
-          const qty500 = parseInt(p.stock_qty_500g) || 0;
-          const qty1k = parseInt(p.stock_qty_1kg) || 0;
+          const stockKg = parseFloat(p.stock_kg) || 0;
+          let costPerKg = parseFloat(p.cost_price_per_kg) || 0;
           
-          let cost500 = parseFloat(p.cost_price_500g) || 0;
-          let cost1k = parseFloat(p.cost_price_1kg) || 0;
-
-          // Check if cost prices are configured
-          if (cost500 > 0 || cost1k > 0) {
+          // Check if cost price per kg is configured
+          if (costPerKg > 0) {
             anyCostPriceAvailable = true;
           } else {
-            // Fallback estimate using selling price if cost is not set
-            cost500 = parseFloat(p.price_500g) || 0;
-            cost1k = parseFloat(p.price_1kg) || 0;
+            // Fallback estimate using retail price for 1kg
+            costPerKg = parseFloat(p.price_1kg) || 0;
           }
 
-          computedStockValue += (qty500 * cost500) + (qty1k * cost1k);
+          computedStockValue += stockKg * costPerKg;
         });
 
         // If view didn't yield stock value or is 0, use computed one
