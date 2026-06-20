@@ -530,7 +530,7 @@ class UnifiedDatabase {
       const res = await fetch(`${this.apiUrl}/api/orders`, {
         method: 'PUT',
         headers: this.getHeaders(),
-        body: JSON.stringify({ id: orderId, status: 'Pending', paymentRef, notes })
+        body: JSON.stringify({ id: orderId, status: 'New Order', paymentRef, notes })
       });
       if (!res.ok) throw new Error(await res.text());
       return await res.json();
@@ -540,7 +540,7 @@ class UnifiedDatabase {
     const orders = JSON.parse(localStorage.getItem("dfp_orders")) || [];
     const idx = orders.findIndex(o => o.id === orderId);
     if (idx !== -1) {
-      orders[idx].status = 'Pending';
+      orders[idx].status = 'New Order';
       orders[idx].paymentRef = paymentRef;
       orders[idx].notes = notes;
       localStorage.setItem("dfp_orders", JSON.stringify(orders));
