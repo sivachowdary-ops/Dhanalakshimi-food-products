@@ -171,7 +171,87 @@
     </div>
   </section>
 
+  <!-- Founder / Proprietor Section -->
+  <section class="founder-section">
+    <div class="container">
+      <div class="founder-card">
+        <div class="founder-img-wrapper">
+          <img src="assets/founder_pic.jpeg" alt="Karella Amarnadh" class="founder-img">
+        </div>
+        <div class="founder-info">
+          <h3 class="founder-name">Karella Amarnadh</h3>
+          <span class="founder-designation">Founder & Proprietor</span>
+          <div class="founder-divider"></div>
+          <p class="founder-quote">"Serving authentic Andhra snacks with quality, tradition, and trust for over 10 years."</p>
+          <p class="founder-message">At Dhanalakshmi Food Products, we believe that food is a bridge to our culture and memories. Each snack we prepare represents the authentic taste of Andhra heritage, handpicked local ingredients, and hygiene standards that you can trust like your own home kitchen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <!-- Customer Video Reviews Section -->
+  <section class="video-reviews-section">
+    <div class="container">
+      <h3 class="section-title">Customer Reviews</h3>
+      <span class="section-subtitle" style="margin-bottom: 8px; display: block;">Real Feedback from Snack Lovers</span>
+      
+      <div class="video-scroll-indicator">
+        <span>← Swipe Horizontally to Watch →</span>
+      </div>
+      
+      <div class="reviews-slider-container">
+        <!-- Review Video 1 -->
+        <div class="video-review-card">
+          <div class="video-wrapper" onclick="togglePlayReviewVideo(this)">
+            <video class="review-video" preload="metadata" loop playsinline muted>
+              <source src="v1.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <button class="video-mute-btn" onclick="toggleMuteReviewVideo(event, this)" aria-label="Mute Video">
+              <!-- Mute SVG Icon (Muted by default) -->
+              <svg class="mute-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                <line class="mute-line" x1="23" y1="9" x2="17" y2="15"></line>
+                <line class="mute-line2" x1="17" y1="9" x2="23" y2="15"></line>
+              </svg>
+            </button>
+            <div class="play-overlay">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </div>
+          </div>
+          <div class="video-review-info">
+            <h4>Jyothi K.</h4>
+            <p>Verified Customer</p>
+          </div>
+        </div>
+
+        <!-- Review Video 2 -->
+        <div class="video-review-card">
+          <div class="video-wrapper" onclick="togglePlayReviewVideo(this)">
+            <video class="review-video" preload="metadata" loop playsinline muted>
+              <source src="v3.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <button class="video-mute-btn" onclick="toggleMuteReviewVideo(event, this)" aria-label="Mute Video">
+              <!-- Mute SVG Icon (Muted by default) -->
+              <svg class="mute-icon-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                <line class="mute-line" x1="23" y1="9" x2="17" y2="15"></line>
+                <line class="mute-line2" x1="17" y1="9" x2="23" y2="15"></line>
+              </svg>
+            </button>
+            <div class="play-overlay">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+            </div>
+          </div>
+          <div class="video-review-info">
+            <h4>Satish Prasad</h4>
+            <p>Verified Customer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <!-- Why Customers Love Us -->
   <section class="why-us">
     <div class="container">
@@ -1432,6 +1512,67 @@
       renderStorefront();
     }
     })();
+  </script>
+
+  <!-- Custom script for Customer Review Video Section click-to-play & mute toggles -->
+  <script>
+    function togglePlayReviewVideo(wrapper) {
+      const video = wrapper.querySelector('.review-video');
+      if (!video) return;
+      
+      // Pause all other review videos first
+      document.querySelectorAll('.review-video').forEach(otherVideo => {
+        if (otherVideo !== video && !otherVideo.paused) {
+          otherVideo.pause();
+          otherVideo.parentElement.classList.remove('playing');
+        }
+      });
+      
+      if (video.paused) {
+        // Play video
+        video.play().then(() => {
+          wrapper.classList.add('playing');
+        }).catch(err => {
+          console.warn("Video playback failed: ", err);
+        });
+      } else {
+        // Pause video
+        video.pause();
+        wrapper.classList.remove('playing');
+      }
+    }
+    
+    function toggleMuteReviewVideo(event, btn) {
+      // Prevent parent click event (which would trigger play/pause)
+      event.stopPropagation();
+      
+      const wrapper = btn.closest('.video-wrapper');
+      const video = wrapper.querySelector('.review-video');
+      const svg = btn.querySelector('.mute-icon-svg');
+      
+      if (!video || !svg) return;
+      
+      video.muted = !video.muted;
+      
+      const muteLines = svg.querySelectorAll('.mute-line, .mute-line2');
+      
+      if (video.muted) {
+        // Muted: show mute lines
+        muteLines.forEach(line => line.style.display = 'block');
+      } else {
+        // Unmuted: hide mute lines
+        muteLines.forEach(line => line.style.display = 'none');
+        
+        // Auto play if it was paused when unmuting
+        if (video.paused) {
+          video.play().then(() => {
+            wrapper.classList.add('playing');
+          }).catch(err => {
+            console.warn("Autoplay after unmute failed: ", err);
+          });
+        }
+      }
+    }
   </script>
 
   <!-- Floating WhatsApp Widget -->
