@@ -7,7 +7,7 @@ const DEFAULT_PRODUCTS = [
     name: "Special Mixture",
     category: "Mixtures",
     description: "A crunchy and savory blend of sev, boondi, roasted peanuts, cashews, and traditional Andhra spices.",
-    image: "assets/product_mixture.jpg",
+    image: "assets/product_mixture.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: true
@@ -17,7 +17,7 @@ const DEFAULT_PRODUCTS = [
     name: "Dal Mixture",
     category: "Mixtures",
     description: "Crispy fried lentils mixed with roasted spices, curry leaves, and a touch of chili.",
-    image: "assets/product_dal_mixture.jpg",
+    image: "assets/product_dal_mixture.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: false
@@ -27,7 +27,7 @@ const DEFAULT_PRODUCTS = [
     name: "Chekodi",
     category: "Chekodilu",
     description: "Classic golden-fried rings made of rice flour and sesame seeds, offering a perfect traditional crunch.",
-    image: "assets/product_chekodi.jpg",
+    image: "assets/product_chekodi.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: true
@@ -37,7 +37,7 @@ const DEFAULT_PRODUCTS = [
     name: "Pappu Chekodi",
     category: "Chekodilu",
     description: "Traditional crunchy ring snack enriched with chana dal (lentils) for an extra layer of texture and taste.",
-    image: "assets/product_pappu_chekodi.jpg",
+    image: "assets/product_pappu_chekodi.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: false
@@ -47,7 +47,7 @@ const DEFAULT_PRODUCTS = [
     name: "Arra Karapusa",
     category: "Karapusa",
     description: "Super fine, spicy gram flour sev seasoned with hand-ground red chilies and garlic.",
-    image: "assets/product_arra_karapusa.jpg",
+    image: "assets/product_arra_karapusa.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: false
@@ -57,7 +57,7 @@ const DEFAULT_PRODUCTS = [
     name: "Vammu Pusa",
     category: "Karapusa",
     description: "Traditional savory sev flavored with carom seeds (ajwain), gentle on the stomach and extremely flavorful.",
-    image: "assets/product_vammu_pusa.jpg",
+    image: "assets/product_vammu_pusa.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: true
@@ -67,7 +67,7 @@ const DEFAULT_PRODUCTS = [
     name: "Janthukulu",
     category: "Traditional Snacks",
     description: "Traditional spiral snack made of rice flour and black gram, flavored with cumin and sesame seeds.",
-    image: "assets/product_janthukulu.jpg",
+    image: "assets/product_janthukulu.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: true
@@ -77,7 +77,7 @@ const DEFAULT_PRODUCTS = [
     name: "Star Kommulu",
     category: "Traditional Snacks",
     description: "Crispy star-shaped snack sticks seasoned with mild spices, perfect for tea time.",
-    image: "assets/product_star_kommulu.jpg",
+    image: "assets/product_star_kommulu.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: false
@@ -87,7 +87,7 @@ const DEFAULT_PRODUCTS = [
     name: "Panchadhara Kommulu",
     category: "Traditional Snacks",
     description: "Sweet, crispy snack sticks coated with sugar syrup. A traditional festive favorite.",
-    image: "assets/product_panchadhara_kommulu.jpg",
+    image: "assets/product_panchadhara_kommulu.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: false
@@ -97,7 +97,7 @@ const DEFAULT_PRODUCTS = [
     name: "Bellam Gavvalu",
     category: "Gavvalu",
     description: "Shell-shaped sweet crisps made of wheat flour, fried to golden perfection and soaked in pure jaggery syrup.",
-    image: "assets/product_bellam_gavvalu.jpg",
+    image: "assets/product_bellam_gavvalu.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: true
@@ -107,7 +107,7 @@ const DEFAULT_PRODUCTS = [
     name: "Hot Gavvalu",
     category: "Gavvalu",
     description: "Savory shell-shaped crisps spiced with red chili powder, garlic, and curry leaves.",
-    image: "assets/product_hot_gavvalu.jpg",
+    image: "assets/product_hot_gavvalu.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: false
@@ -117,7 +117,7 @@ const DEFAULT_PRODUCTS = [
     name: "Chitti Appadalu",
     category: "Appadalu",
     description: "Mini-sized, sun-dried lentil papads. Deep fry or roast for a crunchy companion to your meals.",
-    image: "assets/product_chitti_appadalu.jpg",
+    image: "assets/product_chitti_appadalu.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: false
@@ -127,7 +127,7 @@ const DEFAULT_PRODUCTS = [
     name: "Pedda Appadalu",
     category: "Appadalu",
     description: "Large, traditional papadums hand-rolled with premium quality black gram flour and spices.",
-    image: "assets/product_pedda_appadalu.jpg",
+    image: "assets/product_pedda_appadalu.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: false
@@ -137,7 +137,7 @@ const DEFAULT_PRODUCTS = [
     name: "Diamond Chips",
     category: "Others",
     description: "Sweet and crunchy diamond-cut flour pastries. Light, crispy, and mildly sweet.",
-    image: "assets/product_diamond_chips.jpg",
+    image: "assets/product_diamond_chips.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: false
@@ -147,7 +147,7 @@ const DEFAULT_PRODUCTS = [
     name: "Little Hearts Biscuits",
     category: "Others",
     description: "Puff pastry biscuits baked in the shape of hearts, glazed with caramelized sugar.",
-    image: "assets/product_little_hearts.jpg",
+    image: "assets/product_little_hearts.webp",
     prices: { "500g": 125, "1kg": 250 },
     inStock: true,
     isBestSeller: false

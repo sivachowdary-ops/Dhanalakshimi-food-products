@@ -48,7 +48,7 @@
     <div class="container">
       <div class="header-top">
         <div class="logo-container" onclick="scrollToHero()" style="cursor:pointer;">
-          <img src="assets/logo.png" alt="Dhanalakshmi Food Products Logo" class="logo-img">
+          <img src="assets/logo.webp" alt="Dhanalakshmi Food Products Logo" class="logo-img">
           <div>
             <h1 class="brand-title" id="store-title">Dhanalakshmi</h1>
             <span class="brand-subtitle">Food Products</span>
@@ -97,7 +97,7 @@
     <div class="mobile-nav-drawer" id="mobile-nav-drawer">
       <div class="mobile-nav-header">
         <div class="logo-container">
-          <img src="assets/logo.png" alt="Dhanalakshmi Food Products Logo" class="logo-img">
+          <img src="assets/logo.webp" alt="Dhanalakshmi Food Products Logo" class="logo-img">
           <div>
             <span class="brand-title" style="font-size: 1.1rem; line-height: 1;">Dhanalakshmi</span>
             <span class="brand-subtitle" style="font-size: 0.65rem;">Food Products</span>
@@ -176,7 +176,7 @@
     <div class="container">
       <div class="founder-card">
         <div class="founder-img-wrapper">
-          <img src="assets/founder_pic.jpeg" alt="Karella Amarnadh" class="founder-img">
+          <img src="assets/founder_pic.webp" alt="Karella Amarnadh" class="founder-img" loading="lazy">
         </div>
         <div class="founder-info">
           <h3 class="founder-name">Karella Amarnadh</h3>
@@ -307,7 +307,7 @@
           <p>Every packet is a promise of crunch, warmth, and authentic homemade taste that connects Telugu families and food lovers across distances.</p>
         </div>
         <div class="story-image-wrapper">
-          <video class="story-image" controls preload="metadata" poster="assets/hero_lifestyle.png">
+          <video class="story-image" controls preload="metadata" poster="assets/hero_lifestyle.webp">
             <source src="v2.mp4" type="video/mp4">
             Your browser does not support the video tag.
           </video>
@@ -475,7 +475,7 @@
       <div class="footer-top">
         <div class="footer-about" style="display: flex; flex-direction: column; gap: 16px;">
           <div class="logo-container" style="cursor: default;">
-            <img src="assets/logo.png" alt="Dhanalakshmi Food Products Logo" class="logo-img">
+            <img src="assets/logo.webp" alt="Dhanalakshmi Food Products Logo" class="logo-img">
             <div>
               <h4 id="footer-brand-title" style="margin: 0; font-family: var(--font-heading);">Dhanalakshmi Food Products</h4>
               <span class="brand-subtitle" style="font-size: 0.65rem; color: var(--accent-gold); font-weight: 600; text-transform: uppercase;">Traditional & Authentic</span>
@@ -769,14 +769,14 @@
 
     // Mappings of Category names to generated image files for collections thumbnails
     const catImages = {
-      "All": "assets/hero_lifestyle.png",
-      "Mixtures": "assets/product_mixture.jpg",
-      "Chekodilu": "assets/product_chekodi.jpg",
-      "Karapusa": "assets/product_arra_karapusa.jpg",
-      "Traditional Snacks": "assets/product_janthukulu.jpg",
-      "Gavvalu": "assets/product_bellam_gavvalu.jpg",
-      "Appadalu": "assets/product_chitti_appadalu.jpg",
-      "Others": "assets/product_diamond_chips.jpg"
+      "All": "assets/hero_lifestyle.webp",
+      "Mixtures": "assets/product_mixture.webp",
+      "Chekodilu": "assets/product_chekodi.webp",
+      "Karapusa": "assets/product_arra_karapusa.webp",
+      "Traditional Snacks": "assets/product_janthukulu.webp",
+      "Gavvalu": "assets/product_bellam_gavvalu.webp",
+      "Appadalu": "assets/product_chitti_appadalu.webp",
+      "Others": "assets/product_diamond_chips.webp"
     };
 
     // DOM Elements
@@ -1105,11 +1105,11 @@
         const catWrapper = document.createElement('div');
         catWrapper.className = `category-item-wrapper ${activeClass}`;
         
-        const imgPath = catImages[cat] || "assets/hero_lifestyle.png";
+        const imgPath = catImages[cat] || "assets/hero_lifestyle.webp";
         
         catWrapper.innerHTML = `
           <div class="category-card">
-            <img class="category-card-img" src="${imgPath}" alt="${cat}" onerror="this.src='assets/hero_lifestyle.png'">
+            <img class="category-card-img" src="${imgPath}" alt="${cat}" onerror="this.src='assets/hero_lifestyle.webp'" loading="lazy">
           </div>
           <span class="category-arrow-link">${cat} &rarr;</span>
         `;
@@ -1156,7 +1156,7 @@
         <div class="product-img-wrapper">
           ${product.isBestSeller ? '<span class="badge-bestseller">Best Seller</span>' : ''}
           ${!product.inStock ? '<span class="badge-outofstock">Out of Stock</span>' : ''}
-          <img class="product-card-img" src="${product.image}" alt="${product.name}" onerror="this.src='assets/hero_lifestyle.png'">
+          <img class="product-card-img" src="${product.image}" alt="${product.name}" onerror="this.src='assets/hero_lifestyle.webp'" loading="lazy">
         </div>
         <div class="product-info">
           <h4 class="product-card-title">${product.name}</h4>
@@ -1294,7 +1294,7 @@
         const cartItemEl = document.createElement('div');
         cartItemEl.className = "cart-item";
         cartItemEl.innerHTML = `
-          <img class="cart-item-img" src="${item.product.image}" alt="${item.product.name}" onerror="this.src='assets/hero_lifestyle.png'">
+          <img class="cart-item-img" src="${item.product.image}" alt="${item.product.name}" onerror="this.src='assets/hero_lifestyle.webp'">
           <div class="cart-item-details">
             <div class="cart-item-name">${item.product.name}</div>
             <span class="cart-item-weight">${item.weight}</span>

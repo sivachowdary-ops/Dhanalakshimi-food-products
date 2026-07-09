@@ -14,3 +14,8 @@ desktop.ini
 *.log
 
 .vercel
+
+# Agent temporary files and backups
+.gemini/
+*_backup.mp4
+
